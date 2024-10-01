@@ -1,0 +1,81 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.logo h1 {
+    font-size: 32px;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000;
+}
+
+.intro {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.intro h2 {
+    font-size: 36px;
+}
+
+.intro ul {
+    list-style: none;
+    padding: 0;
+}
+
+.intro ul li {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.signup, .login {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.signup {
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+}
+
+.login {
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+}
+
+.login:hover, .signup:hover {
+    opacity: 0.9;
+}
