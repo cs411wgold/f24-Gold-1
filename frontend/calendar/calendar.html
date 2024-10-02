@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar - KnowTime</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="calendar-container">
+  <div class="month">  
+    <!-- This is where the month is going to go (it gets added in the script section)  -->
+    <h2>Placeholder</h2>
+  </div>
+
+  <ul class="weekdays">
+    <li>Monday</li>
+    <li>Tuesday</li>
+    <li>Wednesday</li>
+    <li>Thursday</li>
+    <li>Friday</li>
+    <li>Saturday</li>
+    <li>Sunday</li>
+  </ul>
+
+  <ul class="days">
+    <!-- These get added based on the number of days in the month in the script section -->
+  </ul>
+</div>
+
+</body>
+</html>
+
+
+<script>
+    // Get our month header on the calendar
+    const monthHeading = document.querySelector('.month h2');
+    
+    // Get our days container
+    const daysContainer = document.querySelector('.days');
+    
+    const currentDate = new Date();
+    
+    // Find the current date and get the month as a number (Oct = 10)
+    const numeralMonth = currentDate.getMonth();
+    
+    // An array of months
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    // Get the name of our numeral month
+    const monthName = months[numeralMonth]; 
+    
+    // Get the year number
+    const year = currentDate.getFullYear();
+    
+    // Set the header text to be that month plus the year
+    monthHeading.textContent = `${monthName} ${year}`;
+    
+    // Get the number of days in the month (corrected to use current month)
+    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); // Now it's correct
+    
+    // Get the starting day of the week for the first of the month
+    const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
+    
+    // Adjust the starting day to align with Monday as day 1 (JavaScript uses Sunday as 0)
+    const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
+    
+    // Create empty days to align the first day of the month correctly with Monday
+    for (let i = 0; i < adjustedFirstDay; i++) {
+      const emptyLi = document.createElement('li');
+      emptyLi.style.visibility = 'hidden'; // Hide the empty slots
+      daysContainer.appendChild(emptyLi);
+    }
+    
+    // Loop through each day of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      // Add a calendar spot for the day
+      const dayLi = document.createElement('li');
+      dayLi.textContent = day;
+      daysContainer.appendChild(dayLi);
+    
+      // Add a task
+      const taskDiv = document.createElement('div');
+      taskDiv.classList.add('task');
+      taskDiv.textContent = `Task ${day}`;
+      dayLi.appendChild(taskDiv);
+    }
+    </script>

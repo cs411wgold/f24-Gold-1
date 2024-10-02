@@ -1,0 +1,47 @@
+.calendar-container {
+  width: 70%; /*Only take up 70% of the page*/
+  margin: 0 auto; /* Helps the entire calendar to be centered */
+  text-align: center; /* Align the text to be centered */
+}
+
+ul {
+  list-style-type: none; /* Remove bullets from list */
+  padding: 0; /* Remove default padding */
+}
+
+.month {
+  padding: 5px 25px; /* How big the color is around the month title */
+  background: #5f9ce2;  /* Color behind the month text */
+  color: white; /*Text color of the month*/
+}
+
+.weekdays {
+  display: flex; /* Set the days to be in a row */
+  padding: 0; /* Remove extra padding */
+  background-color: #d3d1d1;
+}
+
+.weekdays li {
+  width: 14.28%; /* 100% / 7 days */
+  font-weight: bold; /* Make them appear bold */
+  color: #000; /* Text-color*/
+  padding: 15px 0;  /* Size of color behind */
+}
+
+.days {
+  display: flex; /* Puts them in the rows instead of stacked on top of each other */
+  flex-wrap: wrap; /* Wrap at the end of the width (so it is not all one row) */ 
+}
+
+.days li {
+  width: 14.28%; /* 100% / 7 days */
+  border: 1.5px solid #ddd; /* Width of the lines between each day */
+  padding: 15px 0; /* Size of each day box */
+  box-sizing: border-box; /* Makes sure the padding and stuff does not mess with the width (so days will be spaced correctly) */
+}
+
+.task {
+  background-color: #e0f7fa; /* Task background color */
+  padding: 10px; /* Task Size */
+  margin-bottom: 10px; /* Add some padding to the bottom */
+}
