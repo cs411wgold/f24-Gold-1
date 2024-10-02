@@ -12,3 +12,4 @@ Team Gold - Fall 2024
   - gtcatlett - Glenn Catlett - gcatl002@odu.edu
 
 https://reginaldpinder.github.io/f24-Gold-1/
+https://reginaldpinder.github.io/f24-Gold-1/frontend/index.html
