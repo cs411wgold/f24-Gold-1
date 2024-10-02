@@ -30,6 +30,25 @@ nav a {
     font-size: 18px;
     color: #000;
 }
+.home {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.home h2 {
+    font-size: 36px;
+}
+
+.home ul {
+    list-style: none;
+    padding: 0;
+}
+
+.home ul li {
+    font-size: 18px;
+}
 
 .intro {
     text-align: center;
