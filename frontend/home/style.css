@@ -1,0 +1,86 @@
+/* General styles */
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+nav .nav-link {
+    font-weight: bold;
+    margin-right: 15px;
+    color: #00a4b5;
+}
+
+nav .nav-link:hover {
+    color: #006c8d;
+}
+
+/* Profile dropdown button */
+.btn-primary {
+    background-color: #00a4b5;
+    border: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary:hover {
+    background-color: #008c9b;
+}
+
+/* Main Content */
+h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+h3 {
+    font-size: 24px;
+    color: #333;
+}
+
+.assignment-list {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.assignment-item {
+    background-color: #f0f0f5;
+    border-left: 5px solid #6a0dad;
+    color: #333;
+}
+
+.assignment-title {
+    font-size: 18px;
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.date-badge {
+    background-color: #6a0dad;
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.assignment-item:hover {
+    background-color: #e8e0f8;
+}
+
