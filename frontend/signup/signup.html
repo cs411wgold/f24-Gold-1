@@ -1,43 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - KnowTime</title>
-    <link rel="stylesheet" href="../assets/styles.css"> <!-- Adjust the path if needed -->
+    <!--Reference https://mdbootstrap.com/docs/standard/extended/registration/#docsTabsOverview-->
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Barlow Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet"> 
+    <!-- Personal styles sheet-->
+    <link rel="stylesheet" href="styles.css"> 
 </head>
-<body>
-    <header>
-        <div class="logo">
-            <h1>KnowTime</h1>
-            <img src="../assets/tomato.png" alt="tomato logo"> <!-- Adjust the path if needed -->
+<section class="vh-100">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black custom-card" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+  
+                  <p style="font-weight:bold" class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Welcome to KnowTime!</p>
+  
+                  <form class="mx-1 mx-md-4">
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                        <input type="text" id="form3Example1c" class="form-control" />
+                        <label style="font-weight:bold; font-size:20px" class="form-label" for="form3Example1c">Username</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                        <input type="email" id="form3Example3c" class="form-control" />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example3c">Your Email</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                        <input type="password" id="form3Example4c" class="form-control" />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example4c">Password</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                        <input type="password" id="form3Example4cd" class="form-control" />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example4cd">Repeat your password</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-phone fa-lg me-3 fa-fw"></i> <!-- Updated icon to phone -->
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                          <input type="tel" id="form3Example5c" class="form-control" pattern="[0-9]{10}" placeholder="1234567890" />
+                          <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example5c">Phone Number (Optional)</label>
+                        </div>
+                    </div>
+  
+                    <div class="form-check d-flex justify-content-center align-items-center mb-5">
+                        <input class="form-check-input" type="checkbox" value="" id="form2Example3c" />
+                        <label class="form-check-label ms-2" for="form2Example3c">
+                          I agree to all statements in <a href="#!">Terms of service</a>
+                        </label>
+                      </div>
+  
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Sign Up</button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+                  <!--Logo goes back to index from here? Then after login, logo can go to home page-->
+                    <a href="../index.html" style="text-decoration: none; color: inherit;">
+                        <div class="logo">
+                            <span style="font-size: 65px; font-weight: bold">KnowTime</span>
+                            <img src="../Resources/tomato.png" alt="tomato logo" style="width:120px";> <!-- Adjust the path if needed -->
+                        </div>
+                    </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-    </header>
-
-    <main class="signup-main">
-        <section class="signup-form">
-            <h2>Create Your Account</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="signup-btn">Sign Up</button>
-            </form>
-            <p>Already have an account? <a href="../login/login.html">Login here</a></p>
-        </section>
-        <p id="signupMessage"></p> <!-- Message area for success or error -->
-    </main>
-
-    <script defer src="signup.js"></script> <!-- Placeholder for any JS logic -->
-</body>
+      </div>
+    </div>
+</section>
 </html>

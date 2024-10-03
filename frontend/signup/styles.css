@@ -1,0 +1,18 @@
+body{
+    background-color: #82898ddc;
+}
+
+.form-check-label {
+    display: inline-block;
+    margin-left: 10px; 
+    white-space: nowrap; 
+}
+
+.form-check-input {
+    transform: translateX(-150px); 
+}
+
+.custom-card{
+    background-color: rgba(217, 226, 230, 0.575);
+}
+
