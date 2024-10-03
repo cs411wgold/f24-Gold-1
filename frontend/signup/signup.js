@@ -2,14 +2,16 @@ document.getElementById('signupForm').addEventListener('submit', function (event
     event.preventDefault(); // Prevent form from submitting the traditional way
 
     // Get form input values
-    const name = document.getElementById('name').value;
+    const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
 
     // Save user data to localStorage (simulate storing in a database)
-    localStorage.setItem('name', name);
+    localStorage.setItem('username', username);
     localStorage.setItem('email', email);
     localStorage.setItem('password', password);
+    localStorage.setItem('phoneNumber', phoneNumber);
 
     // Display a success message
     document.getElementById('signupMessage').textContent = "Account created successfully! Redirecting...";
