@@ -100,3 +100,9 @@ section a{
     align-items: center;
     min-height: 100vh;
 }
+
+.sign-up{
+    text-align: center;
+    font-size: 15px;
+    margin-top: 20px;
+}
