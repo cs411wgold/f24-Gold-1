@@ -14,12 +14,40 @@
     <div id="header-common"></div>
 
     <script>
-      fetch('../shared/header.html')  <!-- Fetch header -->
+      fetch('../shared/header.html')
         .then(response => response.text())
         .then(data => {
           document.getElementById('header-common').innerHTML = data;
+    
+          const currentPath = window.location.pathname;
+          console.log("Current Path:", currentPath);
+    
+          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
+    
+          navLinks.forEach(link => {
+            const pagePath = link.getAttribute("href");
+    
+            console.log("Checking link:", pagePath);
+    
+            if (currentPath.includes(pagePath)) {
+              console.log("Match found, adding active class to:", link);
+    
+              link.classList.add("active");
+    
+              if (link.classList.contains('dropdown-item')) {
+                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                parentLink.classList.add('active');
+              }
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
         });
     </script>
+    
 <main>
 <div class="calendar-container">
   <div class="month">  

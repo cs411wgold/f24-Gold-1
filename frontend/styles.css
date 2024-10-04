@@ -24,12 +24,36 @@ header {
     font-size: 32px;
 }
 
-nav a {
-    margin: 0 15px;
+.nav-item.dropdown .dropdown-menu {
+    min-width: 100%; 
+    border-radius: 0;
+    margin-top: 0; 
+    padding: 10; 
+    margin: 5 15px;
     text-decoration: none;
     font-size: 18px;
     color: #000;
 }
+
+.dropdown-item {
+    padding: 10px 20px; 
+    border-bottom: 1px solid #ddd; 
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.nav-item.dropdown .nav-link.active {
+    background-color: #007bff; 
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: #0056b3;
+    color: #0056b3;
+}
+
 .home {
     text-align: center;
     background: rgba(255, 255, 255, 0.9);
@@ -99,3 +123,6 @@ nav a {
     opacity: 0.9;
 }
 
+main {
+    flex: 1; 
+}

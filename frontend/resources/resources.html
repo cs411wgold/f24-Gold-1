@@ -11,16 +11,34 @@
 </head>
 
 <body>
-    <!--Header Section-->
+    <!-- Header Section -->
     <div id="header-common"></div>
 
     <script>
-      fetch('../shared/header.html')  <!-- Fetch header -->
+      fetch('../shared/header.html')
         .then(response => response.text())
         .then(data => {
           document.getElementById('header-common').innerHTML = data;
+
+          const currentPage = window.location.pathname.split("/").pop();
+          console.log("Current Page:", currentPage);
+
+          const navLinks = document.querySelectorAll(".nav-link");
+          navLinks.forEach(link => {
+            const page = link.getAttribute("href").split("/").pop();
+
+            if (currentPage === page) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
         });
     </script>
+    
     <!--Main Section-->
     <main>
         <section class ="resources">
