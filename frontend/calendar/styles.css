@@ -1,3 +1,7 @@
+main {
+  flex: 1;
+}
+
 .calendar-container {
   width: 70%; /*Only take up 70% of the page*/
   margin: 0 auto; /* Helps the entire calendar to be centered */
