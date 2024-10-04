@@ -50,13 +50,16 @@
 
     <!-- Main Section -->
     <main class="container text-center mt-5">
-        <h2>This is a placeholder.</h2>
-        <section class="mt-4">
-            <h3>Upcoming Work</h3>
+      <div class="logo">
+        <span style="font-size: 40px; font-weight: bold">Pomodoro Timer</span>
+        <img src="../Resources/tomato.png" alt="tomato logo" style="width:60px; margin-bottom:25px";> <!-- Adjust the path if needed -->
+      </div>
+        <section class="button-container mt-4">
             <div class="assignment-list mt-3">
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <!-- Assignment content here -->
-                </div>
+              <div class="button-container">
+                <button class="button" id="pomodoro-session">Pomodoro</button>
+                <button class="button" id="custom-pomodoro-session">Custom Pomodoro</button>
+              </div>
             </div>
         </section>
     </main>
