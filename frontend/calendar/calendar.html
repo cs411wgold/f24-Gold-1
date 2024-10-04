@@ -40,6 +40,20 @@
     <!-- These get added based on the number of days in the month in the script section -->
   </ul>
 </div>
+        <!-- Footer Section -->
+    <div id="footer-common"></div>
+
+    <script>
+      fetch('../shared/footer.html')  <!-- Fetch footer -->
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-common').innerHTML = data;
+        });
+    </script>
+right before the last 
+
+</body>
+</html>
 
 </body>
 </html>
