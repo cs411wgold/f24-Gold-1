@@ -11,5 +11,9 @@ Team Gold - Fall 2024
   - Baeduh - Kyle Munoz - kmuno003@odu.edu
   - gtcatlett - Glenn Catlett - gcatl002@odu.edu
 
-https://reginaldpinder.github.io/f24-Gold-1/
-https://reginaldpinder.github.io/f24-Gold-1/frontend/index.html
+[GH Pages Home](https://cs411wgold.github.io/f24-Gold-1/)
+
+[Frontend index.html](https://cs411wgold.github.io/f24-Gold-1/frontend/index.html)
+
+[Frontend home.html](https://cs411wgold.github.io/f24-Gold-1/frontend/home/home.html)
+
