@@ -1,5 +1,5 @@
 body{
-    background-color: #82898ddc;
+    background-color: #ffffff69;
 }
 
 .form-check-label {
@@ -13,6 +13,24 @@ body{
 }
 
 .custom-card{
-    background-color: rgba(217, 226, 230, 0.575);
+    background-color: rgb(217, 226, 230,0.575);
 }
 
+.custom-button{
+    margin-bottom: 25px;
+}
+
+.icon-position{
+    transform: translateY(-20px);
+    margin-right: 20px
+}
+
+.tooltip-custom{
+    transform: translateY(-335px);
+    margin-left: 70px
+
+}
+
+.tooltip-custom2{
+    margin-left: 70px
+}

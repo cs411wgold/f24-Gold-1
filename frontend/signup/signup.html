@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet"> 
     <!-- Personal styles sheet-->
     <link rel="stylesheet" href="styles.css"> 
+    <!-- Font Awesome CSS for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <section class="vh-100">
     <div class="container h-100">
@@ -19,60 +21,65 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
                   <p style="font-weight:bold" class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Welcome to KnowTime!</p>
-  
-                  <form class="mx-1 mx-md-4">
+                  <!--Start form class-->
+                  <form class="mx-1 mx-md-4 needs-validation" novalidate>
   
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="text" id="form3Example1c" class="form-control" />
-                        <label style="font-weight:bold; font-size:20px" class="form-label" for="form3Example1c">Username</label>
+                      <i class="fas fa-user fa-lg me-3 fa-fw icon-position"></i>
+                      <div class="form-outline flex-fill mb-0" data-mdb-input-init>
+                        <input type="text" id="usernameInput" class="form-control" required />
+                        <label style="font-weight:bold; font-size:20px" class="form-label" for="usernameInput">Username</label>
+                        <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid username.</div>
                       </div>
                     </div>
   
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw icon-position"></i>
                       <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="email" id="form3Example3c" class="form-control" />
-                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example3c">Your Email</label>
+                        <input type="email" id="email" class="form-control" required />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="email">Your Email</label>
+                        <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid email.</div>
                       </div>
                     </div>
   
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <i class="fas fa-lock fa-lg me-3 fa-fw icon-position"></i>
                       <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4c" class="form-control" />
-                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example4c">Password</label>
+                        <input type="password" id="password" class="form-control" required />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="password">Password</label>
+                        <div class="invalid-feedback" style="font-weight: bold; font-size:15px;">Please enter a password.</div>
                       </div>
                     </div>
   
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <i class="fas fa-key fa-lg me-3 fa-fw icon-position"></i>
                       <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4cd" class="form-control" />
-                        <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example4cd">Repeat your password</label>
+                        <input type="password" id="confirmPassword" class="form-control" required />
+                        <label class="form-label" style="font-weight:bold; font-size:20px" for="confirmPassword">Repeat your password</label>
+                        <div class="invalid-tooltip tooltip-custom" style="font-weight: bold; font-size:10px;">Passwords do not match.</div>
                       </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-phone fa-lg me-3 fa-fw"></i> <!-- Updated icon to phone -->
+                        <i class="fas fa-phone fa-lg me-3 fa-fw icon-position"></i> 
                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                          <input type="tel" id="form3Example5c" class="form-control" pattern="[0-9]{10}" placeholder="1234567890" />
-                          <label class="form-label" style="font-weight:bold; font-size:20px" for="form3Example5c">Phone Number (Optional)</label>
+                          <input type="tel" id="phoneNumber" class="form-control" pattern="[0-9]{10}" placeholder="1234567890"/>
+                          <label class="form-label" style="font-weight:bold; font-size:20px" for="phoneNumber">Phone Number (Optional)</label>
                         </div>
                     </div>
   
                     <div class="form-check d-flex justify-content-center align-items-center mb-5">
-                        <input class="form-check-input" type="checkbox" value="" id="form2Example3c" />
-                        <label class="form-check-label ms-2" for="form2Example3c">
+                        <input class="form-check-input" type="checkbox" value="" id="termsOfService" required />
+                        <label class="form-check-label ms-2" for="termsOfService">
                           I agree to all statements in <a href="#!">Terms of service</a>
                         </label>
+                        <div class="invalid-tooltip tooltip-custom2" style="font-weight: bold; font-size:10px;">You must agree before submitting.</div>
                       </div>
   
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Sign Up</button>
+                      <button  type="submit" data-mdb-ripple-init class="btn btn-primary btn-lg custom-button">Sign Up</button>
                     </div>
-  
+                    <p style="text-align: center;">Already have an account? <a href="../login/login.html">Login here</a></p>
                   </form>
   
                 </div>

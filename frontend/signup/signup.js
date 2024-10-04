@@ -1,24 +1,26 @@
-document.getElementById('signupForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form from submitting the traditional way
+//reference https://mdbootstrap.com/docs/standard/forms/validation/
+(function () {
+    'use strict';
 
-    // Get form input values
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const phoneNumber = document.getElementById('phoneNumber').value;
+    var forms = document.querySelectorAll('.needs-validation');
 
-    // Save user data to localStorage (simulate storing in a database)
-    localStorage.setItem('username', username);
-    localStorage.setItem('email', email);
-    localStorage.setItem('password', password);
-    localStorage.setItem('phoneNumber', phoneNumber);
+    var password = document.getElementById('password');
+    var confirmPassword = document.getElementById('confirmPassword');
 
-    // Display a success message
-    document.getElementById('signupMessage').textContent = "Account created successfully! Redirecting...";
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            confirmPassword.classList.remove('is-invalid');
 
-    // Redirect to login.html after a short delay
-    setTimeout(function () {
-        window.location.href = "../login.html"; // Adjust path if needed
-    }, 2000);
-});
+            if (!form.checkValidity() || password.value !== confirmPassword.value) {
+                event.preventDefault();
+                event.stopPropagation();
 
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.classList.add('is-invalid');
+                }
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
