@@ -50,6 +50,7 @@
     
 <main>
 <div class="calendar-container">
+  <button class="addTask" onclick="addTask()">Add a task!</button>
   <div class="month">  
     <!-- This is where the month is going to go (it gets added in the script section)  -->
     <h2>Placeholder</h2>
@@ -135,6 +136,34 @@
       const taskDiv = document.createElement('div');
       taskDiv.classList.add('task');
       taskDiv.textContent = `Task ${day}`;
+      dayLi.appendChild(taskDiv);
+    }
+
+    function addTask() {
+      let task = prompt("What task would you like to add?");
+      let day = prompt("Which day should it be added on?");
+
+      // Make sure it's a valid string
+      while(!task || task.length === 0) {
+        task = prompt("Invalid task! What task would you like to add?");
+      }
+
+      // Make sure it's a valid number
+      while (isNaN(day) || day < 1 || day > daysInMonth) {
+        day = prompt("Invalid day! What day would you like to use?")
+      }
+
+      // Get all of the days
+      const dayElements = document.querySelectorAll('.days li');
+
+      // Get the day the user gave
+      const dayLi = dayElements[adjustedFirstDay + parseInt(day) - 1];
+
+      // Add the task to the day
+      const taskDiv = document.createElement('div');
+      taskDiv.classList.add('task');
+      taskDiv.textContent = task;
+
       dayLi.appendChild(taskDiv);
     }
     </script>

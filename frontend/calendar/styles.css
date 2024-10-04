@@ -23,6 +23,7 @@ ul {
   display: flex; /* Set the days to be in a row */
   padding: 0; /* Remove extra padding */
   background-color: #d3d1d1;
+  margin-bottom: 0;
 }
 
 .weekdays li {
@@ -34,7 +35,8 @@ ul {
 
 .days {
   display: flex; /* Puts them in the rows instead of stacked on top of each other */
-  flex-wrap: wrap; /* Wrap at the end of the width (so it is not all one row) */ 
+  flex-wrap: wrap; /* Wrap at the end of the width (so it is not all one row) */
+  padding-left: 0; /* reboot.scss from bootstrap adding some padding; reset that so calendar is aligned */
 }
 
 .days li {
@@ -42,10 +44,23 @@ ul {
   border: 1.5px solid #ddd; /* Width of the lines between each day */
   padding: 15px 0; /* Size of each day box */
   box-sizing: border-box; /* Makes sure the padding and stuff does not mess with the width (so days will be spaced correctly) */
+  padding-left: 0; /* reboot.scss from bootstrap adding some padding; reset that so calendar is aligned */
 }
 
 .task {
   background-color: #e0f7fa; /* Task background color */
   padding: 10px; /* Task Size */
   margin-bottom: 10px; /* Add some padding to the bottom */
+}
+
+.addTask {
+  position: absolute; /* Keep button in correct spot */
+  left: 70px; /* Move button away from left edge */
+  top: 50%; /* Button should be in the middle of the page */
+  padding: 10px 20px; /* Button Size */
+  background-color: #007bff; /* Button Color */
+  color: white; /* Text Color */
+  border: none; /* No border around button */
+  border-radius: 5px; /* Rounded Edges */
+  cursor: pointer; /* Cursor on hover */
 }
