@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <div id="header-common"></div>
+    </header>
 <div class="calendar-container">
   <div class="month">  
     <!-- This is where the month is going to go (it gets added in the script section)  -->
@@ -33,6 +36,13 @@
 
 
 <script>
+      // Load Header
+      fetch('../shared/header.html')  <!-- Fetch Header -->
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-common').innerHTML = data;
+        });
+  
     // Get our month header on the calendar
     const monthHeading = document.querySelector('.month h2');
     
