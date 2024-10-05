@@ -1,75 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KnowTime - Dashboard</title>
+    <title>Forum</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="forums.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <!-- Header Section -->
     <div id="header-common"></div>
 
     <script>
-      fetch('../shared/header.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('header-common').innerHTML = data;
-    
-          const currentPath = window.location.pathname;
-          console.log("Current Path:", currentPath);
-    
-          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
-    
-          navLinks.forEach(link => {
-            const pagePath = link.getAttribute("href");
-    
-            console.log("Checking link:", pagePath);
-    
-            if (currentPath.includes(pagePath)) {
-              console.log("Match found, adding active class to:", link);
-    
-              link.classList.add("active");
-    
-              if (link.classList.contains('dropdown-item')) {
-                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
-                parentLink.classList.add('active');
-              }
-            } else {
-              link.classList.remove("active");
-            }
-          });
-        })
-        .catch(error => {
-          console.error('Error loading header:', error);
-        });
+        fetch('../shared/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-common').innerHTML = data;
+
+                const currentPage = window.location.pathname.split("/").pop();
+                console.log("Current Page:", currentPage);
+
+                const navLinks = document.querySelectorAll(".nav-link");
+                navLinks.forEach(link => {
+                    const page = link.getAttribute("href").split("/").pop();
+
+                    if (currentPage === page) {
+                        link.classList.add("active");
+                    } else {
+                        link.classList.remove("active");
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+            });
     </script>
 
-    <!-- Main Section -->
-    <main class="container text-center mt-5">
-        <h2>This is a placeholder.</h2>
-        <section class="mt-4">
-            <h3>Upcoming Work</h3>
-            <div class="assignment-list mt-3">
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <!-- Assignment content here -->
+    <div class="container mt-4">
+        <div class="forum">
+            <div class="forum-title">
+                <h1>Calculus</h1>
+            </div>
+            <div class="forum-row row mb-3">
+                <div class="forum-icon col-2 text-center">
+                    <img src="../resources/tomato.png" alt="Tomato Icon" class="img-fluid" style="max-width: 80px; height: auto;">
+                </div>
+                <div class="forum-description col-6">
+                    <h4><a href="#">Need Calculus Help?</a></h4>
+                    <p>This forum is for anyone looking for help with any courses involving Calculus</p>
+                </div>
+                <div class="forum-stats col-2 text-center">
+                    <span>36 Posts</span>
+                </div>
+                <div class="forum-info col-2">
+                    <b><a href="">Last post</a></b> by <a href="">User54041</a>
+                    <br>on <small>30 Sep 2024</small>
                 </div>
             </div>
-        </section>
-    </main>
-    
-    <!-- Footer Section -->
-    <div id="footer-common"></div>
+            <hr class="forum-divider">
+        </div>
 
+        <div class="forum">
+            <div class="forum-title">
+                <h1>History</h1>
+            </div>
+            <div class="forum-row row mb-3">
+                <div class="forum-icon col-2 text-center">
+                    <img src="../resources/tomato.png" alt="Tomato Icon" class="img-fluid" style="max-width: 80px; height: auto;">
+                </div>
+                <div class="forum-description col-6">
+                    <h4><a href="#">All Things History!</a></h4>
+                    <p>This forum is for anyone wanting to discuss historical topics or looking for assistance with their history courses</p>
+                </div>
+                <div class="forum-stats col-2 text-center">
+                    <span>24 Posts</span>
+                </div>
+                <div class="forum-info col-2">
+                    <b><a href="">Last post</a></b> by <a href="">User21010</a>
+                    <br>on <small>09 Sep 2024</small>
+                </div>
+            </div>
+            <hr class="forum-divider">
+        </div>
+
+        <div class="forum">
+            <div class="forum-title">
+                <h1>Study Help</h1>
+            </div>
+            <div class="forum-row row mb-3">
+                <div class="forum-icon col-2 text-center">
+                    <img src="../resources/tomato.png" alt="Tomato Icon" class="img-fluid"
+                        style="max-width: 80px; height: auto;">
+                </div>
+                <div class="forum-description col-6">
+                    <h4><a href="#">Ask Questions, Share Insights</a></h4>
+                    <p>This forum is for those looking for study tips and help</p>
+                </div>
+                <div class="forum-stats col-2 text-center">
+                    <span>50 Posts</span>
+                </div>
+                <div class="forum-info col-2">
+                    <b><a href="">Last post</a></b> by <a href="">User34647</a>
+                    <br>on <small>02 Oct 2024</small>
+                </div>
+            </div>
+            <hr class="forum-divider">
+        </div>
+
+        <div class="forum"></div>
+            <div class="forum-title">
+                <h1>English</h1>
+            </div>
+            <div class="forum-row row mb-3">
+                <div class="forum-icon col-2 text-center">
+                    <img src="../resources/tomato.png" alt="Tomato Icon" class="img-fluid"
+                        style="max-width: 80px; height: auto;">
+                </div>
+                <div class="forum-description col-6">
+                    <h4><a href="#">Writing, Reading, and Beyond!</a></h4>
+                    <p>This forum is for those looking to discuss their English courses and share any insights they may have.</p>
+                </div>
+                <div class="forum-stats col-2 text-center">
+                    <span>50 Posts</span>
+                </div>
+                <div class="forum-info col-2">
+                    <b><a href="">Last post</a></b> by <a href="">User91042</a>
+                    <br>on <small>02 Oct 2024</small>
+                </div>
+            </div>
+            <hr class="forum-divider">
+        </div>
+
+        <div class="forum-info mt-4">
+            <div class="chart">
+                KnowTime Forum - Stats &nbsp;<i class="fa fa-bar-chart"></i>
+            </div>
+            <span><u>364</u> Posts in <u>4</u> Topics by <u>252</u> Members.</span><br>
+            <span>Latest post: <b><a href="">Why I think Prof. Kennedy is the Goat.</a></b> on Oct 4 2024 By <a href="">User4244</a></span>.<br>
+            <span>Check <a href="">the latest posts</a> .</span><br>
+        </div>
+
+    <div id="footer-common"></div>
+    
     <script>
-      fetch('../shared/footer.html')  <!-- Fetch footer -->
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-common').innerHTML = data;
-        });
+        fetch('../shared/footer.html')  <!-- Fetch footer -->
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-common').innerHTML = data;
+            });
     </script>
+    </div>
+
+    <script src="forum.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
