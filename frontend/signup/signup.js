@@ -1,4 +1,4 @@
-//reference https://mdbootstrap.com/docs/standard/forms/validation/
+//reference https://mdbootstrap.com/docs/standard/forms/validation/ for validation
 (function () {
     'use strict';
 
@@ -11,6 +11,7 @@
         form.addEventListener('submit', function (event) {
             confirmPassword.classList.remove('is-invalid');
 
+            // make sure password and re-entered passwords match
             if (!form.checkValidity() || password.value !== confirmPassword.value) {
                 event.preventDefault();
                 event.stopPropagation();
