@@ -13,7 +13,12 @@ Team Gold - Fall 2024
 
 [GH Pages Home](https://cs411wgold.github.io/f24-Gold-1/)
 
-[Frontend index.html](https://cs411wgold.github.io/f24-Gold-1/frontend/index.html)
+[GH Pages - Frontend index.html](https://cs411wgold.github.io/f24-Gold-1/frontend/index.html)
 
-[Frontend home.html](https://cs411wgold.github.io/f24-Gold-1/frontend/home/home.html)
+[GH Pages - Frontend home.html](https://cs411wgold.github.io/f24-Gold-1/frontend/home/home.html)
+
+[GCP - Frontend index.html](https://cs411w.ue.r.appspot.com/)
+
+[GCP - Frontend home.html](https://cs411w.ue.r.appspot.com/frontend/home/home.html)
+
 
