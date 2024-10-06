@@ -1,4 +1,4 @@
-name: GCP - Prod 
+name: GCP - Dev 
 
 on:
   pull_request:
