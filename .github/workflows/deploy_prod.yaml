@@ -26,4 +26,4 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Deploy to App Engine
-      run: gcloud app deploy app-prod.yaml --quiet
+      run: gcloud app deploy app-prod.yaml --version prod--quiet
