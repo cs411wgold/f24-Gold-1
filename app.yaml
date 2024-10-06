@@ -2,7 +2,7 @@ runtime: python39
 instance_class: F2  
 
 handlers:
-  # HTML files mapping
+  # HTML files mapping for GCP 
   - url: /frontend/home/home.html
     static_files: frontend/home/home.html
     upload: frontend/home/home.html
@@ -130,40 +130,6 @@ handlers:
   - url: /frontend/resources/tomato.png
     static_files: frontend/resources/tomato.png
     upload: frontend/resources/tomato.png
-
-  # Map all CSS files using static_dir
-  - url: /frontend/home/home.html
-    static_dir: frontend/home
-  - url: /frontend/calendar/calendar.html
-    static_dir: frontend/calendar
-  - url: /frontend/contactUs.html
-    static_dir: frontend/contactUs
-  - url: /frontend/forums/forums.html
-    static_dir: frontend/forums
-  - url: /frontend/aboutUs/aboutUs.html
-    static_dir: frontend/aboutUs
-  - url: /frontend/login/login.html
-    static_dir: frontend/login
-  - url: /frontend/profile/profile.html
-    static_dir: frontend/profile
-  - url: /frontend/progress/progress.html
-    static_dir: frontend/progress
-  - url: /frontend/resources/resources.html
-    static_dir: frontend/resources
-  - url: /frontend/signup/signup.html
-    static_dir: frontend/signup
-  - url: /frontend/studyplan/studyplan.html
-    static_dir: frontend/studyplan
-  - url: /frontend/taskboard/taskboard.html
-    static_dir: frontend/taskboard
-  - url: /frontend/timer/timer.html
-    static_dir: frontend/timer
-
-  # Serve static assets like CSS, JS, images
-  - url: /styles
-    static_dir: frontend/styles
-  - url: /images
-    static_dir: frontend/images
 
   # Catch-all for static files
   - url: /
