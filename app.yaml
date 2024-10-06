@@ -147,3 +147,33 @@ handlers:
   - url: /
     static_files: frontend/index.html
     upload: frontend/index.html
+
+  - url: /frontend/home/home.html
+    static_dir: frontend/home
+  - url: /frontend/calendar/calendar.html
+    static_dir: frontend/calendar
+  - url: /frontend/contactUs.html
+    static_dir: frontend/contactUs
+  - url: /frontend/forums/forums.html
+    static_dir: frontend/forums
+  - url: /frontend/aboutUs/aboutUs.html
+    static_dir: frontend/aboutUs
+  - url: /frontend/login/login.html
+    static_dir: frontend/login
+  - url: /frontend/profile/profile.html
+    static_dir: frontend/profile
+  - url: /frontend/progress/progress.html
+    static_dir: frontend/progress
+  - url: /frontend/resources/resources.html
+    static_dir: frontend/resources
+  - url: /frontend/signup/signup.html
+    static_dir: frontend/signup
+  - url: /frontend/studyplan/studyplan.html
+    static_dir: frontend/studyplan
+  - url: /frontend/taskboard/taskboard.html
+    static_dir: frontend/taskboard
+  - url: /frontend/timer/timer.html
+    static_dir: frontend/timer
+    
+  - url: /styles
+    static_dir: frontend/styles
