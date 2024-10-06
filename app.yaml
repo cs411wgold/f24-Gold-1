@@ -43,9 +43,13 @@ handlers:
     static_files: frontend/aboutUs/aboutUs.css
     upload: frontend/aboutUs/aboutUs.css
 
-  - url: /frontend/login/login.html
+  - url: /login/login.html
     static_files: frontend/login/login.html
     upload: frontend/login/login.html
+
+  - url: /login/login.css
+    static_files: frontend/login/login.css
+    upload: frontend/login/login.css
 
   - url: /frontend/login/login.css
     static_files: frontend/login/login.css
@@ -80,6 +84,14 @@ handlers:
     upload: frontend/signup/signup.html
 
   - url: /frontend/signup/signup.css
+    static_files: frontend/signup/signup.css
+    upload: frontend/signup/signup.css
+
+  - url: /signup/signup.html
+    static_files: frontend/signup/signup.html
+    upload: frontend/signup/signup.html
+
+  - url: /signup/signup.css
     static_files: frontend/signup/signup.css
     upload: frontend/signup/signup.css
 
