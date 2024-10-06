@@ -1,0 +1,171 @@
+runtime: python39  
+instance_class: F2  
+
+handlers:
+  # HTML files mapping
+  - url: /frontend/home/home.html
+    static_files: frontend/home/home.html
+    upload: frontend/home/home.html
+
+  - url: /frontend/home/home.css
+    static_files: frontend/home/home.css
+    upload: frontend/home/home.css
+
+  - url: /frontend/calendar/calendar.html
+    static_files: frontend/calendar/calendar.html
+    upload: frontend/calendar/calendar.html
+  
+  - url: /frontend/calendar/styles.css
+    static_files: frontend/calendar/styles.css
+    upload: frontend/calendar/styles.css
+
+  - url: /frontend/contactUs/contactUs.html
+    static_files: frontend/contactUs/contactUs.html
+    upload: frontend/contactUs/contactUs.html
+    
+  - url: /frontend/contactUs/contactUs.css
+    static_files: frontend/contactUs/contactUs.css
+    upload: frontend/contactUs/contactUs.css
+
+  - url: /frontend/forums/forums.html
+    static_files: frontend/forums/forums.html
+    upload: frontend/forums/forums.html
+
+  - url: /frontend/forums/forums.css
+    static_files: frontend/forums/forums.css
+    upload: frontend/forums/forums.css
+
+  - url: /frontend/aboutUs/aboutUs.html
+    static_files: frontend/aboutUs/aboutUs.html
+    upload: frontend/aboutUs/aboutUs.html
+
+  - url: /frontend/aboutUs/aboutUs.css
+    static_files: frontend/aboutUs/aboutUs.css
+    upload: frontend/aboutUs/aboutUs.css
+
+  - url: /frontend/login/login.html
+    static_files: frontend/login/login.html
+    upload: frontend/login/login.html
+
+  - url: /frontend/login/login.css
+    static_files: frontend/login/login.css
+    upload: frontend/login/login.css
+
+  - url: /frontend/profile/profile.html
+    static_files: frontend/profile/profile.html
+    upload: frontend/profile/profile.html
+
+  - url: /frontend/profile/profile.css
+    static_files: frontend/profile/profile.css
+    upload: frontend/profile/profile.css
+
+  - url: /frontend/progress/progress.html
+    static_files: frontend/progress/progress.html
+    upload: frontend/progress/progress.html
+
+  - url: /frontend/progress/progress.css
+    static_files: frontend/progress/progress.css
+    upload: frontend/progress/progress.css
+
+  - url: /frontend/resources/resources.html
+    static_files: frontend/resources/resources.html
+    upload: frontend/resources/resources.html
+
+  - url: /frontend/resources/resources.css
+    static_files: frontend/resources/resources.css
+    upload: frontend/resources/resources.css
+
+  - url: /frontend/signup/signup.html
+    static_files: frontend/signup/signup.html
+    upload: frontend/signup/signup.html
+
+  - url: /frontend/signup/signup.css
+    static_files: frontend/signup/signup.css
+    upload: frontend/signup/signup.css
+
+  - url: /frontend/studyplan/studyplan.html
+    static_files: frontend/studyplan/studyplan.html
+    upload: frontend/studyplan/studyplan.html
+
+  - url: /frontend/studyplan/studyplan.css
+    static_files: frontend/studyplan/studyplan.css
+    upload: frontend/studyplan/studyplan.css    
+
+  - url: /frontend/taskboard/taskboard.html
+    static_files: frontend/taskboard/taskboard.html
+    upload: frontend/taskboard/taskboard.html
+
+  - url: /frontend/taskboard/taskboard.css
+    static_files: frontend/taskboard/taskboard.css
+    upload: frontend/taskboard/taskboard.css
+
+  - url: /frontend/timer/timer.html
+    static_files: frontend/timer/timer.html
+    upload: frontend/timer/timer.html
+
+  - url: /frontend/timer/timer.css
+    static_files: frontend/timer/timer.css
+    upload: frontend/timer/timer.css
+
+  - url: /frontend/index.html
+    static_files: frontend/index.html
+    upload: frontend/index.html
+
+  - url: /frontend/shared/header.html
+    static_files: frontend/shared/header.html
+    upload: frontend/shared/header.html
+
+  - url: /frontend/shared/footer.html
+    static_files: frontend/shared/footer.html
+    upload: frontend/shared/footer.html
+
+  - url: /frontend/styles.css
+    static_files: frontend/styles.css
+    upload: frontend/styles.css
+
+  - url: /styles.css
+    static_files: frontend/styles.css
+    upload: frontend/styles.css
+
+  - url: /frontend/resources/tomato.png
+    static_files: frontend/resources/tomato.png
+    upload: frontend/resources/tomato.png
+
+  # Map all CSS files using static_dir
+  - url: /frontend/home/home.html
+    static_dir: frontend/home
+  - url: /frontend/calendar/calendar.html
+    static_dir: frontend/calendar
+  - url: /frontend/contactUs.html
+    static_dir: frontend/contactUs
+  - url: /frontend/forums/forums.html
+    static_dir: frontend/forums
+  - url: /frontend/aboutUs/aboutUs.html
+    static_dir: frontend/aboutUs
+  - url: /frontend/login/login.html
+    static_dir: frontend/login
+  - url: /frontend/profile/profile.html
+    static_dir: frontend/profile
+  - url: /frontend/progress/progress.html
+    static_dir: frontend/progress
+  - url: /frontend/resources/resources.html
+    static_dir: frontend/resources
+  - url: /frontend/signup/signup.html
+    static_dir: frontend/signup
+  - url: /frontend/studyplan/studyplan.html
+    static_dir: frontend/studyplan
+  - url: /frontend/taskboard/taskboard.html
+    static_dir: frontend/taskboard
+  - url: /frontend/timer/timer.html
+    static_dir: frontend/timer
+
+  # Serve static assets like CSS, JS, images
+  - url: /styles
+    static_dir: frontend/styles
+  - url: /images
+    static_dir: frontend/images
+
+  # Catch-all for static files
+  - url: /
+    static_files: frontend/index.html
+    upload: frontend/index.html
