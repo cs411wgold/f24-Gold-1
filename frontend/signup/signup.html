@@ -5,102 +5,107 @@
   <!-- Responsive meta tag -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KnowTime - Sign Up</title>
-  <!--Reference https://mdbootstrap.com/docs/standard/extended/registration/#docsTabsOverview for template-->
+  <!--Reference https://mdbootstrap.com/docs/standard/extended/registration/#docsTabsOverview for template | 
+        MIT license https://mdbootstrap.com/docs/standard/-->
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Barlow Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet"> 
+  <!-- Barlow Font | refer to https://www.w3schools.com/howto/tryit.asp?font=Barlow-->
+  <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
   <!-- Personal styles sheet-->
-  <link rel="stylesheet" href="styles.css"> 
-  <!-- Font Awesome CSS for icons -->
+  <link rel="stylesheet" href="signup.css"> 
+  <!-- Font Awesome CSS for icons | https://icons.getbootstrap.com/#install-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
+<!-- https://getbootstrap.com/docs/5.0/utilities/sizing/ Reference for viewport height and width -->
 <section class="vh-100">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
+    <div class="container vw-100">
+        <div class="col-lg-12 col-xl-11">
+        <!-- https://getbootstrap.com/docs/5.0/components/card/ Reference for cards-->
         <div class="card custom-card" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-  
-                <p style="font-weight:bold" class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Welcome to KnowTime!</p>
-                
-                <!--Start form class-->
-                <form class="mx-1 mx-md-4 needs-validation" novalidate>
-  
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw icon-position"></i>
-                    <div class="form-outline flex-fill mb-0" data-mdb-input-init>
-                      <input type="text" id="usernameInput" class="form-control" required />
-                      <label style="font-weight:bold; font-size:20px" class="form-label" for="usernameInput">Username</label>
-                        <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid username.</div>
-                    </div>
-                  </div>
+            <!--Logo goes back to index from here? Then after login, logo can go to home page-->
+            <a href="../index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">
+                    <span style="font-size: 65px; font-weight: bold" class="card-title">KnowTime</span>
+                    <img src="../resources/tomato.png" alt="tomato logo" style="width:120px";> <!-- Adjust the path if needed -->
+                </div>
+            </a>
+            <p style="font-weight:bold; text-align:center; font-size: 35px">Welcome to KnowTime!</p> 
+            <div class="card-body p-md-5">
+                <!-- https://getbootstrap.com/docs/5.0/layout/columns/#reordering | columns for wrapping-->
+                <div class="row justify-content-center">
+                    <!-- https://getbootstrap.com/docs/5.0/layout/grid/ -->
+                    <div class="container col-lg-8">
+                        <!-- Start form class-->
+                        <form class="needs-validation" novalidate>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw icon-position"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="email" id="email" class="form-control" required />
-                      <label class="form-label" style="font-weight:bold; font-size:20px" for="email">Your Email</label>
-                      <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid email.</div>
+                            <!-- Username -->
+                            <!-- flex rows https://getbootstrap.com/docs/5.0/utilities/flex/-->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-user fa-lg me-3 fa-fw icon-position"></i>
+                                <div class="form-outline flex-fill mb-0" data-mdb-input-init>
+                                    <!-- https://getbootstrap.com/docs/5.0/forms/form-control/ | Form control docs-->
+                                    <input type="text" id="usernameInput" class="form-control" required />
+                                    <label style="font-weight:bold; font-size:20px" class="form-label" for="usernameInput">Username</label>
+                                    <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid username.</div>
+                                </div>
+                            </div>
+            
+                            <!-- Email -->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-envelope fa-lg me-3 fa-fw icon-position"></i>
+                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                    <input type="email" id="email" class="form-control" required />
+                                    <label class="form-label" style="font-weight:bold; font-size:20px" for="email">Your Email</label>
+                                    <div class="invalid-feedback" style="font-weight: bold; font-size:15px">Invalid email.</div>
+                                </div>
+                            </div>
+            
+                            <!-- Password -->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw icon-position"></i>
+                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                    <input type="password" id="password" class="form-control" required />
+                                    <label class="form-label" style="font-weight:bold; font-size:20px" for="password">Password</label>
+                                    <div class="invalid-feedback" style="font-weight: bold; font-size:15px;">Please enter a password.</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Require user to re-enter password-->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-key fa-lg me-3 fa-fw icon-position"></i>
+                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                    <input type="password" id="confirmPassword" class="form-control" required />
+                                    <label class="form-label" style="font-weight:bold; font-size:20px" for="confirmPassword">Repeat your password</label>
+                                    <div class="invalid-feedback" style="font-weight: bold; font-size:15px;">Passwords do not match.</div>
+                                </div>
+                            </div>
+            
+                            <!-- Phone number (optional)-->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-phone fa-lg me-3 fa-fw icon-position"></i> 
+                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                    <input type="tel" id="phoneNumber" class="form-control" pattern="[0-9]{10}" placeholder="1234567890"/>
+                                    <label class="form-label" style="font-weight:bold; font-size:20px" for="phoneNumber">Phone Number (Optional)</label>
+                                </div>
+                            </div>
+            
+                            <!-- Terms and service agreement -->
+                            <div class="form-check d-flex justify-content-center align-items-center mb-5">
+                                    <input class="form-check-input form-check-inline" type="checkbox" value="" id="termsOfService" required />
+                                    <label class="form-check-label ms-2 text-wrap" for="termsOfService">I agree to all statements in <a href="#!">Terms of service</a></label>
+                                    <div class="invalid-tooltip tooltip-custom" style="font-weight: bold; font-size:10px;">You must agree before submitting.</div>
+                            </div>
+            
+                            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                <button  type="submit" data-mdb-ripple-init class="btn btn-primary btn-lg custom-button">Sign Up</button>
+                            </div>
+                            <p style="text-align: center;">Already have an account? <a href="../login/login.html">Login here</a></p>
+                        </form>
                     </div>
-                  </div>
-  
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw icon-position"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="password" id="password" class="form-control" required />
-                      <label class="form-label" style="font-weight:bold; font-size:20px" for="password">Password</label>
-                      <div class="invalid-feedback" style="font-weight: bold; font-size:15px;">Please enter a password.</div>
-                    </div>
-                  </div>
-  
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw icon-position"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="password" id="confirmPassword" class="form-control" required />
-                      <label class="form-label" style="font-weight:bold; font-size:20px" for="confirmPassword">Repeat your password</label>
-                      <div class="invalid-tooltip tooltip-custom" style="font-weight: bold; font-size:10px;">Passwords do not match.</div>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-phone fa-lg me-3 fa-fw icon-position"></i> 
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="tel" id="phoneNumber" class="form-control" pattern="[0-9]{10}" placeholder="1234567890"/>
-                      <label class="form-label" style="font-weight:bold; font-size:20px" for="phoneNumber">Phone Number (Optional)</label>
-                    </div>
-                  </div>
-  
-                  <div class="form-check d-flex justify-content-center align-items-center mb-5">
-                    <input class="form-check-input" type="checkbox" value="" id="termsOfService" required />
-                    <label class="form-check-label ms-2" for="termsOfService">I agree to all statements in <a href="#!">Terms of service</a></label>
-                    <div class="invalid-tooltip tooltip-custom2" style="font-weight: bold; font-size:10px;">You must agree before submitting.</div>
-                  </div>
-  
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button  type="submit" data-mdb-ripple-init class="btn btn-primary btn-lg custom-button">Sign Up</button>
-                  </div>
-                  <p style="text-align: center;">Already have an account? <a href="../login/login.html">Login here</a></p>
-                </form>
-              </div>
-              
-                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                  <!--Logo goes back to index from here? Then after login, logo can go to home page-->
-                    <a href="../index.html" style="text-decoration: none; color: inherit;">
-                        <div class="logo">
-                            <span style="font-size: 65px; font-weight: bold">KnowTime</span>
-                            <img src="../Resources/tomato.png" alt="tomato logo" style="width:120px";> <!-- Adjust the path if needed -->
-                        </div>
-                    </a>
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <script defer src="signup.js"></script> <!-- Placeholder for any JS logic -->
+    <script defer src="signup.js"></script>
 </section>
 </html>

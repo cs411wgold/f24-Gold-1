@@ -1,0 +1,58 @@
+runtime: python39
+instance_class: F2
+
+#This is used to map files to URLs for GCP
+
+handlers:
+  - url: /frontend/home
+    static_dir: frontend/home
+
+  - url: /frontend/calendar
+    static_dir: frontend/calendar
+
+  - url: /frontend/contactUs
+    static_dir: frontend/contactUs
+
+  - url: /frontend/forums
+    static_dir: frontend/forums
+
+  - url: /frontend/aboutUs
+    static_dir: frontend/aboutUs
+
+  - url: /frontend/login
+    static_dir: frontend/login
+
+  - url: /frontend/profile
+    static_dir: frontend/profile
+
+  - url: /frontend/progress
+    static_dir: frontend/progress
+
+  - url: /frontend/resources
+    static_dir: frontend/resources
+
+  - url: /frontend/signup
+    static_dir: frontend/signup
+
+  - url: /frontend/studyplan
+    static_dir: frontend/studyplan
+
+  - url: /frontend/taskboard
+    static_dir: frontend/taskboard
+
+  - url: /frontend/timer
+    static_dir: frontend/timer
+
+  - url: /frontend/shared
+    static_dir: frontend/shared
+
+  - url: /
+    static_files: frontend/index.html
+    upload: frontend/index.html
+
+  - url: /frontend/styles.css
+    static_files: frontend/styles.css
+    upload: frontend/styles.css
+
+
+
