@@ -13,12 +13,14 @@ body{
     white-space: nowrap; 
 }
 
+/* https://www.w3schools.com/cssref/playdemo.php?filename=playcss_transform&preval=translate(20px,10px) */
 .form-check-input {
     transform: translateX(-150px); 
 }
 
 .custom-card{
     background-color: rgb(217, 226, 230,0.575);
+    text-align: center;
 }
 
 .custom-button{
@@ -31,12 +33,12 @@ body{
     margin-right: 20px
 }
 
+/* https://stackoverflow.com/questions/42121150/css-centering-with-transform */
 .tooltip-custom{
-    transform: translateY(-335px);
-    margin-left: 70px
-
+    position: absolute;
+    left: 31%
 }
 
-.tooltip-custom2{
-    margin-left: 70px
+.custom-checkbox{
+    margin-right: 5px;
 }
