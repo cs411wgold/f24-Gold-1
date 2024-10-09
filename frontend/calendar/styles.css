@@ -13,12 +13,6 @@ ul {
   padding: 0; /* Remove default padding */
 }
 
-.month {
-  padding: 5px 25px; /* How big the color is around the month title */
-  background: #5f9ce2;  /* Color behind the month text */
-  color: white; /*Text color of the month*/
-}
-
 .weekdays {
   display: flex; /* Set the days to be in a row */
   padding: 0; /* Remove extra padding */
@@ -63,4 +57,37 @@ ul {
   border: none; /* No border around button */
   border-radius: 5px; /* Rounded Edges */
   cursor: pointer; /* Cursor on hover */
+}
+
+.month {
+  position: relative; /* Allows buttons to be placed correctly */
+  background: #5f9ce2;  /* Background color of the month */
+  color: white; /* Text color for the month title */
+  display: flex; /* Allows for month text to be centered vertically */
+  justify-content: center; /* Center the month title */
+  align-items: center; /* Vertically center */
+  height: 60px; /* Set height of month header */
+}
+
+.prev-month, .next-month {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  color: white;
+  top: 50%; /* Vertically center the buttons */
+  transform: translateY(-50%); /* Vertically center the buttons */
+}
+
+.prev-month {
+  left: 10px; /* Position left arrow */
+}
+
+.next-month {
+  right: 10px; /* Position right arrow */
+}
+
+.prev-month:hover, .next-month:hover {
+  color: #dddddd; /* Change color on hover */
 }
