@@ -190,7 +190,7 @@
       if(oldMonth !== "January") {
         monthHeading.textContent = `${previousMonth} ${year}`
       } else if (oldMonth === "January") {
-        monthHeading.textContent = `December ${year - 1}`
+        monthHeading.textContent = `December ${parseInt(year) - 1}`
         previousMonth = 'December'
       }
 
@@ -213,16 +213,16 @@
       // An array of months
       const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       
-      const previousMonth = months[months.indexOf(oldMonth) + 1];
+      const nextMonth = months[months.indexOf(oldMonth) + 1];
 
       if(oldMonth !== "December") {
-        monthHeading.textContent = `${previousMonth} ${year}`
+        monthHeading.textContent = `${nextMonth} ${year}`
       } else if (oldMonth === "December") {
-        monthHeading.textContent = `December ${year + 1}`
-        previousMonth = 'January'
+        monthHeading.textContent = `January ${parseInt(year) + 1}`
+        nextMonth = 'January'
       }
 
-      const calendarDate = new Date(year, months.indexOf(previousMonth));
+      const calendarDate = new Date(year, months.indexOf(nextMonth));
 
       const daysContainer = document.querySelector('.days');
       daysContainer.innerHTML = ''
