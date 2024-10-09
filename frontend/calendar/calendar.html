@@ -51,9 +51,11 @@
 <main>
 <div class="calendar-container">
   <button class="addTask" onclick="addTask()">Add a task!</button>
-  <div class="month">  
+  <div class="month">
     <!-- This is where the month is going to go (it gets added in the script section)  -->
+    <button class="prev-month" onclick="getPreviousMonth()">&lt;</button>
     <h2>Placeholder</h2>
+    <button class="next-month" onclick="getNextMonth()">&gt;</button>
   </div>
 
   <ul class="weekdays">
@@ -85,14 +87,18 @@
 </body>
 </html>
 
-<script>  
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    setupDate();
+  });
+  function setupDate(date) {  
     // Get our month header on the calendar
     const monthHeading = document.querySelector('.month h2');
     
     // Get our days container
     const daysContainer = document.querySelector('.days');
     
-    const currentDate = new Date();
+    const currentDate = date ?? new Date();
     
     // Find the current date and get the month as a number (Oct = 10)
     const numeralMonth = currentDate.getMonth();
@@ -138,6 +144,7 @@
       taskDiv.textContent = `Task ${day}`;
       dayLi.appendChild(taskDiv);
     }
+  }
 
     function addTask() {
       let task = prompt("What task would you like to add?");
@@ -165,5 +172,61 @@
       taskDiv.textContent = task;
 
       dayLi.appendChild(taskDiv);
+    }
+
+    function getPreviousMonth() {
+      // Get our month header on the calendar
+      const monthHeading = document.querySelector('.month h2');
+      const parts = monthHeading.textContent.split(" ");
+
+      const oldMonth = parts[0];
+      const year = parts[1];
+
+      // An array of months
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      const previousMonth = months[months.indexOf(oldMonth) - 1];
+
+      if(oldMonth !== "January") {
+        monthHeading.textContent = `${previousMonth} ${year}`
+      } else if (oldMonth === "January") {
+        monthHeading.textContent = `December ${year - 1}`
+        previousMonth = 'December'
+      }
+
+      const calendarDate = new Date(year, months.indexOf(previousMonth));
+
+      const daysContainer = document.querySelector('.days');
+      daysContainer.innerHTML = ''
+
+      setupDate(calendarDate);
+    }
+
+    function getNextMonth() {
+      // Get our month header on the calendar
+      const monthHeading = document.querySelector('.month h2');
+      const parts = monthHeading.textContent.split(" ");
+
+      const oldMonth = parts[0];
+      const year = parts[1];
+
+      // An array of months
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      const previousMonth = months[months.indexOf(oldMonth) + 1];
+
+      if(oldMonth !== "December") {
+        monthHeading.textContent = `${previousMonth} ${year}`
+      } else if (oldMonth === "December") {
+        monthHeading.textContent = `December ${year + 1}`
+        previousMonth = 'January'
+      }
+
+      const calendarDate = new Date(year, months.indexOf(previousMonth));
+
+      const daysContainer = document.querySelector('.days');
+      daysContainer.innerHTML = ''
+
+      setupDate(calendarDate);
     }
     </script>
