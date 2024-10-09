@@ -58,11 +58,17 @@
         <span style="font-size: 40px; font-weight: bold">Pomodoro Timer</span>
         <img src="../resources/tomato.png" alt="tomato logo" style="width:60px; margin-bottom:25px";> <!-- Adjust the path if needed -->
       </div>
-        <section class="button-container mt-4">
-              <div class="button-container">
-                <button class="button" id="pomodoro-session">Pomodoro</button>
-                <button class="button" id="custom-pomodoro-session">Custom Pomodoro</button>
-            </div>
+        <div class="timer">
+          <div class="button-container">
+            <button class="button" id="pomodoro-session">Pomodoro</button>
+            <button class="button" id="short-break">Custom Pomodoro</button>
+          </div>
+  
+          <div id="pomodoro-timer" class="timer-display">1:00</div>
+  
+            <button id="start" class="button" onclick="startTimer()">START</button>
+            <button id="stop" class="button">STOP</button>
+        </div>
         </section>
     </main>
     
@@ -78,3 +84,39 @@
     </script>
 </body>
 </html>
+
+<script>
+  let timeRemaining = parseInt((document.getElementById("pomodoro-timer").textContent).split(":")[0]) * 60;
+  let timer = null;
+  let isRunning = false;
+  function startTimer() {
+    if(isRunning) {
+      return;
+    }
+
+    isRunning = true;
+
+    const timerElement = document.getElementById("pomodoro-timer").textContent;
+
+    timer = setInterval(() => {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+      document.getElementById("pomodoro-timer").textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+      if (timeRemaining === 0) {
+        clearInterval(timer);
+        isRunning = false;
+        alert("Time's up!");
+      } else {
+        timeRemaining--;
+      }
+    }, 1000);
+
+
+    
+  }
+</script>
