@@ -116,8 +116,8 @@
     // Set the header text to be that month plus the year
     monthHeading.textContent = `${monthName} ${year}`;
     
-    // Get the number of days in the month (corrected to use current month)
-    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); // Now it's correct
+    // Get the number of days in the month
+    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); 
     
     // Get the starting day of the week for the first of the month
     const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
@@ -141,6 +141,7 @@
     
       // Add a task
       const taskDiv = document.createElement('div');
+
       taskDiv.classList.add('task');
       taskDiv.textContent = `Task ${day}`;
       dayLi.appendChild(taskDiv);
@@ -150,6 +151,23 @@
     function addTask() {
       let task = prompt("What task would you like to add?");
       let day = prompt("Which day should it be added on?");
+      const monthHeading = document.querySelector(".month h2"); 
+      const month = monthHeading.textContent.split(" ")[0];
+      const year = monthHeading.textContent.split(" ")[1];
+
+      // An array of months
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      const numeralMonth = months.indexOf(month);
+
+    // Get the number of days in the month
+    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); 
+    
+    // Get the starting day of the week for the first of the month
+    const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
+    
+    // Adjust the starting day to align with Monday as day 1 (JavaScript uses Sunday as 0)
+    const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;      
 
       // Make sure it's a valid string
       while(!task || task.length === 0) {
@@ -169,6 +187,7 @@
 
       // Add the task to the day
       const taskDiv = document.createElement('div');
+
       taskDiv.classList.add('task');
       taskDiv.textContent = task;
 
