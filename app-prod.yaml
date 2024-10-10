@@ -4,6 +4,10 @@ instance_class: F2
 #This is used to map files to URLs for GCP
 
 handlers:
+
+  - url: /frontend/img
+    static_dir: frontend/img
+    
   - url: /frontend/home
     static_dir: frontend/home
 
