@@ -79,6 +79,12 @@ header {
     background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
+    margin-top: 100px;
+
+}
+.intro p{
+    font-size: 30px; 
+
 }
 
 .intro h2 {
@@ -93,6 +99,7 @@ header {
 .intro ul li {
     font-size: 18px;
     margin: 10px 0;
+    
 }
 
 .buttons {
