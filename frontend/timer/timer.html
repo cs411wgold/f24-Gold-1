@@ -61,7 +61,7 @@
         <div class="timer">
           <div class="button-container">
             <button class="button" id="pomodoro-session">Pomodoro</button>
-            <button class="button" id="short-break">Custom Pomodoro</button>
+            <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
           </div>
   
           <div id="pomodoro-timer" class="timer-display">30:00</div>
@@ -114,9 +114,14 @@
       } else {
         timeRemaining--;
       }
-    }, 1000);
+    }, 1000);    
+  }
 
-
-    
+  function customTimer() {
+          let time = prompt("How many minutes would you like to study?");
+          while (isNaN(time) || time < 1) {
+            time = prompt("How many minutes would you like to study?");
+          }
+          document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
   }
 </script>
