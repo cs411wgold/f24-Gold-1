@@ -6,6 +6,7 @@ main {
   width: 70%; /*Only take up 70% of the page*/
   margin: 0 auto; /* Helps the entire calendar to be centered */
   text-align: center; /* Align the text to be centered */
+  background-color: rgb(252,252,252);
 }
 
 ul {
