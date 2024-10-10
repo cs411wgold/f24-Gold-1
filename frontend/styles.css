@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('background.png');
+    background-image: url('img/bk.png');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -11,6 +11,7 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 
 header {
     display: flex;
@@ -76,10 +77,11 @@ header {
 
 .intro {
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
     border-radius: 10px;
     margin-top: 100px;
+
+    font-weight: bold;
+
 
 }
 .intro p{
