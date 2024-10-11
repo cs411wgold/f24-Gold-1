@@ -46,6 +46,7 @@ ul {
   background-color: #e0f7fa; /* Task background color */
   padding: 10px; /* Task Size */
   margin-bottom: 10px; /* Add some padding to the bottom */
+  word-wrap: break-word; /* Wrap long tasks */
 }
 
 .addTask {
