@@ -84,6 +84,7 @@
    let timer = null;
    let isRunning = false;
    let originalTime = "";
+   let breakTimeInMinutes = "5";
    
    function startTimer(type) {
      if(isRunning) {
@@ -129,6 +130,11 @@
             time = "0" + time;
            }
 
+           breakTimeInMinutes = prompt("How many minutes would you like to take for a break?");
+           while (isNaN(breakTimeInMinutes) || breakTimeInMinutes < 1) {
+             time = prompt("How many minutes would you like to take for a break?");
+           }
+
            document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
@@ -148,7 +154,12 @@
 
    function startBreak() {
       document.getElementById("type").textContent = "Time for a break!";
-      document.getElementById("pomodoro-timer").textContent = "05:00";
+
+      if(breakTimeInMinutes < 10) {
+        breakTimeInMinutes = "0" + breakTimeInMinutes + ":00";
+      }
+
+      document.getElementById("pomodoro-timer").textContent = breakTimeInMinutes;
       startTimer("break");
    }
 </script>
