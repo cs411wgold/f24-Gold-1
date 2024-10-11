@@ -12,6 +12,16 @@ body {
     justify-content: center;
 }
 
+/* Alternate body style for About Us section */
+.about-us-body {
+    background-color: white; /* Set white background */
+    background-image: none; /* Remove background image */
+    color: black; /* Ensure text is visible on white background */
+    padding: 20px; /* Add some padding */
+    width: 100%; /* Ensure full width */
+    min-height: 100vh; /* Make sure it covers the full viewport height */
+}
+
 
 header {
     display: flex;

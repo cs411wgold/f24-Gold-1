@@ -6,7 +6,7 @@
     <title>KnowTime - Dashboard</title>
     <link rel="icon" type="image/x-icon" href="../resources/tomato.png">
     <link rel="stylesheet" href="/frontend/styles.css">
-    <link rel="stylesheet" href="aboutUs.css">
+    <link rel="stylesheet" href="/frontend/aboutUs/aboutUs.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -48,23 +48,103 @@
           console.error('Error loading header:', error);
         });
     </script>
-
+    
     <!-- Main Section -->
     <main class="container text-center mt-5">
-        <h2>This is a placeholder.</h2>
+        <h2>About Us</h2>
         <section class="mt-4">
-            <h3>Upcoming Work</h3>
-            <div class="assignment-list mt-3">
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <!-- Assignment content here -->
-                </div>
+                <p>Students often struggle with time management, fail to track progress effectively, and underestimate what can be accomplished during a work session. </p> 
+                  
+                <p>Our time management and study skills tool will address these issues by providing those who struggle with time management a community of support and various studying tools.
+                  This tool is poised to improve how individuals manage their time and enhance their study habits.</p>
+                  
+
+                <p>Our web application includes:  a Pomodoro Timer to help with productivity and time management, a grade tracker to keep users up-to-date on their current grade status, a progress tracker to assist with monitoring time spent on completing tasks, a community forum for collaboration and support, and a points system to keep users motivated while they are studying.</p>
+                  
+                <p>These features will help students develop study skills and stay focused, organized, and engaged.</p>
             </div>
+            
+        </section>
+        <h3>Meet the team</h3>
+        <section>
+          <div id="team" class="tab-content" style="display: none;"></div>
+            <div class="members">
+              <div class="team-member" onclick="showPopup('Glenn Catlett', 'Glenn Catlett is a Senior Undergraduate student, majoring in Computer Science. Outside of University, Glenn enjoys exercise and spending time with his dog.', 'gcatl002@odu.edu')">
+                  <img src="../img/GlennCatlett.png">
+                  <h3 style="color:black;">Glenn Catlett</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a style="color:black;">Full Stack Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Steven Chen', 'Steven Chen is a Senior Undergraduate student at Old Dominion University, majoring in Computer Science and minoring in Cybersecurity. In his free time, he enjoys playing table tennis and video games.', 'schen012@odu.edu')">
+                  <img src="../img/StevenChen.jpg">
+                  <h3 style="color:black;">Steven Chen</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Full Stack Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Lauren Keating', 'Lauren is an experienced frontend and backend developer with a passion for coding. In her free time she enjoys reading, coding, and gaming.', 'lkeat003@odu.edu')">
+                  <img src="../img/LaurenKeating.png">
+                  <h3 style="color:black;">Lauren Keating</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Frontend and Backend Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Gabby Ramirez', 'Gabby Ramirez is a second-degree seeking student.  She earned her first degree in Psychology at the College of William & Mary.  She has interned as a Computer Scientist with the government and has worked in the automotive industry for seven years.  Upon graduation, Gabby hopes to make a career change soon after.  When she has time, her hobbies include playing video games, building and painting models, and spending time with her fur babies and husband.', 'grami002@odu.edu')">
+                  <img src="../img/GabbyRamirez.jpg">
+                  <h3 style="color:black;">Gabby Ramirez</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Web Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Erin Shanks', 'Erin Shanks is a senior at Old Dominion University. In her free time she enjoys playing video games and reading.', 'eshan003@odu.edu')">
+                  <img src="../img/ErinShanks.jpg">
+                  <h3 style="color:black;">Erin Shanks</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Frontend and Backend Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Kyle Munoz', 'Kyle Munoz grew up in Virginia Beach. He likes to listen to K-Pop, watch K-dramas, and watch sports. After graduation, he plans to pursue a career in web development.', 'kmuno003@odu.edu')">
+                  <img src="../img/KyleMunoz.jpg">
+                  <h3 style="color:black;">Kyle Munoz</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Web Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Angel Mercado', 'Angel is a senior at Old Dominion University. He plans to pursue a career as a software engineer upon graduation. In his free time, he enjoys reading, lifting, mixed martial arts, and gaming', 'amerc006@odu.edu')">
+                  <img src="../img/AngelMercado.jpg">
+                  <h3 style="color:black;">Angel Mercado</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Web Developer</p>
+              </div>
+              <div class="team-member" onclick="showPopup('Reggie Pinder', 'Reggie is a senior at Old Domionion University. He works full-time as a Programmer Analyst contractor and does school work part-time. In his free time he spends time with his lovely wife and 2 kids, playing video games, and grilling.', 'rpind002@odu.edu')">
+                  <img src="../img/ReggiePinder.png">
+                  <h3 style="color:black;">Reggie Pinder</h3>
+                  <h5 style="color:black;">Click for Bio</h5>
+                  <p.a  style="color:black;">Web Developer</p>
+              </div>
+              <div class="popup" id="popup">
+                <img id="popup-img" src="">
+                <h3 id="popup-name"></h3>
+                <p id="popup-bio" class="popup-info"></p>
+                <p id="popup-email" class="popup-info"></p>
+                <button onclick="closePopup()">Close</button>
+            </div>
+          </div>      
+        </section>
+        
+        <h3>Our Values</h3>
+        <section>
+          <p>At KnowTime, we believe in:</p>
+
+          <p>Community Support: We aim to foster a supportive student community.</p>
+            <p>Academic Growth: Helping students succeed academically is at the heart of our mission.</p>
+            <p> Stress-Free Studying: We want to make managing time and studies as simple as possible for students.</p>
+        </section>
+
+        <h3>Join Us</h3>
+        <section>
+          <p>We invite you to explore KnowTime, join our community, and let us help you make studying more efficient and enjoyable. Whether you're looking for better time management, tracking your progress, or finding new study techniques, KnowTime is here to support you.</p>
         </section>
     </main>
     
     <!-- Footer Section -->
     <div id="footer-common"></div>
-
+    <script src="../aboutUs/aboutUs.js"></script>
     <script>
       fetch('../shared/footer.html')  <!-- Fetch footer -->
         .then(response => response.text())

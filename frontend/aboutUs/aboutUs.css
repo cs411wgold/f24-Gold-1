@@ -5,7 +5,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;  
+    height: 300%;  
 }
 
 html {
@@ -26,3 +26,87 @@ h3 {
     color: #333;
 } 
 
+.members {
+    height: 1000px; /* Adjust the height as needed */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Horizontally center the items */
+    align-items: center; /* Vertically center the items */
+}
+
+p {
+    font-size: 16px;
+    text-align: left;
+    white-space: wrap;
+    color: #333;
+} 
+
+p.a {
+    font-size: 12px;
+    text-align: middle;
+    white-space: wrap;
+    color: #333;
+} 
+
+
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #a3a3a3; /* Background color */
+    color: #fff; /* Text color */
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 999;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    text-align: center;
+}
+
+.popup img {
+    width: 100px; /* Adjust the width of the image as needed */
+    border-radius: 50%;
+}
+
+.popup h3 {
+    margin-top: 0;
+}
+
+.popup-info {
+    margin-bottom: 10px;
+}
+
+.popup button {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.popup button:hover {
+    background-color: #fff;
+    color: #cecece; /* Hover text color */
+}
+
+
+.team-member {
+    flex: 1 1 calc(33.333% - 20px);
+    text-align: center;
+    margin: 5px;
+    transition: transform 0.3s ease; /* Add transition property */
+}
+
+.team-member img {
+    width: 125px; /* Adjust the width as needed */
+    height: 125px; /* Adjust the height as needed */
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.team-member:hover {
+    transform: scale(1.1); /* Make the team member 10% larger on hover */
+}
