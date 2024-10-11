@@ -137,7 +137,7 @@
    
            breakTimeInMinutes = prompt("How many minutes would you like to take for a break?");
            while (isNaN(breakTimeInMinutes) || breakTimeInMinutes < 1) {
-             time = prompt("How many minutes would you like to take for a break?");
+             breakTimeInMinutes = prompt("How many minutes would you like to take for a break?");
            }
    
            document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
