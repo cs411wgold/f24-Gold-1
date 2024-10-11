@@ -62,7 +62,7 @@
                <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
             </div>
             <div id="type" class="timer-type">Time to study!</div>
-            <div id="pomodoro-timer" class="timer-display">30:00</div>
+            <div id="pomodoro-timer" class="timer-display">25:00</div>
             <button id="start" class="button" onclick="startTimer()">START</button>
             <button id="stop" class="button" onclick="stopTimer()">STOP</button>
          </div>
@@ -85,7 +85,7 @@
    let isRunning = false;
    let originalTime = "";
    
-   function startTimer() {
+   function startTimer(type) {
      if(isRunning) {
        return;
      }
@@ -93,6 +93,10 @@
      isRunning = true;
      originalTime = document.getElementById("pomodoro-timer").textContent;
      timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
+
+     if(!type) {
+     document.getElementById("type").textContent = "Time to study!";
+     }
    
      const timerElement = document.getElementById("pomodoro-timer").textContent;
    
@@ -109,6 +113,7 @@
          clearInterval(timer);
          isRunning = false;
          alert("Time's up!");
+         startBreak();
        } else {
          timeRemaining--;
        }
@@ -120,6 +125,10 @@
            while (isNaN(time) || time < 1) {
              time = prompt("How many minutes would you like to study?");
            }
+           if(time < 10) {
+            time = "0" + time;
+           }
+
            document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
@@ -135,5 +144,11 @@
    
    document.getElementById("pomodoro-timer").textContent = originalTime;
    timeRemaining = 0;
+   }
+
+   function startBreak() {
+      document.getElementById("type").textContent = "Time for a break!";
+      document.getElementById("pomodoro-timer").textContent = "05:00";
+      startTimer("break");
    }
 </script>
