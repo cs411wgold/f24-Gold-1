@@ -64,6 +64,7 @@
             <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
           </div>
   
+          <div id="type" class="timer-type">Time to study!</div>
           <div id="pomodoro-timer" class="timer-display">30:00</div>
   
             <button id="start" class="button" onclick="startTimer()">START</button>
@@ -86,15 +87,17 @@
 </html>
 
 <script>
-  let timeRemaining = parseInt((document.getElementById("pomodoro-timer").textContent).split(":")[0]) * 60;
+  let timeRemaining = 0;
   let timer = null;
   let isRunning = false;
+
   function startTimer() {
     if(isRunning) {
       return;
     }
 
     isRunning = true;
+    timeRemaining = parseInt((document.getElementById("pomodoro-timer").textContent).split(":")[0]) * 60;
 
     const timerElement = document.getElementById("pomodoro-timer").textContent;
 
@@ -123,5 +126,6 @@
             time = prompt("How many minutes would you like to study?");
           }
           document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
+          timeRemaining = parseInt((document.getElementById("pomodoro-timer").textContent).split(":")[0]) * 60;
   }
 </script>
