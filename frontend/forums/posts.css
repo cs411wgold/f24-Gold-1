@@ -1,0 +1,41 @@
+.forum-info {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.forum-info i {
+    color: #007bff;
+    margin-right: 15px;
+}
+
+.post {
+    margin-bottom: 20px;
+}
+
+.reply {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.nested-replies {
+    border-left: 2px solid #dee2e6;
+    padding-left: 1rem;
+}
+
+.vote-buttons button {
+    margin-right: 5px;
+}
+
+.reply-form {
+    margin-top: 10px;
+}
+
+.post-meta,
+.reply-meta {
+    color: #6c757d;
+    margin-bottom: 10px;
+}
