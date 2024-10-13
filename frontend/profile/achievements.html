@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowTime - Achievements</title>
+    <link rel="icon" type="image/x-icon" href="../resources/tomato.png">
+    <link rel="stylesheet" href="/frontend/styles.css">
+    <link rel="stylesheet" href="achievements.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Barlow Font | refer to https://www.w3schools.com/howto/tryit.asp?font=Barlow-->
+    <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
+    <!-- Font Awesome CSS for icons | https://icons.getbootstrap.com/#install-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <div id="header-common"></div>
+
+    <script>
+      fetch('../shared/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-common').innerHTML = data;
+    
+          const currentPath = window.location.pathname;
+          console.log("Current Path:", currentPath);
+    
+          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
+    
+          navLinks.forEach(link => {
+            const pagePath = link.getAttribute("href");
+    
+            console.log("Checking link:", pagePath);
+    
+            if (currentPath.includes(pagePath)) {
+              console.log("Match found, adding active class to:", link);
+    
+              link.classList.add("active");
+    
+              if (link.classList.contains('dropdown-item')) {
+                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                parentLink.classList.add('active');
+              }
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
+        });
+    </script>
+
+    <!-- Main Section -->
+    <section class="d-grid container p-md-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="p-3 border rounded shadow-sm bg-light col-lg-8">
+                    <h2 style="text-align:center;">Recent Achievement</h2>
+                    <!--Placeholder until interactive-->
+                    <!--Will need something to recognize most recent achivement and display it here-->
+                    <div class="card custom-card-primary" style="border-radius: 10px; background-color:rgb(247, 242, 234)">
+                        <div class="row justify-content-lg-center">
+                            <img src="../img/avatars/tomato_warrior.png" alt="study warrior avatar" class="images">
+                        </div>
+                    </div>
+                    <h3 style="text-align:center">Study Warrior</h3>
+                    <div class="card custom-card-secondary" style="border-radius:10px;">
+                        <p class="text-alignment" style="font-size:20px">Complete your first study session.</p>
+                    </div>
+                </div>
+            </div>
+            <!--Achievements scrollbar section-->
+            <div class="col">
+                <div class="row">
+                    <div class="card mb-5">
+                        <!--Need a way to access profile points and output here-->
+                        <h2 style="text-align:center">Achievement Points: 425</h2>
+                    </div>
+                    <div class="container-fluid py-2 bg-light border rounded scrollmenu">
+                        <!--https://blog.hubspot.com/website/horizontal-scrolling | horizontal scroll bar-->
+                        <!--Maybe a better way to have all of the achivements?-->
+                        <div class="d-flex flex-row flex-nowrap">
+                                <div class="card avatar-card col-4" style="border-radius:10px">
+                                    <div class="card custom-card-primary" style="border-radius:10px; background-color:rgb(247, 242, 234)">
+                                        <img src="../img/avatars/timer_beginner.png" alt="timer beginner avatar" class="images">
+                                    </div>
+                                    <h3 style="text-align:center">Timer Beginner</h3>
+                                    <div class="card custom-card-secondary" style="border-radius:10px; background-color:rgb(247,242,234)">
+                                        <p class="text-alignment" style="font: size 20px;">Use timer for one session.</p>
+                                    </div>
+                                </div>
+                                <div class="card avatar-card col-4" style="border-radius:10px">
+                                    <div class="card custom-card-primary" style="border-radius:10px; background-color:rgb(247, 242, 234)">
+                                        <img src="../img/avatars/grade_tracker_1.png" alt="grade tracker avatar" class="images">
+                                    </div>
+                                    <h3 style="text-align:center">Grade Tracker!</h3>
+                                    <div class="card custom-card-secondary" style="border-radius:10px; background-color:rgb(247,242,234)">
+                                        <p class="text-alignment" style="font: size 20px;">Enter your first grade.</p>
+                                    </div>
+                                </div>
+                                <div class="card avatar-card col-4" style="border-radius:10px">
+                                    <div class="card custom-card-primary" style="border-radius:10px; background-color:rgb(247, 242, 234)">
+                                        <img src="../img/avatars/locked_avatar.png" alt="grade tracker avatar" class="images">
+                                    </div>
+                                    <h3 style="text-align:center">Hidden</h3>
+                                    <div class="card custom-card-secondary" style="border-radius:10px; background-color:rgb(247,242,234)">
+                                        <p class="text-alignment" style="font: size 20px;">Earn more points to unlock!</p>
+                                    </div>
+                                </div>
+                                <div class="card avatar-card col-4" style="border-radius:10px">
+                                    <div class="card custom-card-primary" style="border-radius:10px; background-color:rgb(247, 242, 234)">
+                                        <img src="../img/avatars/locked_avatar.png" alt="grade tracker avatar" class="images">
+                                    </div>
+                                    <h3 style="text-align:center">Hidden</h3>
+                                    <div class="card custom-card-secondary" style="border-radius:10px; background-color:rgb(247,242,234)">
+                                        <p class="text-alignment" style="font: size 20px;">Earn more points to unlock!</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Section -->
+    <div id="footer-common"></div>
+
+    <script>
+      fetch('../shared/footer.html')  <!-- Fetch footer -->
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-common').innerHTML = data;
+        });
+    </script>
+</body>
+</html>
