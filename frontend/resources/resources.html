@@ -42,7 +42,7 @@
     
     <!--Main Section-->
     <main>
-        <section class ="resources">
+        <section class ="container col-10 resources">
             <h2>Still Overwhelmed?</h2>
             <h2>We are here to help</h2>
             <p>Whether you're looking to manage stress or improve your academic performance,
@@ -51,11 +51,12 @@
             academic resources to boost your grades? Whatever your goals are, we're here to 
             support you on your journey to success.</p>
             <p>Select your preference below to explore the resources tailored to your needs.</p>
+            <!--Have ODU resources added for now.  Maybe add more buttons for other resources or add pages with links to outside resources-->
+            <div class="buttons" onclick="exitAlert()">
+              <a href="https://www.odu.edu/counseling-services"><button class="MentalHealthSupport">Mental Health Support</button></a>
+              <a href="https://www.odu.edu/academic-success-center"><button class="AcademicSupport">Academic Support</button></a>
+            </div>
         </section>
-        <div class="buttons">
-            <a href="#"><button class="MentalHealthSupport">Mental Health Support</button></a>
-            <a href="#"><button class="AcademicSupport">Academic Support</button></a>
-        </div>
     </main>
     <!--Footer Section-->
     <div id="footer-common"></div>
@@ -67,6 +68,7 @@
             document.getElementById('footer-common').innerHTML = data;
           });
     </script>
+    <script defer src="resources.js"></script>
 </body>
 </html>
 
