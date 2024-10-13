@@ -26,3 +26,12 @@ h3 {
     color: #333;
 } 
 
+.form-container{
+    margin-top: 10px;
+    margin-bottom: 10px
+
+}
+
+.icon{
+    color: rgb(100, 92, 92);
+}
