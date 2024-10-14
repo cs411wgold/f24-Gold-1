@@ -181,8 +181,9 @@
    function startStudy() {
      currentMode = "study";
      document.getElementById("type").textContent = "Time to study!";
-     document.getElementById("pomodoro-timer").textContent = studyTimeInMinutes < 10 ? "0" + studyTimeInMinutes + ":00" : studyTimeInMinutes + ":00";
-     timeRemaining = parseInt(studyTimeInMinutes) * 60;
+     const studyMinutes = parseInt(studyTimeInMinutes.split(":")[0])
+     document.getElementById("pomodoro-timer").textContent = studyMinutes < 10 ? "0" + studyMinutes + ":00" : studyMinutes + ":00";
+     timeRemaining = studyMinutes * 60;
      startTimer();
    }
    
