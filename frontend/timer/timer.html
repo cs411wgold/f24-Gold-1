@@ -58,7 +58,7 @@
          </div>
          <div class="timer">
             <div class="button-container">
-               <button class="button" id="pomodoro-session">Pomodoro</button>
+               <button class="button" id="pomodoro-session" onClick="normalTimer()">Pomodoro</button>
                <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
             </div>
             <div id="type" class="timer-type">Time to study!</div>
@@ -143,6 +143,13 @@
            document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
+   }
+
+   function normalTimer() {   
+           document.getElementById("pomodoro-timer").textContent = "25:00";
+           originalTime = document.getElementById("pomodoro-timer").textContent;
+           timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
+           breakTimeInMinutes = "5";
    }
    
    function stopTimer() {
