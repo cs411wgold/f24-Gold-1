@@ -85,8 +85,10 @@
    let isRunning = false;
    let originalTime = "";
    let breakTimeInMinutes = "5";
+   let studyTimeInMinutes = "25";
+   let currentMode = "study";
    
-   function startTimer(type) {
+   function startTimer() {
      if(isRunning) {
        return;
      }
@@ -100,8 +102,10 @@
       timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
      }
    
-     if(!type) {
+     if(currentMode == "study") {
      document.getElementById("type").textContent = "Time to study!";
+     } else if (currentMode === "break") {
+      document.getElementById("type").textContent = "Time for a break!";
      }
    
      const timerElement = document.getElementById("pomodoro-timer").textContent;
@@ -119,7 +123,12 @@
          clearInterval(timer);
          isRunning = false;
          alert("Time's up!");
-         startBreak();
+
+         if(currentMode === "break") {
+         startStudy();
+         } else if (currentMode === "study") {
+          startBreak();
+         }
        } else {
          timeRemaining--;
        }
@@ -127,12 +136,12 @@
    }
    
    function customTimer() {
-           let time = prompt("How many minutes would you like to study?");
-           while (isNaN(time) || time < 1) {
-             time = prompt("How many minutes would you like to study?");
+           studyTimeInMinutes = prompt("How many minutes would you like to study?");
+           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 1) {
+            studyTimeInMinutes = prompt("How many minutes would you like to study?");
            }
-           if(time < 10) {
-            time = "0" + time;
+           if(studyTimeInMinutes < 10) {
+            studyTimeInMinutes = "0" + studyTimeInMinutes;
            }
    
            breakTimeInMinutes = prompt("How many minutes would you like to take for a break?");
@@ -140,7 +149,7 @@
              breakTimeInMinutes = prompt("How many minutes would you like to take for a break?");
            }
    
-           document.getElementById("pomodoro-timer").textContent = time.toString() + ":00";
+           document.getElementById("pomodoro-timer").textContent = studyTimeInMinutes.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
    }
@@ -162,14 +171,19 @@
    }
    
    function startBreak() {
-      document.getElementById("type").textContent = "Time for a break!";
-   
-      if(breakTimeInMinutes < 10) {
-        breakTimeInMinutes = "0" + breakTimeInMinutes + ":00";
-      }
-   
-      document.getElementById("pomodoro-timer").textContent = breakTimeInMinutes;
-      startTimer("break");
+     currentMode = "break";
+     document.getElementById("type").textContent = "Time for a break!";
+     document.getElementById("pomodoro-timer").textContent = breakTimeInMinutes < 10 ? "0" + breakTimeInMinutes + ":00" : breakTimeInMinutes + ":00";
+     timeRemaining = parseInt(breakTimeInMinutes) * 60;
+     startTimer();
+   }
+
+   function startStudy() {
+     currentMode = "study";
+     document.getElementById("type").textContent = "Time to study!";
+     document.getElementById("pomodoro-timer").textContent = studyTimeInMinutes < 10 ? "0" + studyTimeInMinutes + ":00" : studyTimeInMinutes + ":00";
+     timeRemaining = parseInt(studyTimeInMinutes) * 60;
+     startTimer();
    }
    
    function pauseTimer() {
