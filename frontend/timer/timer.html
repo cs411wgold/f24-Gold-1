@@ -122,7 +122,11 @@
        if (timeRemaining === 0) {
          clearInterval(timer);
          isRunning = false;
+         const alarm = new Audio("./alarm.wav");
+         alarm.play().then(() => {
          alert("Time's up!");
+         }
+        )
 
          if(currentMode === "break") {
          startStudy();
