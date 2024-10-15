@@ -51,7 +51,14 @@
 
     <!-- Main Section -->
     <main class="container bg-light text-center mt-5">
-        <h2>This is a placeholder.</h2>
+        <h2 id = "username"></h2>
+        <!--Display Username-->
+        <script>
+          var username = localStorage.getItem('username') || 'DefaultUsername';
+          document.getElementById('username').innerText = username;
+        </script>
+        <p>You’ve spent a total of 349 hours studying on KnowTime!
+          Your average grade has gone up!</p> <!--Placeholder until data exists-->
         <section class="mt-4">
             <h3>Temporary Link to Achievements</h3>
             <a href="achievements.html"><button style="font-size:medium">Achievements</button></a>
