@@ -4,7 +4,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;  
+    height: auto;  
 }
 
 html {
@@ -58,4 +58,9 @@ h3 {
 .timer-type {
   font-size: 30px;
   font-weight: bold;
+}
+
+.timer-container{
+  margin-top: 100px;
+  margin-bottom: 150px;
 }
