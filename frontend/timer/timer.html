@@ -87,6 +87,9 @@
    let breakTimeInMinutes = "5";
    let studyTimeInMinutes = "25";
    let currentMode = "study";
+   let longBreak = "20";
+   let sessionCount = 0;
+   let originalLongBreak = "20";
    
    function startTimer() {
      if(isRunning) {
@@ -140,18 +143,22 @@
    }
    
    function customTimer() {
-           studyTimeInMinutes = prompt("How many minutes would you like to study? (1-90 minutes)");
-           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 1 || studyTimeInMinutes > 90) {
-            studyTimeInMinutes = prompt("How many minutes would you like to study? (1-90 minutes)");
-           }
-           if(studyTimeInMinutes < 10) {
-            studyTimeInMinutes = "0" + studyTimeInMinutes;
+           studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
+           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 20 || studyTimeInMinutes > 90) {
+            studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
            }
    
-           breakTimeInMinutes = prompt("How many minutes would you like to take for a break? (1-30 minutes)");
-           while (isNaN(breakTimeInMinutes) || breakTimeInMinutes < 1 || breakTimeInMinutes > 30) {
-             breakTimeInMinutes = prompt("How many minutes would you like to take for a break? (1-30 minutes)");
+           breakTimeInMinutes = prompt("How many minutes would you like to take for a short break? (5-15 minutes)");
+           while (isNaN(breakTimeInMinutes) || breakTimeInMinutes < 5 || breakTimeInMinutes > 15) {
+             breakTimeInMinutes = prompt("How many minutes would you like to take for a break? (5-15 minutes)");
            }
+
+           longBreak = prompt("How many minutes would you like to take for a a long break? (20-60 minutes)");
+           while (isNaN(longBreak) || longBreak < 20 || longBreak > 60) {
+            longBreak = prompt("How many minutes would you like to take for a break? (20-60 minutes)");
+           }
+
+           originalLongBreak = longBreak;
    
            document.getElementById("pomodoro-timer").textContent = studyTimeInMinutes.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
@@ -175,6 +182,16 @@
    }
    
    function startBreak() {
+     sessionCount++;
+
+     if(sessionCount % 8 === 0) {
+        breakTimeInMinutes = longBreak;
+     }
+
+     if(sessionCount !== 1 && sessionCount % 8 === 1) {
+        breakTimeInMinutes = originalLongBreak;
+     }
+
      currentMode = "break";
      document.getElementById("type").textContent = "Time for a break!";
      document.getElementById("pomodoro-timer").textContent = breakTimeInMinutes < 10 ? "0" + breakTimeInMinutes + ":00" : breakTimeInMinutes + ":00";
@@ -183,6 +200,7 @@
    }
 
    function startStudy() {
+     sessionCount++;
      currentMode = "study";
      document.getElementById("type").textContent = "Time to study!";
      const studyMinutes = parseInt(studyTimeInMinutes.split(":")[0])
