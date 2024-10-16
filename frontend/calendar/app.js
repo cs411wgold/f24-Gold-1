@@ -40,11 +40,22 @@ function setupDate(date) {
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('task');
         const savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
-        savedTasks.forEach(taskObj => {
+
+
+        savedTasks.forEach((taskObj, index) => {
             const taskItem = document.createElement('div');
             taskItem.classList.add('task-item');
             taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
+
+            // Add delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = "Delete";
+            deleteButton.classList.add('delete-task-btn');
+            deleteButton.addEventListener('click', () => deleteTask(year, numeralMonth, day, index));
+
+            taskItem.appendChild(deleteButton); // Add delete button to the task item
             taskDiv.appendChild(taskItem);
+        
         });
         dayLi.appendChild(taskDiv);
     }
@@ -79,6 +90,18 @@ function saveTask() {
     const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
     taskModal.hide();
     setupDate(); // Refresh the calendar to show the added task
+}
+
+function deleteTask(year, month, day, taskIndex) {
+    const dateKey = `${year}-${month}-${day}`;
+    const tasks = JSON.parse(localStorage.getItem(dateKey)) || [];
+    tasks.splice(taskIndex, 1); // Remove the task at the given index
+
+    // Update local storage
+    localStorage.setItem(dateKey, JSON.stringify(tasks));
+
+    // Refresh the calendar
+    setupDate();
 }
 
 // Function to convert 24-hour time to 12-hour format
