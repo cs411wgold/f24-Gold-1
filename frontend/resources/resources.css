@@ -48,3 +48,11 @@ body {
 .MentalHealthSupport:hover, .AcademicSupport:hover {
     opacity: 0.9;
 }
+
+.links{
+    font-size:20px;
+}
+
+.nav{
+    font-size:20px;
+}

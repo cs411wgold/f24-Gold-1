@@ -4,7 +4,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;  
+    height: auto;  
 }
 
 html {
@@ -25,10 +25,15 @@ h3 {
     color: #333;
 } 
 
-.container {
-  text-align: center;
-  width: 100%;
-  padding: 10px 0;
+.timer {
+  display: inline-block;
+  width: 70%;
+  box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 
 .button {
@@ -38,10 +43,24 @@ h3 {
   border-radius: 5px;
   padding: 10px 10px;
   margin: 5px;
-  margin-bottom: 50px;
+  cursor: pointer;
 }
 
 .button:hover {
   background-color: #f87070;
 }
 
+.timer-display {
+  font-size: 80px;
+  font-weight: bold;
+}
+
+.timer-type {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.timer-container{
+  margin-top: 100px;
+  margin-bottom: 150px;
+}
