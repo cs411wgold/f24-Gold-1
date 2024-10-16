@@ -37,7 +37,7 @@ ul {
 .days li {
   width: 14.28%;
   border: 1.5px solid #ddd;
-  padding: 15px 0;
+  padding: 50px 0;
   box-sizing: border-box;
 }
 
@@ -46,6 +46,7 @@ ul {
   padding: 10px;
   margin-bottom: 10px;
   word-wrap: break-word;
+  display: none; /* Hide task by default */
 }
 
 .task-item {
