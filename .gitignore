@@ -21,3 +21,4 @@ gradle-app.setting
 .classpath
 
 /backend/venv
+/backend/djangoConfig/__pycache__
