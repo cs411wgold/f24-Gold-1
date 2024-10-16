@@ -90,6 +90,17 @@
    let longBreak = "20";
    let sessionCount = 0;
    let originalLongBreak = "20";
+
+   function switchTimer() {
+    const timerButton = document.getElementById("next");
+    timerButton.remove();
+
+    if(currentMode === "break") {
+         startStudy();
+         } else if (currentMode === "study") {
+          startBreak();
+         }
+   }
    
    function startTimer() {
      if(isRunning) {
@@ -126,16 +137,16 @@
          clearInterval(timer);
          isRunning = false;
          const alarm = new Audio("./alarm.wav");
-         alarm.play().then(() => {
-         alert("Time's up!");
-         }
-        )
+         // Professor Kennedy said to have an alert element and then a button to switch timers.
+         alarm.play();
+         const button = document.createElement("button");
+          button.id = "next";
+          button.className = "button";
+          button.innerText = "NEXT TIMER";
+          button.onclick = switchTimer; 
 
-         if(currentMode === "break") {
-         startStudy();
-         } else if (currentMode === "study") {
-          startBreak();
-         }
+          const timerDiv = document.querySelector(".timer");
+          timerDiv.appendChild(button);
        } else {
          timeRemaining--;
        }
@@ -144,7 +155,7 @@
    
    function customTimer() {
            studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
-           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 20 || studyTimeInMinutes > 90) {
+           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 1 || studyTimeInMinutes > 90) {
             studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
            }
    
@@ -155,7 +166,7 @@
 
            longBreak = prompt("How many minutes would you like to take for a a long break? (20-60 minutes)");
            while (isNaN(longBreak) || longBreak < 20 || longBreak > 60) {
-            longBreak = prompt("How many minutes would you like to take for a break? (20-60 minutes)");
+            longBreak = prompt("How many minutes would you like to take for a long break? (20-60 minutes)");
            }
 
            originalLongBreak = longBreak;
