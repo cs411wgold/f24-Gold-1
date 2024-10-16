@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowTime - Academic Resources</title>
+    <link rel="icon" type="image/x-icon" href="../resources/tomato.png">
+    <link rel="stylesheet" href="/frontend/styles.css">
+    <link rel="stylesheet" href="resources.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Barlow Font | refer to https://www.w3schools.com/howto/tryit.asp?font=Barlow-->
+    <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
+    <!-- Font Awesome CSS for icons | https://icons.getbootstrap.com/#install-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <div id="header-common"></div>
+
+    <script>
+      fetch('../shared/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-common').innerHTML = data;
+    
+          const currentPath = window.location.pathname;
+          console.log("Current Path:", currentPath);
+    
+          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
+    
+          navLinks.forEach(link => {
+            const pagePath = link.getAttribute("href");
+    
+            console.log("Checking link:", pagePath);
+    
+            if (currentPath.includes(pagePath)) {
+              console.log("Match found, adding active class to:", link);
+    
+              link.classList.add("active");
+    
+              if (link.classList.contains('dropdown-item')) {
+                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                parentLink.classList.add('active');
+              }
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
+        });
+    </script>
+    <!-- Main Section -->
+    <!-- Reference for side bar code | https://getbootstrap.com/docs/5.0/examples/sidebars/#-->
+    <section class="container m-4">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border rounded" style="width: 280px; --bs-bg-opacity: 0.95;">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none" style="font-weight:bold; color:black">
+                    <span class="fs-4">Topics</span>
+                    </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                    <!--Add more topics for academic resources here-->
+                    <li class="nav-item">
+                        <a href="#General" class="nav-link customer-nav" aria-current="page">General Academic Resources</a>
+                    </li>
+                    <li>
+                        <a href="#Tutoring" class="nav-link" aria-current="page">Tutoring</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" aria-current="page">Studying Tips</a>
+                    </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="container bg-light" style="margin-bottom:-10px">
+                    <h2 id="General">University Academic Resources</h2>
+                </div>
+                <div class="container bg-light p-4" style="--bs-bg-opacity:0.8">
+                    <a href="https://www.odu.edu/academic-success-center" class="links">Old Dominion University Academic Success Center</a>
+                    <p>Access and explore the homepage of ODU's Acaedmic Success Center.</p>
+                    <a href="https://www.odu.edu/sss" class="links">TRiO Student Support Services</a>
+                    <p>Learn more about ODU's TRiO Student Support Services which offers comprehensive support in areas including academic, personal, and financial.</p>
+                    <a href="https://www.odu.edu/accessibility" class="links">Educational Accessibility</a>
+                    <p>Review information on ODU's Office of Educational Accessibility. This office aims to assist all students with disabilities and works to ensure
+                        that the university is complying with legal mandates.</p>
+                </div>
+                <div class="container bg-light" style="margin-bottom:-10px">
+                    <h2 id="Tutoring">Tutoring Resources</h2>
+                </div>
+                <div class="container bg-light p-4" style="--bs-bg-opacity:0.85">
+                    <a href="https://www.odu.edu/languagelearningcenter" class="links">ODU Language Learning Center (LLC)</a>
+                    <p>Explore ODU's Language Learning Center, which provides different resources on studying and learning languages as well as an option
+                        to book an appointment for assistance with a specific language or culture.
+                    </p>
+                    <a href="https://www.odu.edu/science-tutoring-centers" class="links">ODU Science Tutoring Center</a>
+                    <p>ODU's Science Tutoring Center offers tutoring in subjects including:  Biology, Chemistry, Computer Science, Math & Statistics,
+                        Ocean & Earth Science, Physics, and Psychology.
+                    </p>
+                    <a href="https://www.odu.edu/math/help/smart-room" class="links">ODU SMART Room</a>
+                    <p>The SMART room tutoring resource at ODU offers tutoring sessions in 101M (Intro to Math for Critical Thinking), 102M (College Algebra),
+                        103M (College Algebra with Supplemental Instruction), and 162M(Precalculus I).
+                    </p>
+                    <a href="https://www.odu.edu/physics/students/learning-center" class="links">ODU Physics Learning Center</a>
+                    <p>ODU's Physics Learning Center offers a comfortable and convenient in-person study location, in-person tutoring, and online tutoring.</p>
+                    <a href="https://www.odu.edu/math/help" class="links">ODU Mathematics & Statistics Tutoring</a>
+                    <p>The Math and Stat tutoring resources offered by ODU includes online zoom help sessions for a variety of courses as well as
+                        a directory of Math and Stat faculty members that includes their office hours information.
+                    </p>
+                    <a href="https://www.odu.edu/al/centers/writing-center" class="links">ODU Writing Resource Center</a>
+                    <p>The Writing Resource Center at ODU provides assistance to undergraduate and graduate students with their writing for any course through online
+                        and on-campus appointments.
+                    </p>
+                    <a href="https://www.odu.edu/mechanical-aerospace-engineering/instructional-laboratories/collaborative-learning-environment-lab" class="links">
+                        ODU Collaborative Learning Environment Lab</a>
+                    <p>Learn more about ODU's Hands-On-Learning lab includes tutoring for various courses in Mechanical Engineering on-campus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <div id="footer-common"></div>
+
+    <script>
+      fetch('../shared/footer.html')  <!-- Fetch footer -->
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-common').innerHTML = data;
+        });
+    </script>
+    <script defer src="resources.js"></script>
+</body>
+</html>
