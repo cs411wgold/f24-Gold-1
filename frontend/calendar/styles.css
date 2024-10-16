@@ -65,6 +65,35 @@ ul {
   cursor: pointer;
 }
 
+.day-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-task-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-task-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 2px 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-task-btn:hover {
+  background-color: #0056b3;
+}
+
 .month {
   position: relative;
   background: #5f9ce2;
