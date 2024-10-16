@@ -1,5 +1,5 @@
 # docker-compose.yml
-version: '3.8'
+version: '311'
 
 services:
   frontend:
@@ -25,9 +25,9 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: knowtimeDB
+      POSTGRES_USER: knowtimeAdmin
+      POSTGRES_PASSWORD: TestMe123
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
