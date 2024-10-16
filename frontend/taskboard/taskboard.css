@@ -5,7 +5,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;  
+    height: auto;  
 }
 
 html {
@@ -17,12 +17,197 @@ main {
 }
 
 h2 {
-    font-size: 36px;
-    margin-bottom: 30px;
-} 
+    text-align: center;
+}
 
 h3 {
     font-size: 24px;
     color: #333;
 } 
+
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+.sortable-lists {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-column {
+    width: 22%;
+    background-color: #e1f5fe;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+h3 {
+    text-align: center;
+    background-color: #007bb6;
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.sortable-list {
+    list-style: none;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    min-height: 100px;
+    border: 1px solid #dddddd;
+}
+
+.sortable-item {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: move;
+}
+
+.tag {
+    font-size: 0.8em;
+    color: #888;
+}
+
+
+#tags-list {
+    list-style: none;
+    padding: 0;
+}
+
+#tags-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensure buttons are aligned properly */
+    padding: auto;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tags-container {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    width: 200px;
+}
+
+.tags-container h3 {
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.tag-circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.tag-input {
+    width: 120px;
+    padding: 2px 5px;
+    margin-right: 5px;
+}
+
+.save-tag-btn {
+    padding: 2px 5px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.save-tag-btn:hover {
+    background-color: #218838;
+}
+
+.new-tag-item {
+    margin-top: 10px;
+}
+
+.tag-name {
+    flex: 1;
+    text-align: left;
+}
+/* Add Tags Button Styles */
+#add-tags-btn {
+    background-color: #6c757d; /* Gray background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for spacing */
+    cursor: pointer; /* Show pointer cursor */
+    font-size: 16px; /* Adjust font size */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    width: 100%; /* Make it full width if needed */
+    max-width: 200px; /* Set a maximum width */
+    margin-top: 15px; /* Space above the button */
+}
+
+/* Hover Effect */
+#add-tags-btn:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+/* Adjust button when inside a container */
+.tags-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center-align the button */
+}
+
+.delete-tag-btn {
+    background: none;
+    border: none;
+    color: #dc3545; /* Bootstrap's red color */
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.delete-tag-btn:hover {
+    text-decoration: underline;
+}
+
+.edit-tag-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.edit-tag-btn:hover {
+    text-decoration: underline;
+}
+
+#edit-tags-btn {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.studying { color: red; }
+.program-assign { color: pink; }
+.other-homework { color: purple; }
+.discussion-board { color: orange; }
+
+
 
