@@ -41,6 +41,11 @@ function setupDate(date) {
         taskDiv.classList.add('task');
         const savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
 
+        // Show the task div if tasks exist
+        if (savedTasks.length > 0) {
+            taskDiv.style.display = 'block'; // Change display to show tasks
+        }
+
 
         savedTasks.forEach((taskObj, index) => {
             const taskItem = document.createElement('div');
