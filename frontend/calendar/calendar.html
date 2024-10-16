@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calendar - KnowTime</title>
-<link rel="icon" type="image/x-icon" href="../resources/tomato.png">
-<link rel="stylesheet" href="/frontend/styles.css">
-<link rel="stylesheet" href="styles.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - KnowTime</title>
+    <link rel="icon" type="image/x-icon" href="../resources/tomato.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <!-- Header Section -->
     <div id="header-common"></div>
 
+    <!-- Calendar Section -->
+    <div class="container mt-4">
+        <h1 class="text-center">Task Calendar</h1>
+        <div id="calendar"></div>
+        <div id="taskInput" class="mt-4">
+            <h2>Tasks for <span id="selectedDate"></span></h2>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="task" placeholder="Enter task">
+                <input type="time" class="form-control" id="taskTime" placeholder="Time">
+                <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+            </div>
+            <ul id="tasksList" class="tasks"></ul>
+        </div>
+    </div>
+
+    <!-- Script to load the shared header -->
     <script>
       fetch('../shared/header.html')
         .then(response => response.text())
@@ -48,201 +63,7 @@
           console.error('Error loading header:', error);
         });
     </script>
-    
-<main>
-<div class="calendar-container">
-  <button class="addTask" onclick="addTask()">Add a task!</button>
-  <div class="month">
-    <!-- This is where the month is going to go (it gets added in the script section)  -->
-    <button class="prev-month" onclick="getPreviousMonth()">&lt;</button>
-    <h2>Placeholder</h2>
-    <button class="next-month" onclick="getNextMonth()">&gt;</button>
-  </div>
 
-  <ul class="weekdays">
-    <li>Monday</li>
-    <li>Tuesday</li>
-    <li>Wednesday</li>
-    <li>Thursday</li>
-    <li>Friday</li>
-    <li>Saturday</li>
-    <li>Sunday</li>
-  </ul>
-
-  <ul class="days">
-    <!-- These get added based on the number of days in the month in the script section -->
-  </ul>
-</div>
-</main>
-        <!-- Footer Section -->
-    <div id="footer-common"></div>
-
-    <script>
-      fetch('../shared/footer.html')  <!-- Fetch footer -->
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-common').innerHTML = data;
-        });
-    </script> 
-
+    <script src="app.js"></script>
 </body>
 </html>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-    setupDate();
-  });
-  function setupDate(date) {  
-    // Get our month header on the calendar
-    const monthHeading = document.querySelector('.month h2');
-    
-    // Get our days container
-    const daysContainer = document.querySelector('.days');
-    
-    const currentDate = date ?? new Date();
-    
-    // Find the current date and get the month as a number (Oct = 10)
-    const numeralMonth = currentDate.getMonth();
-    
-    // An array of months
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    
-    // Get the name of our numeral month
-    const monthName = months[numeralMonth]; 
-    
-    // Get the year number
-    const year = currentDate.getFullYear();
-    
-    // Set the header text to be that month plus the year
-    monthHeading.textContent = `${monthName} ${year}`;
-    
-    // Get the number of days in the month
-    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); 
-    
-    // Get the starting day of the week for the first of the month
-    const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
-    
-    // Adjust the starting day to align with Monday as day 1 (JavaScript uses Sunday as 0)
-    const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
-    
-    // Create empty days to align the first day of the month correctly with Monday
-    for (let i = 0; i < adjustedFirstDay; i++) {
-      const emptyLi = document.createElement('li');
-      emptyLi.style.visibility = 'hidden'; // Hide the empty slots
-      daysContainer.appendChild(emptyLi);
-    }
-    
-    // Loop through each day of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      // Add a calendar spot for the day
-      const dayLi = document.createElement('li');
-      dayLi.textContent = day;
-      daysContainer.appendChild(dayLi);
-    
-      // Add a task
-      const taskDiv = document.createElement('div');
-
-      taskDiv.classList.add('task');
-      taskDiv.textContent = `Task ${day}`;
-      dayLi.appendChild(taskDiv);
-    }
-  }
-
-    function addTask() {
-      let task = prompt("What task would you like to add?");
-      let day = prompt("Which day should it be added on?");
-      const monthHeading = document.querySelector(".month h2"); 
-      const month = monthHeading.textContent.split(" ")[0];
-      const year = monthHeading.textContent.split(" ")[1];
-
-      // An array of months
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-      const numeralMonth = months.indexOf(month);
-
-    // Get the number of days in the month
-    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate(); 
-    
-    // Get the starting day of the week for the first of the month
-    const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
-    
-    // Adjust the starting day to align with Monday as day 1 (JavaScript uses Sunday as 0)
-    const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;      
-
-      // Make sure it's a valid string
-      while(!task || task.length === 0) {
-        task = prompt("Invalid task! What task would you like to add?");
-      }
-
-      // Make sure it's a valid number
-      while (isNaN(day) || day < 1 || day > daysInMonth) {
-        day = prompt("Invalid day! What day would you like to use?")
-      }
-
-      // Get all of the days
-      const dayElements = document.querySelectorAll('.days li');
-
-      // Get the day the user gave
-      const dayLi = dayElements[adjustedFirstDay + parseInt(day) - 1];
-
-      // Add the task to the day
-      const taskDiv = document.createElement('div');
-
-      taskDiv.classList.add('task');
-      taskDiv.textContent = task;
-
-      dayLi.appendChild(taskDiv);
-    }
-
-    function getPreviousMonth() {
-      // Get our month header on the calendar
-      const monthHeading = document.querySelector('.month h2');
-      const parts = monthHeading.textContent.split(" ");
-
-      const oldMonth = parts[0];
-      let year = parts[1];
-
-      // An array of months
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      
-      let previousMonth = months[months.indexOf(oldMonth) - 1];
-
-      if (oldMonth === "January") {
-        previousMonth = 'December'
-        year = (parseInt(year) - 1).toString();
-      }
-
-      const calendarDate = new Date(year, months.indexOf(previousMonth));
-
-      const daysContainer = document.querySelector('.days');
-      daysContainer.innerHTML = ''
-
-      setupDate(calendarDate);
-    }
-
-    function getNextMonth() {
-      // Get our month header on the calendar
-      const monthHeading = document.querySelector('.month h2');
-      const parts = monthHeading.textContent.split(" ");
-
-      const oldMonth = parts[0];
-      let year = parts[1];
-
-      // An array of months
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      
-      let nextMonth = months[months.indexOf(oldMonth) + 1];
-
-      if (oldMonth === "December") {
-        nextMonth = 'January';
-        year = (parseInt(year) + 1).toString();
-      }
-
-      const calendarDate = new Date(year, months.indexOf(nextMonth));
-
-      const daysContainer = document.querySelector('.days');
-      daysContainer.innerHTML = '';
-
-      setupDate(calendarDate);
-    }
-    </script>

@@ -1,95 +1,66 @@
-main {
-  flex: 1;
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
 }
 
-.calendar-container {
-  width: 70%; /*Only take up 70% of the page*/
-  margin: 0 auto; /* Helps the entire calendar to be centered */
-  text-align: center; /* Align the text to be centered */
-  background-color: rgb(252,252,252);
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-ul {
-  list-style-type: none; /* Remove bullets from list */
-  padding: 0; /* Remove default padding */
+/* Calendar Styling */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.weekdays {
-  display: flex; /* Set the days to be in a row */
-  padding: 0; /* Remove extra padding */
-  background-color: #d3d1d1;
-  margin-bottom: 0;
+.day-header {
+  font-weight: bold;
+  text-align: center;
 }
 
-.weekdays li {
-  width: 14.28%; /* 100% / 7 days */
-  font-weight: bold; /* Make them appear bold */
-  color: #000; /* Text-color*/
-  padding: 15px 0;  /* Size of color behind */
+.empty {
+  background-color: #f0f0f0;
 }
 
-.days {
-  display: flex; /* Puts them in the rows instead of stacked on top of each other */
-  flex-wrap: wrap; /* Wrap at the end of the width (so it is not all one row) */
-  padding-left: 0; /* reboot.scss from bootstrap adding some padding; reset that so calendar is aligned */
-}
-
-.days li {
-  width: 14.28%; /* 100% / 7 days */
-  border: 1.5px solid #ddd; /* Width of the lines between each day */
-  padding: 15px 0; /* Size of each day box */
-  box-sizing: border-box; /* Makes sure the padding and stuff does not mess with the width (so days will be spaced correctly) */
-  padding-left: 0; /* reboot.scss from bootstrap adding some padding; reset that so calendar is aligned */
-}
-
-.task {
-  background-color: #e0f7fa; /* Task background color */
-  padding: 10px; /* Task Size */
-  margin-bottom: 10px; /* Add some padding to the bottom */
-  word-wrap: break-word; /* Wrap long tasks */
-}
-
-.addTask {
-  position: absolute; /* Keep button in correct spot */
-  left: 70px; /* Move button away from left edge */
-  top: 50%; /* Button should be in the middle of the page */
-  padding: 10px 20px; /* Button Size */
-  background-color: #007bff; /* Button Color */
-  color: white; /* Text Color */
-  border: none; /* No border around button */
-  border-radius: 5px; /* Rounded Edges */
-  cursor: pointer; /* Cursor on hover */
-}
-
-.month {
-  position: relative; /* Allows buttons to be placed correctly */
-  background: #5f9ce2;  /* Background color of the month */
-  color: white; /* Text color for the month title */
-  display: flex; /* Allows for month text to be centered vertically */
-  justify-content: center; /* Center the month title */
-  align-items: center; /* Vertically center */
-  height: 60px; /* Set height of month header */
-}
-
-.prev-month, .next-month {
-  background-color: transparent;
-  border: none;
-  font-size: 24px;
+.day {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
   cursor: pointer;
-  position: absolute;
+  transition: background-color 0.3s;
+}
+
+.day:hover {
+  background-color: #f0f0f0;
+}
+
+.day.active {
+  background-color: #007bff;
   color: white;
-  top: 50%; /* Vertically center the buttons */
-  transform: translateY(-50%); /* Vertically center the buttons */
 }
 
-.prev-month {
-  left: 10px; /* Position left arrow */
+/* Task Input Section */
+#taskInput {
+  display: none;
 }
 
-.next-month {
-  right: 10px; /* Position right arrow */
+.tasks {
+  margin-top: 10px;
 }
 
-.prev-month:hover, .next-month:hover {
-  color: #dddddd; /* Change color on hover */
+.tasks li {
+  list-style: none;
+  margin-bottom: 5px;
+  background-color: #007bff;
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
 }
