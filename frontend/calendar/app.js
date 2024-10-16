@@ -79,14 +79,19 @@ function addTask() {
     loadTasksForDay(currentDay);
 }
 
-// Function to load tasks for the selected day, sorted by time
+// Function to load tasks for the selected day, sorted by time (earliest first)
 function loadTasksForDay(day) {
     tasksList.innerHTML = '';
     let tasks = JSON.parse(localStorage.getItem(day)) || [];
 
-    // Sort tasks by time in descending order (latest first)
-    tasks.sort((a, b) => b.time.localeCompare(a.time));
+    // Convert time to a number (e.g., "18:30" -> 1830) and sort in ascending order (earliest first)
+    tasks.sort((a, b) => {
+        const timeA = parseInt(a.time.replace(':', ''), 10); // Convert "18:30" to 1830
+        const timeB = parseInt(b.time.replace(':', ''), 10); // Convert "09:45" to 945
+        return timeA - timeB; // Sort in ascending order
+    });
 
+    // Display the tasks
     tasks.forEach(taskObj => {
         const taskItem = document.createElement('li');
         taskItem.innerText = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
