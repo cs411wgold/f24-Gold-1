@@ -155,7 +155,7 @@
    
    function customTimer() {
            studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
-           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 1 || studyTimeInMinutes > 90) {
+           while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 20 || studyTimeInMinutes > 90) {
             studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
            }
    
