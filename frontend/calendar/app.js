@@ -1,10 +1,85 @@
-const calendar = document.getElementById('calendar');
-const selectedDate = document.getElementById('selectedDate');
-const taskInput = document.getElementById('taskInput');
-const tasksList = document.getElementById('tasksList');
-let currentDay = '';
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", function() {
+    setupDate();
+    document.getElementById('saveTaskBtn').addEventListener('click', saveTask);
+});
+
+let currentDay = ''; // Used to track the selected day for adding tasks
+
+// Function to set up the calendar for a specific date
+function setupDate(date) {
+    const monthHeading = document.querySelector('.month h2');
+    const daysContainer = document.querySelector('.days');
+    const currentDate = date ?? new Date();
+    const numeralMonth = currentDate.getMonth();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = months[numeralMonth];
+    const year = currentDate.getFullYear();
+
+    monthHeading.textContent = `${monthName} ${year}`;
+    const daysInMonth = new Date(year, numeralMonth + 1, 0).getDate();
+    const firstDayOfMonth = new Date(year, numeralMonth, 1).getDay();
+    const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
+
+    daysContainer.innerHTML = ''; // Clear previous days
+
+    // Add empty slots for the first week (to align the starting day)
+    for (let i = 0; i < adjustedFirstDay; i++) {
+        const emptyLi = document.createElement('li');
+        emptyLi.style.visibility = 'hidden';
+        daysContainer.appendChild(emptyLi);
+    }
+
+    // Render the actual days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayLi = document.createElement('li');
+        dayLi.textContent = day;
+        dayLi.addEventListener('click', () => openTaskModal(day, numeralMonth, year));
+        daysContainer.appendChild(dayLi);
+
+        // Check if there are saved tasks for this day
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add('task');
+        const savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
+        savedTasks.forEach(taskObj => {
+            const taskItem = document.createElement('div');
+            taskItem.classList.add('task-item');
+            taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
+            taskDiv.appendChild(taskItem);
+        });
+        dayLi.appendChild(taskDiv);
+    }
+}
+
+// Function to open the modal when clicking on a date
+function openTaskModal(day, month, year) {
+    currentDay = `${year}-${month}-${day}`;
+    document.getElementById('selectedDate').value = currentDay; // Store the selected date
+    document.getElementById('taskForm').reset(); // Clear previous task form
+    const taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
+    taskModal.show();
+}
+
+// Function to save the task
+function saveTask() {
+    const task = document.getElementById('taskInput').value;
+    const time = document.getElementById('taskTime').value;
+    const selectedDate = document.getElementById('selectedDate').value;
+
+    if (!task || !time) {
+        alert("Both task and time are required.");
+        return;
+    }
+
+    // Save task to local storage
+    const tasks = JSON.parse(localStorage.getItem(selectedDate)) || [];
+    tasks.push({ task, time });
+    localStorage.setItem(selectedDate, JSON.stringify(tasks));
+
+    // Close modal and refresh the calendar
+    const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
+    taskModal.hide();
+    setupDate(); // Refresh the calendar to show the added task
+}
 
 // Function to convert 24-hour time to 12-hour format
 function convertTo12Hour(time) {
@@ -15,90 +90,40 @@ function convertTo12Hour(time) {
     return `${hours}:${minutes} ${ampm}`;
 }
 
-// Function to create the calendar with days of the month
-function createCalendar(month, year) {
-    calendar.innerHTML = ''; // Clear the calendar
+// Function to get the previous month
+function getPreviousMonth() {
+    const monthHeading = document.querySelector('.month h2');
+    const parts = monthHeading.textContent.split(" ");
+    const oldMonth = parts[0];
+    let year = parts[1];
 
-    const firstDay = new Date(year, month).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let previousMonth = months[months.indexOf(oldMonth) - 1];
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    daysOfWeek.forEach(day => {
-        const header = document.createElement('div');
-        header.className = 'day-header';
-        header.innerText = day;
-        calendar.appendChild(header);
-    });
-
-    for (let i = 0; i < firstDay; i++) {
-        const emptyDiv = document.createElement('div');
-        emptyDiv.className = 'empty';
-        calendar.appendChild(emptyDiv);
+    if (oldMonth === "January") {
+        previousMonth = 'December';
+        year = (parseInt(year) - 1).toString();
     }
 
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'day';
-        dayDiv.innerText = day;
-        dayDiv.addEventListener('click', () => selectDay(day, month, year));
-        calendar.appendChild(dayDiv);
-    }
+    const calendarDate = new Date(year, months.indexOf(previousMonth));
+    setupDate(calendarDate);
 }
 
-// Function to select a day and load tasks for that day
-function selectDay(day, month, year) {
-    const selected = new Date(year, month, day);
-    currentDay = `${year}-${month + 1}-${day}`;
-    selectedDate.innerText = selected.toDateString(); // Display the full date
-    taskInput.style.display = 'block';
-    loadTasksForDay(currentDay);
+// Function to get the next month
+function getNextMonth() {
+    const monthHeading = document.querySelector('.month h2');
+    const parts = monthHeading.textContent.split(" ");
+    const oldMonth = parts[0];
+    let year = parts[1];
 
-    document.querySelectorAll('.day').forEach(dayDiv => {
-        dayDiv.classList.remove('active');
-    });
-    event.target.classList.add('active');
-}
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let nextMonth = months[months.indexOf(oldMonth) + 1];
 
-// Function to add a new task
-function addTask() {
-    const task = document.getElementById('task').value;
-    const time = document.getElementById('taskTime').value;
-
-    if (!task || !time) {
-        alert('Please enter both task and time');
-        return;
+    if (oldMonth === "December") {
+        nextMonth = 'January';
+        year = (parseInt(year) + 1).toString();
     }
 
-    // Save task to local storage
-    const tasks = JSON.parse(localStorage.getItem(currentDay)) || [];
-    tasks.push({ task, time });
-    localStorage.setItem(currentDay, JSON.stringify(tasks));
-
-    document.getElementById('task').value = '';
-    document.getElementById('taskTime').value = '';
-    loadTasksForDay(currentDay);
+    const calendarDate = new Date(year, months.indexOf(nextMonth));
+    setupDate(calendarDate);
 }
-
-// Function to load tasks for the selected day, sorted by time (earliest first)
-function loadTasksForDay(day) {
-    tasksList.innerHTML = '';
-    let tasks = JSON.parse(localStorage.getItem(day)) || [];
-
-    // Convert time to a number (e.g., "18:30" -> 1830) and sort in ascending order (earliest first)
-    tasks.sort((a, b) => {
-        const timeA = parseInt(a.time.replace(':', ''), 10); // Convert "18:30" to 1830
-        const timeB = parseInt(b.time.replace(':', ''), 10); // Convert "09:45" to 945
-        return timeA - timeB; // Sort in ascending order
-    });
-
-    // Display the tasks
-    tasks.forEach(taskObj => {
-        const taskItem = document.createElement('li');
-        taskItem.innerText = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
-        tasksList.appendChild(taskItem);
-    });
-}
-
-window.onload = () => {
-    createCalendar(currentMonth, currentYear);
-};

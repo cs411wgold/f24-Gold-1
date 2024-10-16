@@ -1,66 +1,98 @@
-/* General Styling */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  margin: 0;
+main {
+  flex: 1;
+}
+
+.calendar-container {
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: rgb(252,252,252);
+}
+
+ul {
+  list-style-type: none;
   padding: 0;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.weekdays {
+  display: flex;
+  padding: 0;
+  background-color: #d3d1d1;
+  margin-bottom: 0;
 }
 
-/* Calendar Styling */
-#calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.day-header {
+.weekdays li {
+  width: 14.28%;
   font-weight: bold;
-  text-align: center;
+  color: #000;
+  padding: 15px 0;
 }
 
-.empty {
-  background-color: #f0f0f0;
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
 }
 
-.day {
-  border: 1px solid #ccc;
+.days li {
+  width: 14.28%;
+  border: 1.5px solid #ddd;
+  padding: 15px 0;
+  box-sizing: border-box;
+}
+
+.task {
+  background-color: #e0f7fa;
+  padding: 10px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.task-item {
+  margin-top: 5px;
+}
+
+.addTask {
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
   border-radius: 5px;
-  padding: 15px;
-  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.day:hover {
-  background-color: #f0f0f0;
-}
-
-.day.active {
-  background-color: #007bff;
+.month {
+  position: relative;
+  background: #5f9ce2;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
 }
 
-/* Task Input Section */
-#taskInput {
-  display: none;
-}
-
-.tasks {
-  margin-top: 10px;
-}
-
-.tasks li {
-  list-style: none;
-  margin-bottom: 5px;
-  background-color: #007bff;
-  padding: 8px;
-  border-radius: 4px;
+.prev-month, .next-month {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
   color: white;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev-month {
+  left: 10px;
+}
+
+.next-month {
+  right: 10px;
+}
+
+.prev-month:hover, .next-month:hover {
+  color: #dddddd;
 }
