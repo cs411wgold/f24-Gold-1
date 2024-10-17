@@ -51,14 +51,19 @@
 
     <!-- Main Section -->
     <main class="container bg-light text-center mt-5">
+      <div class="profile-container">
+        <!--Placeholder-->
+        <img src="../img/avatars/timer_beginner.png" alt="timer beginner avatar" class="images">
         <h2 id = "username"></h2>
+      </div>
         <!--Display Username-->
         <script>
-          var username = localStorage.getItem('username') || 'DefaultUsername';
+          var username = localStorage.getItem('username') || 'User001';
           document.getElementById('username').innerText = username;
         </script>
+        <!--Placeholder-->
         <p>You’ve spent a total of 349 hours studying on KnowTime!
-          Your average grade has gone up!</p> <!--Placeholder until data exists-->
+          Your average grade has gone up!</p> 
         <section class="mt-4">
             <h3>Temporary Link to Achievements</h3>
             <a href="achievements.html"><button style="font-size:medium">Achievements</button></a>
