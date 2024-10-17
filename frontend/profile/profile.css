@@ -23,18 +23,54 @@ main {
     margin-top: 20px;
 }
 .profile-container img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 .profile-container h2 {
     font-size: 36px;
     font-weight: bold;
     margin: 0;  
 }
-h3 {
-    font-size: 24px;
-    color: #333;
-} 
+.Button-container{
+    display: flex;
+    gap: 20px;
+}
+.Achievments-container {
+    display: flex;
+    align-items: center;
+}
+.Achievments-container img {
+    width: 60px; 
+    height: 60px;
+    margin-right: 15px; 
+}
+.Achievments-container button {
+    padding: 10px 20px; 
+}
+.FriendsList-container {
+    display: flex;
+    align-items: center;
+}
+.FriendsList-container img {
+    width: 60px; 
+    height: 60px;
+    margin-right: 15px; 
+}
+.FriendsList-container button {
+    padding: 10px 20px; 
+}
+.Settings-container {
+    display: flex;
+    align-items: center;
+}
+.Settings-container img {
+    width: 60px; 
+    height: 60px;
+    margin-right: 15px; 
+}
+.Settings-container button {
+    padding: 10px 20px;
+}
 
