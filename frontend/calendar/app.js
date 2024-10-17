@@ -32,26 +32,21 @@ function setupDate(date) {
     // Render the actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
         const dayLi = document.createElement('li');
+        dayLi.classList.add('date-box'); // Add a class for the date box
 
-        // Create a div to hold the date number and task button
+        // Add event listener to open the task modal when the date box is clicked
+        dayLi.addEventListener('click', function () {
+            openTaskModal(day, numeralMonth, year);
+        });
+
+        // Create a div to hold the date number
         const dayContentDiv = document.createElement('div');
         dayContentDiv.classList.add('day-content');
 
         // Add the date number
         const daySpan = document.createElement('span');
         daySpan.textContent = day; // Display the date number
-        dayContentDiv.appendChild(daySpan);
-
-        // Add "Add Task" button
-        const addTaskButton = document.createElement('button');
-        addTaskButton.textContent = 'Add Task';
-        addTaskButton.classList.add('add-task-btn');
-        addTaskButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent the day click event from triggering
-            openTaskModal(day, numeralMonth, year); // Open the modal when "Add Task" is clicked
-        });
-
-        dayContentDiv.appendChild(addTaskButton); // Append the button after the date
+        dayContentDiv.appendChild(daySpan); // Append the date number to the content div
         dayLi.appendChild(dayContentDiv); // Append the day content div to the dayLi element
 
         // Check if there are saved tasks for this day
@@ -81,13 +76,16 @@ function setupDate(date) {
             const deleteButton = document.createElement('button');
             deleteButton.textContent = "Delete";
             deleteButton.classList.add('delete-task-btn');
-            deleteButton.addEventListener('click', () => deleteTask(year, numeralMonth, day, index));
+            deleteButton.addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent the click from opening the modal when deleting a task
+                deleteTask(year, numeralMonth, day, index);
+            });
 
             taskItem.appendChild(deleteButton); // Add delete button to the task item
             taskDiv.appendChild(taskItem);
         });
 
-        dayLi.appendChild(taskDiv); // Append the taskDiv to the day element, after the date
+        dayLi.appendChild(taskDiv); // Append the taskDiv to the day element
         daysContainer.appendChild(dayLi); // Append the day li to the calendar
     }
 }
