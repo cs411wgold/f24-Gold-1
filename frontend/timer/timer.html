@@ -90,10 +90,15 @@
    let longBreak = "20";
    let sessionCount = 0;
    let originalLongBreak = "20";
+   let alarmInterval = null;
+   const alarm = new Audio("./alarm.wav");
 
    function switchTimer() {
     const timerButton = document.getElementById("next");
     timerButton.remove();
+
+    clearInterval(alarmInterval); 
+    alarmInterval = null;
 
     if(currentMode === "break") {
          startStudy();
@@ -101,6 +106,10 @@
           startBreak();
          }
    }
+
+   function playAlarm() {
+    alarm.play();
+}
    
    function startTimer() {
      if(isRunning) {
@@ -136,9 +145,9 @@
        if (timeRemaining === 0) {
          clearInterval(timer);
          isRunning = false;
-         const alarm = new Audio("./alarm.wav");
          // Professor Kennedy said to have an alert element and then a button to switch timers.
-         alarm.play();
+         playAlarm();
+         alarmInterval = setInterval(playAlarm, 30000);
          const button = document.createElement("button");
           button.id = "next";
           button.className = "button";
