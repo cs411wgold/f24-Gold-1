@@ -53,6 +53,7 @@ body {
     font-size:20px;
 }
 
-.nav{
+.side-nav{
     font-size:20px;
+    position: fixed;
 }
