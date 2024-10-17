@@ -32,21 +32,63 @@ function setupDate(date) {
     // Render the actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
         const dayLi = document.createElement('li');
-        dayLi.textContent = day;
-        dayLi.addEventListener('click', () => openTaskModal(day, numeralMonth, year));
-        daysContainer.appendChild(dayLi);
+
+        // Create a div to hold the date number and task button
+        const dayContentDiv = document.createElement('div');
+        dayContentDiv.classList.add('day-content');
+
+        // Add the date number
+        const daySpan = document.createElement('span');
+        daySpan.textContent = day; // Display the date number
+        dayContentDiv.appendChild(daySpan);
+
+        // Add "Add Task" button
+        const addTaskButton = document.createElement('button');
+        addTaskButton.textContent = 'Add Task';
+        addTaskButton.classList.add('add-task-btn');
+        addTaskButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the day click event from triggering
+            openTaskModal(day, numeralMonth, year); // Open the modal when "Add Task" is clicked
+        });
+
+        dayContentDiv.appendChild(addTaskButton); // Append the button after the date
+        dayLi.appendChild(dayContentDiv); // Append the day content div to the dayLi element
 
         // Check if there are saved tasks for this day
+        let savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
+
+        // Sort the tasks before displaying them
+        savedTasks = sortTasksByTime(savedTasks);
+
+        // Show the task div if tasks exist
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('task');
-        const savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
-        savedTasks.forEach(taskObj => {
+        if (savedTasks.length > 0) {
+            taskDiv.style.display = 'block'; // Show the task div if tasks exist
+        } else {
+            taskDiv.style.display = 'none'; // Hide the task div if no tasks exist
+        }
+
+        taskDiv.innerHTML = ''; // Clear any previous tasks
+
+        // Render each task in sorted order
+        savedTasks.forEach((taskObj, index) => {
             const taskItem = document.createElement('div');
             taskItem.classList.add('task-item');
             taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
+
+            // Add delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = "Delete";
+            deleteButton.classList.add('delete-task-btn');
+            deleteButton.addEventListener('click', () => deleteTask(year, numeralMonth, day, index));
+
+            taskItem.appendChild(deleteButton); // Add delete button to the task item
             taskDiv.appendChild(taskItem);
         });
-        dayLi.appendChild(taskDiv);
+
+        dayLi.appendChild(taskDiv); // Append the taskDiv to the day element, after the date
+        daysContainer.appendChild(dayLi); // Append the day li to the calendar
     }
 }
 
@@ -70,15 +112,44 @@ function saveTask() {
         return;
     }
 
-    // Save task to local storage
+    // Retrieve existing tasks from localStorage
     const tasks = JSON.parse(localStorage.getItem(selectedDate)) || [];
+
+    // Add the new task to the array
     tasks.push({ task, time });
-    localStorage.setItem(selectedDate, JSON.stringify(tasks));
+
+    // Sort the tasks by time
+    const sortedTasks = sortTasksByTime(tasks);
+
+    // Save the sorted tasks back to local storage
+    localStorage.setItem(selectedDate, JSON.stringify(sortedTasks));
 
     // Close modal and refresh the calendar
     const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
     taskModal.hide();
     setupDate(); // Refresh the calendar to show the added task
+}
+
+// Function to delete a task
+function deleteTask(year, month, day, taskIndex) {
+    const dateKey = `${year}-${month}-${day}`;
+    const tasks = JSON.parse(localStorage.getItem(dateKey)) || [];
+    tasks.splice(taskIndex, 1); // Remove the task at the given index
+
+    // Update local storage
+    localStorage.setItem(dateKey, JSON.stringify(tasks));
+
+    // Refresh the calendar
+    setupDate();
+}
+
+// Function to sort tasks by time in ascending order
+function sortTasksByTime(tasks) {
+    return tasks.sort((a, b) => {
+        const timeA = convertTo24Hour(a.time);
+        const timeB = convertTo24Hour(b.time);
+        return timeA.localeCompare(timeB); // Compare the 24-hour formatted times
+    });
 }
 
 // Function to convert 24-hour time to 12-hour format
@@ -88,6 +159,19 @@ function convertTo12Hour(time) {
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12; // Convert 0 to 12 for midnight
     return `${hours}:${minutes} ${ampm}`;
+}
+
+// Helper function to convert 12-hour time to 24-hour format
+function convertTo24Hour(time12h) {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (hours === '12') {
+        hours = '00'; // Midnight case
+    }
+    if (modifier === 'PM' && hours !== '12') {
+        hours = parseInt(hours, 10) + 12; // Convert PM to 24-hour format
+    }
+    return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
 // Function to get the previous month
