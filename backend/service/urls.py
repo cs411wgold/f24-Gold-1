@@ -5,4 +5,6 @@ urlpatterns = [
     path('hello/', hello_world, name='hello page'),
         path('', homepage, name='landing page yuhhh'),
 
+        
+
 ]
