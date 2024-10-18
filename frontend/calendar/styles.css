@@ -39,6 +39,7 @@ ul {
   border: 1.5px solid #ddd;
   padding: 50px 0;
   box-sizing: border-box;
+
 }
 
 .task {
@@ -67,8 +68,17 @@ ul {
 
 .day-content {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+}
+
+.day-content span {
+  position: absolute;
+  top: -40px;
+  left: 5px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .add-task-btn {
@@ -125,4 +135,11 @@ ul {
 
 .prev-month:hover, .next-month:hover {
   color: #dddddd;
+}
+
+#header-common {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
