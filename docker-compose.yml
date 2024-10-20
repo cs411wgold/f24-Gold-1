@@ -1,6 +1,4 @@
 # docker-compose.yml
-version: '311'
-
 services:
   frontend:
     build:
@@ -21,21 +19,34 @@ services:
       - app-network
     depends_on:
       - db
+    environment:
+      POSTGRES_DB: knowtimeDB
+      POSTGRES_USER: kt_admin
+      POSTGRES_PASSWORD: TestMe123
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./backend/db/login_data.sql:/app/db/login_data.sql
+    command: >
+      sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: postgres:13
+    container_name: kt-db
     environment:
-      POSTGRES_DB: knowtimeDB
-      POSTGRES_USER: knowtimeAdmin
+      POSTGRES_DB: knowtime
+      POSTGRES_USER: kt_admin
       POSTGRES_PASSWORD: TestMe123
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./backend/db/config.sql:/docker-entrypoint-initdb.d/config.sql
+          
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres_data:

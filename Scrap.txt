@@ -1,0 +1,13 @@
+
+
+curl -X POST http://localhost:8000/login/ \
+-H "Content-Type: application/json" \
+-d '{"email": "jimbo@odu.edu", "password": "password123"}'
+
+
+curl -X POST http://localhost:8000/login/ \
+-H "Content-Type: application/json" \
+-d '{"username": "jimbo", "password": "password123"}'
+
+
+pbkdf2_sha256$870000$d3LLWS2XuuHP62mWN0iIvJ$jPgiGrqd9i4Ak0EH4wDvRCULlWK4FoTotFcw78NgDnk=
