@@ -1,8 +1,8 @@
-*{
+/*{
     margin: 0;
     padding: 0;
     box-sizing: borderbox;
-}
+}*/
 
 /*body{
     display: flex;
@@ -11,6 +11,7 @@
     min-height: 100vh;
 }*/
 
+/*
 .login-box{
     display:flex;
     justify-content: center;
@@ -89,9 +90,8 @@ section a{
     left:50%;
     color:white;
     /*-webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);*/
+    -ms-transform: translate(-50%,-50%);
     transform: translate(-50%, -50%);
-    
     cursor: pointer;
     
 }

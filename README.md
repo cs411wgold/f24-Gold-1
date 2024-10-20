@@ -21,3 +21,13 @@ Team Gold - Fall 2024
 
 [GCP - Frontend home.html](https://dev-dot-cs411w.ue.r.appspot.com/frontend/home/home.html)
 
+# Backend
+
+Docker Compose: docker-compose up --build
+Docker Remove: docker-compose down 
+Admin: http://localhost:8000/admin/
+username: knowtimeAdmin
+email: admin@odu.edu
+password: TestMe123
+
+

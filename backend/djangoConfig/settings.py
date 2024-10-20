@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:80",
+#     "http://localhost:80",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True 
 
 ROOT_URLCONF = 'djangoConfig.urls'
 
@@ -81,8 +91,14 @@ WSGI_APPLICATION = 'djangoConfig.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'knowtime', 
+        'USER': 'kt_admin',  
+        'PASSWORD': 'TestMe123',  
+        'HOST': 'kt-db',  
+        # uncomment below, and comment above, if running DB in container and Django locally
+        # 'HOST': 'localhost',  
+        'PORT': '5432',  
     }
 }
 
