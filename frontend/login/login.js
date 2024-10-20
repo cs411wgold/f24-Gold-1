@@ -1,70 +1,58 @@
-document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
-
-    // Get the input values
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    // Retrieve the saved email and password from localStorage (simulating stored user data)
-    const storedEmail = localStorage.getItem('email');
-    const storedPassword = localStorage.getItem('password');
-
-    // Check if the entered email and password match the stored values
-    if (email === storedEmail && password === storedPassword) {
-        // If login is successful, display a message and redirect to home page
-        document.getElementById('loginMessage').textContent = "Login successful! Redirecting...";
-        
-        // Redirect to home.html after a short delay (1 second)
-        setTimeout(function () {
-            window.location.href = "../home.html"; // Adjust path if needed
-        }, 1000);
-    } else {
-        // If login fails, display an error message
-        document.getElementById('loginMessage').textContent = "Invalid email or password. Please try again.";
-    }
-});
-
-// login.js
-
 document.addEventListener("DOMContentLoaded", function () {
-const loginForm = document.getElementById("loginForm");
-const loginMessage = document.getElementById("loginMessage");
+    const testSubmit = document.getElementById("testSubmit");
 
-loginForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent form submission
+    if (testSubmit) {  // Corrected variable name
+        testSubmit.addEventListener("click", function (event) {  // Attach to test submit button
+            event.preventDefault();  // Prevent any default action
+            console.log("Test submit button clicked!");  // Check if this logs
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+            // Get the values from the input fields
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-    // Simple validation
-    if (email === "" || password === "") {
-        displayMessage("Please fill in all fields.", "error");
+            // Check if fields are populated
+            if (username === "" || password === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Make an AJAX request to the login endpoint
+            fetch("/login/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Login successful! Redirecting...");
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
+                } else {
+                    alert(data.message);  // Alert error message
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again later.");
+            });
+        });
     } else {
-        // Simulate login process (You can replace this with actual authentication logic)
-        fakeLogin(email, password);
+        console.error("Test submit button not found!");
+    }
+
+    function displayMessage(message, type) {
+        const loginMessage = document.getElementById("loginMessage");
+        if (loginMessage) {
+            loginMessage.textContent = message;
+            loginMessage.style.color = (type === "success") ? "green" : "red";
+        }
     }
 });
 
-function fakeLogin(email, password) {
-    // Simulating a simple login validation (replace this with real authentication)
-    if (email === "user@example.com" && password === "password123") {
-        displayMessage("Login successful! Redirecting...", "success");
-
-        // Simulate a redirection after successful login (2 seconds delay)
-        setTimeout(function () {
-            window.location.href = "dashboard.html"; // Redirect to a dashboard or homepage
-        }, 2000);
-    } else {
-        displayMessage("Invalid email or password.", "error");
-    }
-}
-
-function displayMessage(message, type) {
-    loginMessage.textContent = message;
-    if (type === "success") {
-        loginMessage.style.color = "green";
-    } else if (type === "error") {
-        loginMessage.style.color = "red";
-    }
-}
-});
