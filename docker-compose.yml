@@ -25,6 +25,10 @@ services:
       POSTGRES_PASSWORD: TestMe123
       POSTGRES_HOST: my-postgres-container
       POSTGRES_PORT: 5432
+    command: >
+      sh -c "while ! nc -z db 5432; do sleep 1; done;
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: postgres:13

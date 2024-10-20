@@ -22,5 +22,5 @@ gradle-app.setting
 
 /backend/venv
 /backend/djangoConfig/__pycache__
-/backend/service/__pycache__
+/backend/login/__pycache__
 
