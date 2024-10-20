@@ -82,11 +82,13 @@ WSGI_APPLICATION = 'djangoConfig.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'my-postgres-container'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': 'knowtime', 
+        'USER': 'kt_admin',  
+        'PASSWORD': 'TestMe123',  
+        'HOST': 'kt-db',  
+        # uncomment below, and comment above, if running DB in container and Django locally
+        # 'HOST': 'localhost',  
+        'PORT': '5432',  
     }
 }
 
