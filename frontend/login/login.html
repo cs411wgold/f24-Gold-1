@@ -11,32 +11,6 @@
     <script defer src="login.js"></script> <!-- This will handle the login action -->
 </head>
 <body>
-   <!-- <header>
-        <div class="logo">
-            <h1>KnowTime</h1>
-            <img src="tomato.png" alt="tomato logo">
-        </div>
-
-    </header>
-
-    <main class="login-main">
-        <section class="login-form">
-            <h2>Login to KnowTime</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-            <p>Don't have an account? <a href="../signup/signup.html">Sign up here</a></p>
-        </section>
-        <p id="loginMessage"></p>  To display messages like success or error
-    </main>-->
     <header>
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
             <div class="container-fluid">
@@ -53,10 +27,10 @@
                 <header>Login</header>
             </div>
             <div class="input-box">
-                <input type="text" class="input-field" placeholder = "Username">
+                <input type="text" class="input-field" id="username"placeholder = "Username">
             </div>
             <div class="input-box">
-                <input type="password" class="input-field" placeholder = "Password">
+                <input type="password" class="input-field" id="password" placeholder = "Password">
             </div>
             <div class="forgot">
                 <section>
@@ -70,8 +44,12 @@
             <div class="sign-up">
                 <p>Don't have account? <a href="../signup/signup.html">Sign Up</a></p>
             </div>
+            <div class="input-test">
+                <button class="submit-test-btn" id="testSubmit">Submit (Test)</button>
+            </div>
        </div>
     </div>
 
 </body>
 </html>
+
