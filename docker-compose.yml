@@ -23,10 +23,12 @@ services:
       POSTGRES_DB: knowtimeDB
       POSTGRES_USER: kt_admin
       POSTGRES_PASSWORD: TestMe123
-      POSTGRES_HOST: my-postgres-container
+      POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+    volumes:
+      - ./backend/db/login_data.sql:/app/db/login_data.sql
     command: >
-      sh -c "while ! nc -z db 5432; do sleep 1; done;
+      sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
 

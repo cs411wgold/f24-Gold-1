@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Make an AJAX request to the login endpoint
-            fetch("/login/", {
+            fetch("http://127.0.0.1:8000/login/", { 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -32,10 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.status === "success") {
                     alert("Login successful! Redirecting...");
                     setTimeout(() => {
-                        window.location.href = "dashboard.html";
+                        window.location.href = "../studyplan/studyplan.html";
                     }, 1000);
                 } else {
-                    alert(data.message);  // Alert error message
+                    alert(data.message);  
                 }
             })
             .catch(error => {
