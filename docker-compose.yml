@@ -1,6 +1,4 @@
 # docker-compose.yml
-version: '311'
-
 services:
   frontend:
     build:
@@ -23,26 +21,26 @@ services:
       - db
     environment:
       POSTGRES_DB: knowtimeDB
-      POSTGRES_USER: knowtimeAdmin
+      POSTGRES_USER: kt_admin
       POSTGRES_PASSWORD: TestMe123
       POSTGRES_HOST: my-postgres-container
       POSTGRES_PORT: 5432
 
   db:
     image: postgres:13
-    container_name: my-postgres-container
+    container_name: kt-db
     environment:
-      POSTGRES_DB: knowtimeDB
-      POSTGRES_USER: knowtimeAdmin
+      POSTGRES_DB: knowtime
+      POSTGRES_USER: kt_admin
       POSTGRES_PASSWORD: TestMe123
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./backend/db/config.sql:/docker-entrypoint-initdb.d/config.sql
+          
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres_data:
