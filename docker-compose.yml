@@ -21,9 +21,16 @@ services:
       - app-network
     depends_on:
       - db
+    environment:
+      POSTGRES_DB: knowtimeDB
+      POSTGRES_USER: knowtimeAdmin
+      POSTGRES_PASSWORD: TestMe123
+      POSTGRES_HOST: my-postgres-container
+      POSTGRES_PORT: 5432
 
   db:
     image: postgres:13
+    container_name: my-postgres-container
     environment:
       POSTGRES_DB: knowtimeDB
       POSTGRES_USER: knowtimeAdmin
