@@ -7,11 +7,13 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Test submit button clicked!");  // Check if this logs
 
             // Get the values from the input fields
-            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            
             const password = document.getElementById("password").value;
+            
 
             // Check if fields are populated
-            if (username === "" || password === "") {
+            if (email === "" || password === "") {
                 alert("Please fill in all fields.");
                 return;
             }
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username: username,
+                    username: email,
                     password: password
                 })
             })
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.status === "success") {
                     alert("Login successful! Redirecting...");
                     setTimeout(() => {
-                        window.location.href = "../studyplan/studyplan.html";
+                        window.location.href = "../home/home.html";
                     }, 1000);
                 } else {
                     alert(data.message);  
