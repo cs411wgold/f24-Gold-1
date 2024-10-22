@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'login',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
