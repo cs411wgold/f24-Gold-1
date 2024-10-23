@@ -23,14 +23,14 @@ def login_view(request):
             data = json.loads(request.body)
             form = LoginForm(data)
             if form.is_valid():
-                username = form.cleaned_data['username']
+                email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
-                user = authenticate(request, username=username, password=password)
+                user = authenticate(request, email=email, password=password)
                 if user is not None:
                     login(request, user)
                     return JsonResponse({'status': 'success', 'message': 'Login successful!'})
                 else:
-                    return JsonResponse({'status': 'error', 'message': 'Invalid username or password.'}, status=401)
+                    return JsonResponse({'status': 'error', 'message': 'Invalid email or password.'}, status=401)
             else:
                 errors = form.errors.as_json()
                 return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': errors}, status=400)
@@ -38,7 +38,7 @@ def login_view(request):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed.'}, status=405)
-        
+
 
 @csrf_exempt
 def signup_view(request):

@@ -22,8 +22,7 @@ class SignUpForm(UserCreationForm):
         return email
 
 
-# LoginForm handles user login. It asks for a username and password.
+# LoginForm handles user login. It asks for an email and password.
 class LoginForm(forms.Form):
-    username = forms.CharField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True) 
-
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
