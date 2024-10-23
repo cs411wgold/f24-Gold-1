@@ -5,7 +5,7 @@ body {
     background-image: url('img/bk.png');
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
