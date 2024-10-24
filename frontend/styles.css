@@ -88,12 +88,9 @@ header {
 .intro {
     text-align: center;
     border-radius: 10px;
-    margin-top: 100px;
-
     font-weight: bold;
-
-
 }
+
 .intro p{
     font-size: 30px; 
 
@@ -121,10 +118,10 @@ header {
 .signup, .login {
     font-size: 18px;
     padding: 10px 20px;
-    margin: 10px;
     border: none;
     cursor: pointer;
-    margin-left: 20%;
+    margin-right:30px;
+    margin-left:30px
 }
 
 .signup {
