@@ -42,7 +42,7 @@
         <div id="footer-common"></div>
 
         <script>
-          fetch('/frontend/shared/footer.html')  <!-- Fetch footer -->
+          fetch('/shared/footer.html')  <!-- Fetch footer -->
             .then(response => response.text())
             .then(data => {
               document.getElementById('footer-common').innerHTML = data;
