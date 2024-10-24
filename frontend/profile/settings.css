@@ -20,40 +20,48 @@ main {
     justify-content: left;
     flex-direction: column;
     text-align: left;
-    background-color: #f5f5f5;
+    margin-left: 80px;
 }
 .profile-header {
     display: flex;
     align-items: left;
 }
 .profile-header img {
-    margin-right: 50px;
+    height: 70px;
+    width: 70px;
 }
 .edit-avatar-button {
     display: block;
-    margin: 10px 0; 
+    margin: 50px; 
     font-size: medium;
-    background-color: #2ab7f3;
+    background-color: #008080;
     color: rgb(255, 255, 255);
 }
 .Button-container{
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 80px;
     gap: 15px; 
-    align-items: left; 
 }
 .PublicProfile-button{
+    width: 250px; 
+    height: 50px;
     padding: 10px 20px;
-    background-color: #2ab7f3;
+    background-color: #008080;
     color: rgb(255, 255, 255);
 }
 .Account-button{
+    width: 250px; 
+    height: 50px;
     padding: 10px 20px;
-    background-color: #2ab7f3;
+    background-color: #008080;
     color: rgb(255, 255, 255);
 }
 .ViewManageFriendsList-button{
+    width: 250px; 
+    height: 50px;
     padding: 10px 20px;
-    background-color: #2ab7f3;
+    background-color: #008080;
     color: rgb(255, 255, 255);
 }
