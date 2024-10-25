@@ -1,19 +1,18 @@
 [
-    {
-      "model": "auth.user",
-      "pk": 1,
-      "fields": {
-        "username": "jimbo",
-        "password": "pbkdf2_sha256$870000$d3LLWS2XuuHP62mWN0iIvJ$jPgiGrqd9i4Ak0EH4wDvRCULlWK4FoTotFcw78NgDnk=",
-        "email": "jimbo@odu.edu",
-        "first_name": "Jim",
-        "last_name": "Bo",
-        "is_staff": true,
-        "is_active": true,
-        "is_superuser": false,
-        "date_joined": "2023-10-21T00:00:00Z",
-        "last_login": null
-      }
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "jimbo",
+      "password": "pbkdf2_sha256$870000$d3LLWS2XuuHP62mWN0iIvJ$jPgiGrqd9i4Ak0EH4wDvRCULlWK4FoTotFcw78NgDnk=",
+      "email": "jimbo@odu.edu",
+      "first_name": "Jim",
+      "last_name": "Bo",
+      "is_staff": true,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2023-10-21T00:00:00Z",
+      "last_login": null
     }
-  ]
-  
+  }
+]

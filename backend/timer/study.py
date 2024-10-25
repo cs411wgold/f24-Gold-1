@@ -10,5 +10,8 @@ from django.contrib.auth.models import User
 
 # Connect user stuff later
 # user = models.ForeignKey(User, on_delete=models.CASCADE)  
+
 class StudySession(models.Model):
-    study_data = models.JSONField() # Task Name, Task Time, Date Started
+    task_name = models.CharField(max_length=255)
+    task_time = models.IntegerField()
+    date_started = models.DateTimeField()

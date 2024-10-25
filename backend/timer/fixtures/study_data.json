@@ -1,14 +1,13 @@
 [
-    {
-      "model": "timer.StudySession",
-      "pk": 1,
-      "fields": {
-        "study_data": {
-            "task_name": "Study Session",
-            "task_time": "25",
-            "date_started": "2024-10-24T16:50:00"
-          }
+  {
+    "model": "timer.StudySession",
+    "pk": 1,
+    "fields": {
+      "study_data": {
+        "task_name": "Study Session",
+        "task_time": 25,
+        "date_started": "2024-10-24T16:50:00Z"
       }
     }
-  ]
-  
+  }
+]
