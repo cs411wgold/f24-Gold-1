@@ -26,15 +26,13 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
     volumes:
-      - ./backend/db/login_data.sql:/app/db/login_data.sql
       - ./backend/login/fixtures/user_data.json:/app/login/fixtures/user_data.json
-      - ./backend/db/timer.sql:/app/db/timer.sql
       - ./backend/timer/fixtures/study_data.json:/app/timer/fixtures/study_data.json
     command: >
       sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
             python manage.py migrate &&
             python manage.py loaddata /app/login/fixtures/user_data.json &&
-            python manage.py loaddata /app/timer/fixtures/study_data.json &&
+            python manage.py loaddata /app/timer/fixtures/study_data.json 
             python manage.py runserver 0.0.0.0:8000"
 
   db:
