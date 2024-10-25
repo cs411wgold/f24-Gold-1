@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from login.views import signup_view
+from timer.views import create_study_session
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('login.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('timer.urls')),
 ]

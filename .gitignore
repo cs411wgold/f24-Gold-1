@@ -20,6 +20,9 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+# VSCode
+.vscode
+
 /backend/venv
 /backend/djangoConfig/__pycache__
 /backend/login/__pycache__
