@@ -32,6 +32,7 @@ services:
       sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
             python manage.py migrate &&
             python manage.py loaddata /app/login/fixtures/user_data.json &&
+            python manage.py loaddata /app/timer/fixtures/study_data.json &&
             python manage.py runserver 0.0.0.0:8000"
 
   db:
