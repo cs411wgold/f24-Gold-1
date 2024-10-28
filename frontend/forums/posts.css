@@ -39,3 +39,11 @@
     color: #6c757d;
     margin-bottom: 10px;
 }
+
+.subscribe-btn {
+    transition: all 0.3s ease;
+}
+
+.subscribe-btn:hover {
+    transform: scale(1.05);
+}
