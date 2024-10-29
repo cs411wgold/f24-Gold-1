@@ -45,21 +45,77 @@
           <div class="container bg-light col-4 p-md-2 rounded" style="--bs-bg-opacity:0.8;">
             <h2>Welcome Back!</h2>
             <h3>Upcoming Assignments</h3>
-          </div>
-            <div class="assignment-list mt-3">
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <div class="date-badge rounded-circle p-2">5/9</div>
-                    <div class="assignment-title">CS 390: Homework 5</div>
-                </div>
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <div class="date-badge rounded-circle p-2">5/12</div>
-                    <div class="assignment-title">CS 350: Lab 11</div>
-                </div>
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <div class="date-badge rounded-circle p-2">5/13</div>
-                    <div class="assignment-title">CS 330: Homework 6</div>
-                </div>
             </div>
+            <div id="upcoming-assignments" class="assignments-container">
+                <script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                      fetch('http://127.0.0.1:8000/assignments/upcoming/')
+                          .then(response => response.json())
+                          .then(data => {
+                              const assignmentsContainer = document.getElementById('upcoming-assignments');
+                              assignmentsContainer.innerHTML = "";  // Clear previous content if any
+                              
+                              data.assignments.forEach(assignment => {
+                                  const assignmentCard = `
+                                      <div class="assignment-card">
+                                          <div class="date">${assignment.due_at}</div>
+                                          <div class="details">
+                                              <h3>${assignment.name}</h3>
+                                          </div>
+                                      </div>
+                                  `;
+                                  assignmentsContainer.innerHTML += assignmentCard;
+                              });
+                          })
+                          .catch(error => {
+                              console.error("Error fetching assignments:", error);
+                          });
+                  });
+              </script>
+              <!--
+                
+                <script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                      const courseId = 161613;  // Replace with your actual course ID
+                      fetch(`http://127.0.0.1:8000/api/courses/${courseId}/assignments/`)
+                          .then(response => response.json())
+                          .then(data => {
+                              if (Array.isArray(data.assignments) && data.assignments.length > 0) {
+                                  const assignmentsContainer = document.getElementById('upcoming-assignments');
+                                  assignmentsContainer.innerHTML = "";  // Clear previous content if any
+                                  
+                                  // Iterate over the first 3 assignments
+                                  data.assignments.slice(0, 3).forEach(assignment => {
+                                      const dueDate = new Date(assignment.due_at);
+                                      const formattedDate = `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
+              
+                                      // Create assignment card HTML
+                                      const assignmentCard = `
+                                          <div class="assignment-card">
+                                              <div class="date">${formattedDate}</div>
+                                              <div class="details">
+                                                  <h3>CS 411W: ${assignment.name}</h3>
+                                              </div>
+                                          </div>
+                                      `;
+                                      
+                                      assignmentsContainer.innerHTML += assignmentCard;
+                                  });
+                              } else {
+                                  console.error("No assignments found or error in response format.");
+                              }
+                          })
+                          .catch(error => {
+                              console.error("Error fetching assignments:", error);
+                          });
+                  });
+              </script>
+              -->
+              
+                <!-- Upcoming assignments will be populated here -->
+              </div>
+          
+          
         </section>
     </main>
 

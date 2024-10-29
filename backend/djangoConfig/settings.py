@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'login',
     'timer',
     'rest_framework',
+    'assignments',
 ]
 
 MIDDLEWARE = [

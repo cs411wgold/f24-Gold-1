@@ -1,11 +1,15 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import json, logging
 from .forms import SignUpForm, LoginForm
+from login.utils import list_upcoming_assignments 
 
+CANVAS_BASE_URL = "https://canvas.odu.edu"  # Replace with your school's Canvas URL
+REGGIE_ACCESS_TOKEN = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r"  # Replace with your Canvas token
+REGGIE_STUDENT_ID ="40892"
+CS411W_COURSE_ID="161613"
 
 def hello_world(request):
     return HttpResponse("Hello, World Yuhhhh!")
@@ -69,3 +73,15 @@ def signup_view(request):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed.'}, status=405)
+from django.http import JsonResponse
+
+@csrf_exempt
+def list_upcoming_assignments_view(request, course_id):
+    try:
+        # Call the utility function to get assignments
+        upcoming_assignments = list_upcoming_assignments(course_id)
+        return JsonResponse({"message": "Success", "assignments": upcoming_assignments}, status=200)
+    except Exception as e:
+        logger.error(f"Error fetching assignments: {str(e)}")
+        return JsonResponse({"message": "Error", "details": str(e)}, status=500)
+
