@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function fetchUpcomingAssignments() {
     // Define the Canvas API URL for upcoming assignments
     const canvasApiUrl = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments";
-    const authToken = "Bearer <YOUR_ACCESS_TOKEN>";  // Replace <YOUR_ACCESS_TOKEN> with your actual access token
+    const authToken = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r";  // Replace <YOUR_ACCESS_TOKEN> with your actual access token
 
     // Fetch the assignments
     fetch(canvasApiUrl, {
