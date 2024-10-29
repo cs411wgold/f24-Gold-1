@@ -347,6 +347,24 @@ const api = {
     },
     voteReply: async (replyId, value) => {
         return new Promise(resolve => setTimeout(() => resolve({ success: true }), 100));
+    },
+
+    subscribeToThread: async (postId) => {
+        return new Promise(resolve => setTimeout(() => resolve({
+            success: true,
+            subscribed: true
+        }), 100));
+    },
+    unsubscribeFromThread: async (postId) => {
+        return new Promise(resolve => setTimeout(() => resolve({
+            success: true,
+            subscribed: false
+        }), 100));
+    },
+    getSubscriptionStatus: async (postId) => {
+        return new Promise(resolve => setTimeout(() => resolve({
+            subscribed: localStorage.getItem(`subscribed_${postId}`) === 'true'
+        }), 100));
     }
 };
 
@@ -355,6 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const postsContainer = document.getElementById('posts-container');
     const postForm = document.getElementById('post-form');
     const forumId = new URLSearchParams(window.location.search).get('id');
+
+    // Store subscriptions in localStorage
+    const subscriptions = new Set(
+        JSON.parse(localStorage.getItem('threadSubscriptions') || '[]')
+    );
 
     async function loadForumContent() {
         try {
@@ -383,11 +406,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createPostHTML(post) {
+        const isHidden = post.downvotes >= 10;
+        const isSubscribed = subscriptions.has(post.id);
+
         return `
-        <div class="post card mb-3" data-post-id="${post.id}">
+        <div class="post card mb-3 ${isHidden ? 'flagged-post' : ''}" data-post-id="${post.id}">
             <div class="card-body">
+                ${isHidden ? `
+                    <div class="flagged-content alert alert-warning">
+                        This post has been flagged due to community feedback.
+                        <button class="btn btn-sm btn-link" onclick="toggleFlaggedContent(${post.id})">Show Content</button>
+                    </div>
+                    <div class="hidden-content" style="display: none;">
+                ` : ''}
+                
                 <h5 class="card-title">${post.title}</h5>
                 <p class="card-text">${post.content}</p>
+                
+                ${isHidden ? '</div>' : ''}
+                
                 <div class="post-meta">
                     <small>Posted by ${post.author} on ${new Date(post.createdAt).toLocaleString()}</small>
                 </div>
@@ -398,6 +435,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         </button>
                         <button class="btn btn-sm btn-outline-danger downvote-btn" onclick="vote(${post.id}, -1)">
                             <i class="fas fa-arrow-down"></i> ${post.downvotes}
+                        </button>
+                        <button class="btn btn-sm ${isSubscribed ? 'btn-primary' : 'btn-outline-primary'} ms-2 subscribe-btn" 
+                                onclick="toggleSubscription(${post.id})">
+                            <i class="fas ${isSubscribed ? 'fa-bell-slash' : 'fa-bell'}"></i>
+                            ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                         </button>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showReplyForm(${post.id})">Reply</button>
@@ -414,11 +456,25 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     }
 
+    // Enhanced reply HTML with moderation
     function createReplyHTML(reply, postId) {
+        const isHidden = reply.downvotes >= 10;
+
         return `
-        <div class="reply card mb-2" data-reply-id="${reply.id}">
+        <div class="reply card mb-2 ${isHidden ? 'flagged-reply' : ''}" data-reply-id="${reply.id}">
             <div class="card-body">
+                ${isHidden ? `
+                    <div class="flagged-content alert alert-warning">
+                        This reply has been flagged due to community feedback.
+                        <button class="btn btn-sm btn-link" onclick="toggleFlaggedReply(${reply.id})">Show Content</button>
+                    </div>
+                    <div class="hidden-content" style="display: none;">
+                ` : ''}
+                
                 <p class="card-text">${reply.content}</p>
+                
+                ${isHidden ? '</div>' : ''}
+                
                 <div class="reply-meta">
                     <small>Replied by ${reply.author} on ${new Date(reply.createdAt).toLocaleString()}</small>
                 </div>
@@ -446,6 +502,24 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
     }
+
+    // Toggle subscription status
+    window.toggleSubscription = async function (postId) {
+        try {
+            if (subscriptions.has(postId)) {
+                await api.unsubscribeFromThread(postId);
+                subscriptions.delete(postId);
+            } else {
+                await api.subscribeToThread(postId);
+                subscriptions.add(postId);
+            }
+
+            localStorage.setItem('threadSubscriptions', JSON.stringify([...subscriptions]));
+            await loadPosts(); // Refresh the view
+        } catch (error) {
+            console.error('Error toggling subscription:', error);
+        }
+    };
 
     async function submitPost(event) {
         event.preventDefault();

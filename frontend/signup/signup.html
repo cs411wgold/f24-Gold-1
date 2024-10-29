@@ -14,6 +14,7 @@
   <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
   <!-- Personal styles sheet-->
   <link rel="stylesheet" href="signup.css"> 
+  <link rel="stylesheet" href="../styles.css"> 
   <!-- Font Awesome CSS for icons | https://icons.getbootstrap.com/#install-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
@@ -27,7 +28,7 @@
             <a href="../index.html" style="text-decoration: none; color: inherit;">
                 <div class="logo">
                     <span style="font-size: 65px; font-weight: bold" class="card-title">KnowTime</span>
-                    <img src="../Resources/tomato.png" alt="tomato logo" style="width:120px";> <!-- Adjust the path if needed -->
+                    <img src="../resources/tomato.png" alt="tomato logo" style="width:120px";> 
                 </div>
             </a>
             <p style="font-weight:bold; text-align:center; font-size: 35px">Welcome to KnowTime!</p> 
@@ -92,15 +93,15 @@
             
                             <!-- Terms and service agreement -->
                             <div class="form-check d-flex justify-content-center align-items-center mb-5">
-                                    <input class="form-check-input form-check-inline" type="checkbox" value="" id="termsOfService" required />
-                                    <label class="form-check-label ms-2 text-wrap" for="termsOfService">I agree to all statements in <a href="#!">Terms of service</a></label>
+                                    <input class="form-check-input form-check-inline custom-checkbox" type="checkbox" value="" id="termsOfService" required />
+                                    <label class="form-check-label ms-2 text-wrap" for="termsOfService" style="font-weight:bold;">I agree to all statements in <a href="#!">Terms of service</a></label>
                                     <div class="invalid-tooltip tooltip-custom" style="font-weight: bold; font-size:10px;">You must agree before submitting.</div>
                             </div>
             
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                 <button  type="submit" data-mdb-ripple-init class="btn btn-primary btn-lg custom-button">Sign Up</button>
                             </div>
-                            <p style="text-align: center;">Already have an account? <a href="../login/login.html">Login here</a></p>
+                            <p style="text-align: center; font-weight:bold">Already have an account? <a href="../login/login.html">Login here</a></p>
                         </form>
                     </div>
                 </div>

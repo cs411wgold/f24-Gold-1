@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from login.views import signup_view
+from timer.views import create_study_session
 
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('', include('login.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('assignments.urls')),
+    path('', include('timer.urls')),
 ]

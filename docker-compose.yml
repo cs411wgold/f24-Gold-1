@@ -27,12 +27,12 @@ services:
       POSTGRES_PORT: 5432
     volumes:
       - ./backend/login/fixtures/user_data.json:/app/login/fixtures/user_data.json
-      - ./backend/assignments/fixtures/assignment_data.json:/app/assignments/fixtures/assignment_data.json
     command: >
       sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
             python manage.py makemigrations && configs:
             python manage.py migrate &&
             python manage.py loaddata /app/login/fixtures/user_data.json /app/assignments/fixtures/assignment_data.json &&
+            python manage.py loaddata /app/timer/fixtures/study_data.json 
             python manage.py runserver 0.0.0.0:8000"
 
   db:

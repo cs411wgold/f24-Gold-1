@@ -15,27 +15,34 @@
     
 
     <main>
-        <section class="intro">
-            <h2>Overwhelmed with studying?</h2>
-            <p>We offer:</p>
-            <ul>
-                <li>Canvas/Blackboard importing</li>
-                <li>Personalized study plans</li>
-                <li>Fun ways to track progress and grade improvement</li>
-                <li>Recommendations to student & mental health resources</li>
-            </ul>
-        </section>
-
-        <div class="buttons">
-            <a href="signup/signup.html"><button class="signup">Sign Up</button></a>
-            <a href="login/login.html"><button class="login">Login</button></a>
+        <div class="container bg-white text-center rounded" style="--bs-bg-opacity: 0.8; margin-top:10%;">
+            <div class="logo"> 
+                <span style="font-size: 50px; font-weight: bold;">KnowTime</span>
+                <img src="resources/tomato.png" alt="tomato logo" style="width:80px; margin-bottom:20px">
+            </div>
+        </div>
+        <div class="container bg-white rounded p-4 text-center" style="--bs-bg-opacity: 0.8; margin-top: 15%; margin-bottom:45%">
+            <section class="intro">
+                <h2>Overwhelmed with studying?</h2>
+                <p>We offer:</p>
+                <ul>
+                    <li>Canvas/Blackboard importing</li>
+                    <li>Personalized study plans</li>
+                    <li>Fun ways to track progress and grade improvement</li>
+                    <li>Recommendations to student & mental health resources</li>
+                </ul>
+            </section>
+            <div class="buttons">
+                <a href="signup/signup.html"><button class="signup">Sign Up</button></a>
+                <a href="login/login.html"><button class="login">Login</button></a>
+            </div>
         </div>
     </main>
         <!-- Footer Section -->
         <div id="footer-common"></div>
 
         <script>
-          fetch('shared/footer.html')  <!-- Fetch footer -->
+          fetch('/shared/footer.html')  <!-- Fetch footer -->
             .then(response => response.text())
             .then(data => {
               document.getElementById('footer-common').innerHTML = data;

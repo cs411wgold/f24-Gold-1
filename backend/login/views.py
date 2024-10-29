@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 import json, logging
 from .forms import SignUpForm, LoginForm
 from login.utils import list_upcoming_assignments 
@@ -29,11 +30,18 @@ def login_view(request):
             if form.is_valid():
                 email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
-                user = authenticate(request, email=email, password=password)
-                if user is not None:
-                    login(request, user)
-                    return JsonResponse({'status': 'success', 'message': 'Login successful!'})
-                else:
+                
+                # First get the user by email
+                try:
+                    user = User.objects.get(email=email)
+                    # Then authenticate with username and password
+                    user = authenticate(request, username=user.username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        return JsonResponse({'status': 'success', 'message': 'Login successful!'})
+                    else:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid email or password.'}, status=401)
+                except User.DoesNotExist:
                     return JsonResponse({'status': 'error', 'message': 'Invalid email or password.'}, status=401)
             else:
                 errors = form.errors.as_json()
@@ -49,18 +57,18 @@ def signup_view(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            print("Received data in signup_view:", data)  # Debugging statement
             form = SignUpForm(data)
             if form.is_valid():
                 user = form.save()
-                raw_password = form.cleaned_data.get('password1')
-                user = authenticate(username=user.username, password=raw_password)
-                if user:
-                    login(request, user)
-                    return JsonResponse({'status': 'success', 'message': 'Signup successful!'})
-                else:
-                    return JsonResponse({'status': 'error', 'message': 'User authentication failed after signup.'})
+                logger.info(f"User saved: {user.username}")
+
+                # Automatically log in the user after signup
+                login(request, user)
+                return JsonResponse({'status': 'success', 'message': 'Signup successful!'})
             else:
-                return JsonResponse({'status': 'error', 'message': form.errors})
+                print("Form validation errors:", form.errors)  # Print form errors for debugging
+                return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': form.errors.as_json()}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
     else:

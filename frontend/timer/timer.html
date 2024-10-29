@@ -51,12 +51,18 @@
            });
       </script>
       <!-- Main Section -->
-      <main class="container-fluid text-center col-4 p-5 border rounded shadow-sm timer-container" style="background-color:rgb(255, 244, 228);">
+      <main class="container-fluid bg-light text-center col-4 p-5 border rounded shadow-sm timer-container" style="--bs-bg-opacity:0.85; margin-bottom:175px;">
          <div class="logo">
             <span style="font-size: 40px; font-weight: bold;">Pomodoro Timer</span>
             <img src="../resources/tomato.png" alt="tomato logo" style="width:60px; margin-bottom:25px";>
          </div>
          <div class="timer">
+          <select name="tasks" id="tasks">
+            <option value="" disabled selected>Select a task</option>
+            <option value="task1">Task 1</option>
+            <option value="task2">Task 2</option>
+            <option value="task3">Task 3</option>
+        </select>
             <div class="button-container">
                <button class="button" id="pomodoro-session" onClick="normalTimer()">Pomodoro</button>
                <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
@@ -92,6 +98,7 @@
    let originalLongBreak = "20";
    let alarmInterval = null;
    const alarm = new Audio("./alarm.wav");
+   const taskDropdown = document.getElementById("tasks");
 
    function switchTimer() {
     const timerButton = document.getElementById("next");
@@ -115,6 +122,11 @@
      if(isRunning) {
        return;
      }
+
+     if(taskDropdown.value === "") {
+        alert("The timer could not be started because a task has not been selected yet!");
+        return;
+    }
    
      isRunning = true;
    
@@ -163,6 +175,10 @@
    }
    
    function customTimer() {
+    if(taskDropdown.value === "") {
+          alert("Please select a task before customizing your timer!");
+          return;
+    }
            studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
            while (isNaN(studyTimeInMinutes) || studyTimeInMinutes < 20 || studyTimeInMinutes > 90) {
             studyTimeInMinutes = prompt("How many minutes would you like to study? (20-90 minutes)");
@@ -186,6 +202,10 @@
    }
 
    function normalTimer() {   
+    if(taskDropdown.value === "") {
+              alert("The timer could not be started because a task has not been selected yet!");
+              return;
+          }
            document.getElementById("pomodoro-timer").textContent = "25:00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;

@@ -4,15 +4,15 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%; 
+    height: auto; 
 }
 
 .resources {
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.842);
     padding: 20px;
-    margin-top:5%;
-    margin-bottom:5%;
+    margin-top:10%;
+    margin-bottom:19%;
     border-radius: 10px;
 }
 
