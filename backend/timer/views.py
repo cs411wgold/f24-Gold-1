@@ -23,11 +23,17 @@ def create_study_session(request):
             
             logger.info(f"Creating a new study session with data: {data}")
             
-            StudySession.objects.create(
-                task_name=task_name,
-                task_time=task_time,
-                date_started=date_started
-            )
+            task = StudySession.objects.filter(task_name=task_name).first()
+
+            if task is None:
+                StudySession.objects.create(
+                    task_name=task_name,
+                    task_time=task_time,
+                    date_started=date_started
+                )
+            else:
+                task.task_time += task_time
+                task.save()
             return JsonResponse({'status': 'success', 'message': 'Study session created!'})
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
