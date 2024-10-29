@@ -1,0 +1,15 @@
+[
+    {
+        "model": "assignments.assignment",
+        "pk": 1,
+        "fields": {
+            "name": "Sample Assignment",
+            "description": "This is a sample assignment description.",
+            "course_id": 101,
+            "due_at": "2024-12-31T23:59:59Z",
+            "points_possible": 100.0,
+            "grading_type": "Points",
+            "submission_types": "Online Upload"
+        }
+    }
+]
