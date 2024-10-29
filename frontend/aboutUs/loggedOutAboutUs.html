@@ -15,7 +15,7 @@
     <div id="header-common"></div>
 
     <script>
-      fetch('../shared/header.html')
+      fetch('../shared/notLoggedInHeader.html')
         .then(response => response.text())
         .then(data => {
           document.getElementById('header-common').innerHTML = data;
@@ -50,7 +50,7 @@
     </script>
     
     <!-- Main Section -->
-    <main class="container mt-5 text-center bg-light border rounded">
+    <main class="container mt-5 text-center bg-light border rounded" style="margin-top:20%">
         <h2>About Us</h2>
         <section class="mt-4">
                 <p>Students often struggle with time management, fail to track progress effectively, and underestimate what can be accomplished during a work session. </p> 
