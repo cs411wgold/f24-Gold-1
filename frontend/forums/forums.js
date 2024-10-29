@@ -1,4 +1,3 @@
-
 // Mock API functions
 const api = {
     getForumInfo: async (forumId) => {
@@ -368,6 +367,17 @@ const api = {
     }
 };
 
+// Add this after the api object
+const userVotes = {
+    posts: JSON.parse(localStorage.getItem('userPostVotes') || '{}'),
+    replies: JSON.parse(localStorage.getItem('userReplyVotes') || '{}')
+};
+
+function saveVotes() {
+    localStorage.setItem('userPostVotes', JSON.stringify(userVotes.posts));
+    localStorage.setItem('userReplyVotes', JSON.stringify(userVotes.replies));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const forumContent = document.getElementById('forum-content');
     const postsContainer = document.getElementById('posts-container');
@@ -408,6 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createPostHTML(post) {
         const isHidden = post.downvotes >= 10;
         const isSubscribed = subscriptions.has(post.id);
+        const userVote = userVotes.posts[post.id] || 0;
 
         return `
         <div class="post card mb-3 ${isHidden ? 'flagged-post' : ''}" data-post-id="${post.id}">
@@ -430,10 +441,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div class="vote-buttons">
-                        <button class="btn btn-sm btn-outline-primary upvote-btn" onclick="vote(${post.id}, 1)">
+                        <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
+                                onclick="vote(${post.id}, 1)" 
+                                ${userVote === -1 ? 'disabled' : ''}>
                             <i class="fas fa-arrow-up"></i> ${post.upvotes}
                         </button>
-                        <button class="btn btn-sm btn-outline-danger downvote-btn" onclick="vote(${post.id}, -1)">
+                        <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
+                                onclick="vote(${post.id}, -1)"
+                                ${userVote === 1 ? 'disabled' : ''}>
                             <i class="fas fa-arrow-down"></i> ${post.downvotes}
                         </button>
                         <button class="btn btn-sm ${isSubscribed ? 'btn-primary' : 'btn-outline-primary'} ms-2 subscribe-btn" 
@@ -459,6 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enhanced reply HTML with moderation
     function createReplyHTML(reply, postId) {
         const isHidden = reply.downvotes >= 10;
+        const userVote = userVotes.replies[reply.id] || 0;
 
         return `
         <div class="reply card mb-2 ${isHidden ? 'flagged-reply' : ''}" data-reply-id="${reply.id}">
@@ -480,10 +496,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="vote-buttons">
-                        <button class="btn btn-sm btn-outline-primary upvote-btn" onclick="voteReply(${reply.id}, 1)">
+                        <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
+                                onclick="voteReply(${reply.id}, 1)"
+                                ${userVote === -1 ? 'disabled' : ''}>
                             <i class="fas fa-arrow-up"></i> ${reply.upvotes}
                         </button>
-                        <button class="btn btn-sm btn-outline-danger downvote-btn" onclick="voteReply(${reply.id}, -1)">
+                        <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
+                                onclick="voteReply(${reply.id}, -1)"
+                                ${userVote === 1 ? 'disabled' : ''}>
                             <i class="fas fa-arrow-down"></i> ${reply.downvotes}
                         </button>
                     </div>
@@ -568,8 +588,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.vote = async function (postId, value) {
         try {
+            const currentVote = userVotes.posts[postId] || 0;
+            
+            // If clicking the same vote button again, remove the vote
+            if (currentVote === value) {
+                value = 0;
+            }
+            
+            // Update the post in the DOM immediately
+            const post = document.querySelector(`[data-post-id="${postId}"]`);
+            const upvoteBtn = post.querySelector('.upvote-btn');
+            const downvoteBtn = post.querySelector('.downvote-btn');
+            
+            // Update vote counts
+            const upvoteCount = parseInt(upvoteBtn.textContent);
+            const downvoteCount = parseInt(downvoteBtn.textContent);
+            
+            if (currentVote === 1) upvoteBtn.textContent = ` ${upvoteCount - 1}`;
+            if (currentVote === -1) downvoteBtn.textContent = ` ${downvoteCount - 1}`;
+            if (value === 1) upvoteBtn.textContent = ` ${upvoteCount + 1}`;
+            if (value === -1) downvoteBtn.textContent = ` ${downvoteCount + 1}`;
+            
+            // Update button states
+            userVotes.posts[postId] = value;
+            saveVotes();
+            
+            // Update UI without full reload
+            upvoteBtn.className = `btn btn-sm ${value === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn`;
+            downvoteBtn.className = `btn btn-sm ${value === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn`;
+            upvoteBtn.disabled = value === -1;
+            downvoteBtn.disabled = value === 1;
+            
             await api.vote(postId, value);
-            await loadPosts();
         } catch (error) {
             console.error('Error voting:', error);
         }
@@ -577,8 +627,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.voteReply = async function (replyId, value) {
         try {
+            const currentVote = userVotes.replies[replyId] || 0;
+            
+            // If clicking the same vote button again, remove the vote
+            if (currentVote === value) {
+                value = 0;
+            }
+            
+            // Update the reply in the DOM immediately
+            const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
+            const upvoteBtn = reply.querySelector('.upvote-btn');
+            const downvoteBtn = reply.querySelector('.downvote-btn');
+            
+            // Update vote counts
+            const upvoteCount = parseInt(upvoteBtn.textContent);
+            const downvoteCount = parseInt(downvoteBtn.textContent);
+            
+            if (currentVote === 1) upvoteBtn.textContent = ` ${upvoteCount - 1}`;
+            if (currentVote === -1) downvoteBtn.textContent = ` ${downvoteCount - 1}`;
+            if (value === 1) upvoteBtn.textContent = ` ${upvoteCount + 1}`;
+            if (value === -1) downvoteBtn.textContent = ` ${downvoteCount + 1}`;
+            
+            // Update button states
+            userVotes.replies[replyId] = value;
+            saveVotes();
+            
+            // Update UI without full reload
+            upvoteBtn.className = `btn btn-sm ${value === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn`;
+            downvoteBtn.className = `btn btn-sm ${value === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn`;
+            upvoteBtn.disabled = value === -1;
+            downvoteBtn.disabled = value === 1;
+            
             await api.voteReply(replyId, value);
-            await loadPosts();
         } catch (error) {
             console.error('Error voting on reply:', error);
         }
