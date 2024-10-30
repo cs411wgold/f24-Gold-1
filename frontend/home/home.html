@@ -47,9 +47,10 @@
             <h3>Upcoming Assignments</h3>
             </div>
             <div id="upcoming-assignments" class="assignments-container">
+              <!--
                 <script>
                   document.addEventListener("DOMContentLoaded", function() {
-                      fetch('http://127.0.0.1:8000/assignments/upcoming/')
+                      fetch('http://127.0.0.1:8000/upcoming/')
                           .then(response => response.json())
                           .then(data => {
                               const assignmentsContainer = document.getElementById('upcoming-assignments');
@@ -72,12 +73,13 @@
                           });
                   });
               </script>
-              <!--
+              -->
+            
                 
                 <script>
                   document.addEventListener("DOMContentLoaded", function() {
                       const courseId = 161613;  // Replace with your actual course ID
-                      fetch(`http://127.0.0.1:8000/api/courses/${courseId}/assignments/`)
+                      fetch(`http://127.0.0.1:8000/upcoming/`)
                           .then(response => response.json())
                           .then(data => {
                               if (Array.isArray(data.assignments) && data.assignments.length > 0) {
@@ -110,7 +112,7 @@
                           });
                   });
               </script>
-              -->
+             
               
                 <!-- Upcoming assignments will be populated here -->
               </div>

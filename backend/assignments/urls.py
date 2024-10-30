@@ -1,6 +1,8 @@
-from django.urls import path
-from .views import list_upcoming_assignments
+# In assignments/assignment_urls.py
 
-urlpatterns = [path('assignments/upcoming/', list_upcoming_assignments, name='list_upcoming_assignments'),
-    
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('upcoming/', views.list_upcoming_assignments, name='upcoming-assignments'),
 ]
