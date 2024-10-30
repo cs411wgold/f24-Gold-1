@@ -146,7 +146,7 @@
     <div id="footer-common"></div>
     <script src="../aboutUs/aboutUs.js"></script>
     <script>
-      fetch('../shared/footer.html')  <!-- Fetch footer -->
+      fetch('../shared/loggedOutFooter.html')  <!-- Fetch footer -->
         .then(response => response.text())
         .then(data => {
           document.getElementById('footer-common').innerHTML = data;

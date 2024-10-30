@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowTime - Terms & Conditions</title>
+    <link rel="icon" type="image/x-icon" href="../resources/tomato.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="signup.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Barlow Font | refer to https://www.w3schools.com/howto/tryit.asp?font=Barlow-->
+    <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
+    <!-- Font Awesome CSS for icons | https://icons.getbootstrap.com/#install-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <div id="header-common"></div>
+
+    <script>
+      fetch('../shared/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-common').innerHTML = data;
+    
+          const currentPath = window.location.pathname;
+          console.log("Current Path:", currentPath);
+    
+          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
+    
+          navLinks.forEach(link => {
+            const pagePath = link.getAttribute("href");
+    
+            console.log("Checking link:", pagePath);
+    
+            if (currentPath.includes(pagePath)) {
+              console.log("Match found, adding active class to:", link);
+    
+              link.classList.add("active");
+    
+              if (link.classList.contains('dropdown-item')) {
+                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                parentLink.classList.add('active');
+              }
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
+        });
+    </script>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container bg-light p-5" style="margin-top: 2%; margin-bottom: 2%; --bs-bg-opacity:80%;">
+            <p class="disclaimer">
+                <b>Disclaimer: This document is for a school project! It has no legal power.</b> <img src="/frontend/img/avatars/tomato_lawyer.png" style="width:100px">
+            </p>
+            <div class="container bg-light p-4">
+                <div style="margin-bottom:5%">
+                    <h1>Terms and Conditions</h1>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>License to Use</h2>
+                    <p>
+                        You are granted a limited, non-exclusive, and revocable license to access and use this service for perosnal, non-commercial purposes. You may share this
+                        application with others as long as:
+                        <li>
+                            You do not alter or modify any part of the application.
+                        </li>
+                        <li>
+                            You share it only with the original branding and source information.
+                        </li>
+                        <li>
+                            Any recipients are informed of these Terms and agree to comply with them.
+                        </li>
+                    </p>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>User Responsibilities</h2>
+                    <p>
+                        You agree to use this application legally and respectfully.  Do not attempt to access restricted areas or interfere with 
+                        this application's functionality.
+                    </p>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>Intellectual Propery</h2>
+                    <p>
+                        All content on this website, including logos, text, and images created by us, is our property unless stated otherwise.  Images created by Canva are 
+                        subject to Canva's <a href="https://www.canva.com/policies/terms-of-use/">Terms of Use. </a>
+                    </p>
+                    <p>
+                        As a user, you retain ownership of any posts, comments, or other content created on this forum ("User Content").  By posting, you grant us non-exclusive,
+                        royalty-free, worldwide license to use, display, or distribute your content as part of the forum.  This license is only for operating and promoting
+                        the forum.
+                    </p>
+                    <p>
+                        You may revoke this license at any time by requesting for your account to be deleted.  
+                    </p>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>Limitation of Liability</h2>
+                    <p>
+                        Use at your own risk.  We are not liable for any direct or indirect damages caused from using this website.
+                    </p>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>Privacy Policy</h2>
+                    <h4>Information We Collect</h4>
+                    <p>
+                        Upon registration or interaction with our application, we will collect personal information such as email address and phone number (optional).
+                    </p>
+                    <p>
+                        Depending on the tools used provided by KnowTime, we will also collect student information provided to us, including:
+                        <li>
+                            Grades
+                        </li>
+                        <li>
+                            Time to complete study sessions with pomodoro timer or manually entered
+                        </li>
+                        <li>
+                            Registered courses
+                        </li>
+                        <li>
+                            User created tasks and assignments
+                        </li>
+                        <li>
+                            Assignments collected through Canvas API
+                        </li>
+                        <li>
+                            Calendar information such as deadlines and free time blocked off
+                        </li>
+                    </p>
+                    <h4>How We Use Your Information</h4>
+                    <p>
+                        We use your information provided to improve our services by generating a personalized study plan based on time recorded in study sessions, assignments, 
+                        customized tags, grades, and times blocked off in calendar.  We also use this data to create Progress and Grade tracking graphs only viewable to the user.
+                    </p>
+                    <h4>Data Protection</h4>
+                    <p>
+                        We implement security measures to protect your information to the best of our ability.
+                    </p>
+                    <h4>Third-Party Sharing</h4>
+                    <p>
+                        We do not sell, trade, or rent your personali information to others.  
+                    </p>
+                    <p>
+                        Our service uses Canvas API to retrieve relevant information, such as course details, assignments, and grades, to enhance your experience.  This information
+                        is pulled in compliance with Canvas's privacy policies and is only used within our appliacation for educational use.
+                    </p>
+                    <h4>Your Choices</h4>
+                    <p>
+                        You may request to view, update, or delete your personal information at any time by contacting us through the Contact Us page available on the footer of each page.
+                    </p>
+                    <h4>Policy Changes</h4>
+                    <p>
+                        We may update this Privacy Policy periodically.
+                    </p>
+                </div>
+                <div style="margin-bottom:5%">
+                    <h2>Change to Terms</h2>
+                    <p>
+                        We may update these Terms periodically.  Continuing to use this service after changes indicate acceptance.  Any updates made will
+                        be sent out to user's email address.
+                    </p>
+                </div>
+            </div>    
+        </div>
+    </div>
+    <!-- Footer Section -->
+    <div id="footer-common"></div>
+
+    <script>
+      fetch('../shared/footer.html')  <!-- Fetch footer -->
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-common').innerHTML = data;
+        });
+    </script>
+</body>
+</html>
