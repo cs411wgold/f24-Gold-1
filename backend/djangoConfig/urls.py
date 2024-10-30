@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from login.views import signup_view
-from timer.views import create_study_session
+from timer.views import handle_study_request
 
 
 urlpatterns = [

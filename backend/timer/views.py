@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 @csrf_exempt
-def create_study_session(request):
+def handle_study_request(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -37,4 +37,18 @@ def create_study_session(request):
             return JsonResponse({'status': 'success', 'message': 'Study session created!'})
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
-    return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed.'}, status=405)
+    elif request.method == 'GET':
+        study_sessions = StudySession.objects.all()
+        
+        study_sessions_data = [
+            {
+                'task_name': session.task_name,
+                'task_time': session.task_time,
+                'date_started': session.date_started
+            }
+            for session in study_sessions
+        ]
+        
+        return JsonResponse({'status': 'success', 'study_sessions': study_sessions_data})
+
+

@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import create_study_session
+from .views import handle_study_request
 
 urlpatterns = [
-    path('timer/', create_study_session, name='timer-page'),  
+    path('timer/', handle_study_request, name='timer-page'),  
 ]
