@@ -6,31 +6,29 @@
 (function () {
     'use strict';
 
+    // Get the form, password, and confirmPassword elements
     var forms = document.querySelectorAll('.needs-validation');
     var password = document.getElementById('password');
     var confirmPassword = document.getElementById('confirmPassword');
 
+    // Loop over the forms and attach event listeners
     Array.prototype.slice.call(forms).forEach(function (form) {
         form.addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent the default form submission
             confirmPassword.classList.remove('is-invalid');
 
-            // Prevent form submission if passwords don't match or form is invalid
+            // Check if passwords match and form is valid
             if (!form.checkValidity() || password.value !== confirmPassword.value) {
-                event.preventDefault();
                 event.stopPropagation();
 
+                // Show invalid feedback if passwords do not match
                 if (password.value !== confirmPassword.value) {
                     confirmPassword.classList.add('is-invalid');
                 }
             } else {
-                // Prevent default form submission to handle it with JavaScript
-                event.preventDefault();
-
-                // Collect form data
+                // Form data to be sent to the backend
                 var formData = {
-                    username: document.getElementById('username').value,
-                    first_name: document.getElementById('firstName').value,
-                    last_name: document.getElementById('lastName').value,
+                    username: document.getElementById('usernameInput').value,
                     email: document.getElementById('email').value,
                     password1: password.value,
                     password2: confirmPassword.value
@@ -40,25 +38,31 @@
                 fetch("http://localhost:8000/signup/", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify(formData),
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Signup successful!');
-                        // Optionally, redirect to login or another page
-                        window.location.href = '/login';
-                    } else {
-                        alert(`Error: ${data.message}`);
-                        console.error("Backend errors:", data.errors);
-                    }
-                })
-                .catch(error => console.error("Error:", error));
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();  // Ensure the response is JSON
+                    })
+                    .then((data) => {
+                        if (data.status === "success") {
+                            alert("Signup successful!");
+                            window.location.href = "/login";  // Redirect on success
+                        } else {
+                            alert(`Error: ${data.message}`);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        alert("An error occurred during signup.");
+                    });
             }
 
-            form.classList.add('was-validated');
+            form.classList.add('was-validated');  // Bootstrap form validation class
         }, false);
     });
 })();
