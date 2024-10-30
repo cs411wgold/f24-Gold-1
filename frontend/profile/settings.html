@@ -58,18 +58,12 @@
         </div>
         <a href="#"><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
       </div>
-        <!--Display Username-->
-        <script>
-          var username = localStorage.getItem('username') || 'User001';
-          document.getElementById('username').innerText = username;
-        </script>
-        <section class="mt-4">
-          <div class="Button-container">
-            <a href="#"><button class="PublicProfile-button" style="font-size:medium">Public Profile</button></a>
-            <a href="#"><button class="Account-button" style="font-size:medium">Account</button></a>
-            <a href="#"><button class="ViewManageFriendsList-button"style="font-size:medium">View/Manage Friends List</button></a>
-          </div>
-        </section>
+      <button onclick="openPopup('public-profile')">Public Profile</button> 
+      <button onclick="openPopup('account')">Account</button> 
+      <button onclick="openPopup('view-users')">View/Manage Users</button> 
+      <div id="public-profile" class="popup">placeholder <button onclick="closePopup('public-profile')">Close</button></div> 
+      <div id="account" class="popup">Placeholder <button onclick="closePopup('account')">Close</button></div> 
+      <div id="view-users" class="popup">Placeholder <button onclick="closePopup('view-users')">Close</button></div>
     </main>
 
       <!-- Footer Section -->

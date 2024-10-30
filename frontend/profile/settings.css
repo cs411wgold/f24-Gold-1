@@ -32,36 +32,19 @@ main {
 }
 .edit-avatar-button {
     display: block;
-    margin: 50px; 
+    margin: 20px; 
     font-size: medium;
     background-color: #008080;
     color: rgb(255, 255, 255);
 }
-.Button-container{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 80px;
-    gap: 15px; 
-}
-.PublicProfile-button{
-    width: 250px; 
-    height: 50px;
-    padding: 10px 20px;
-    background-color: #008080;
-    color: rgb(255, 255, 255);
-}
-.Account-button{
-    width: 250px; 
-    height: 50px;
-    padding: 10px 20px;
-    background-color: #008080;
-    color: rgb(255, 255, 255);
-}
-.ViewManageFriendsList-button{
-    width: 250px; 
-    height: 50px;
-    padding: 10px 20px;
-    background-color: #008080;
-    color: rgb(255, 255, 255);
+.popup { 
+    display: none; 
+    position: fixed; 
+    left: 50%; 
+    top: 50%; 
+    transform: translate(-50%, -50%); 
+    padding: 20px; 
+    background-color: white; 
+    border: 1px solid black; 
+    z-index: 1; 
 }
