@@ -30,6 +30,7 @@ def fetch_assignments():
 
 # Function to insert assignments into the database
 def insert_assignments(assignments):
+    cursor = None
     try:
         # Connect to the PostgreSQL database
         connection = psycopg2.connect(

@@ -59,9 +59,6 @@
          <div class="timer">
           <select name="tasks" id="tasks">
             <option value="" disabled selected>Select a task</option>
-            <option value="task1">Task 1</option>
-            <option value="task2">Task 2</option>
-            <option value="task3">Task 3</option>
         </select>
             <div class="button-container">
                <button class="button" id="pomodoro-session" onClick="normalTimer()">Pomodoro</button>
@@ -99,6 +96,20 @@
    let alarmInterval = null;
    const alarm = new Audio("./alarm.wav");
    const taskDropdown = document.getElementById("tasks");
+
+   fetch('http://127.0.0.1:8000/upcoming/')
+  .then(response => response.json())
+  .then(data => {
+    data.assignments.forEach((task) => {
+      const option = document.createElement("option");
+         option.value = task.name; 
+         option.textContent = task.name; 
+         taskDropdown.appendChild(option);
+    })
+  })
+  .catch(error => {
+    console.error("Error fetching data:", error); 
+  });
 
    function switchTimer() {
     const timerButton = document.getElementById("next");
