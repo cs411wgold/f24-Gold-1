@@ -31,6 +31,13 @@ const api = {
         return new Promise(resolve => setTimeout(() => resolve(forumData[forumId]), 100));
     },
     getPosts: async (forumId) => {
+        // Get posts from localStorage or use default data
+        const storedPosts = localStorage.getItem(`forum_posts_${forumId}`);
+        if (storedPosts) {
+            return JSON.parse(storedPosts);
+        }
+        
+        // If no stored posts, use the sample data and store it
         const samplePosts = {
             math: [
                 {
@@ -318,28 +325,73 @@ const api = {
                 }
             ]
         };
-        return new Promise(resolve => setTimeout(() => resolve(samplePosts[forumId]), 100));
+        
+        localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(samplePosts[forumId]));
+        return samplePosts[forumId];
     },
     createPost: async (forumId, postData) => {
-        return new Promise(resolve => setTimeout(() => resolve({
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        const newPost = {
             id: Date.now(),
             ...postData,
-            author: "CurrentUser",
+            author: "jimbo",
             createdAt: new Date().toISOString(),
             upvotes: 0,
             downvotes: 0,
             replies: []
-        }), 200));
+        };
+        
+        posts.unshift(newPost); // Add new post at the beginning
+        localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+        return newPost;
     },
     createReply: async (postId, replyData) => {
-        return new Promise(resolve => setTimeout(() => resolve({
+        // Find the post in all forums
+        const forumId = new URLSearchParams(window.location.search).get('id');
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        
+        const newReply = {
             id: Date.now(),
             ...replyData,
-            author: "CurrentUser",
+            author: "jimbo",
             createdAt: new Date().toISOString(),
             upvotes: 0,
             downvotes: 0
-        }), 200));
+        };
+
+        // Function to add reply to post or nested reply
+        function addReplyToPost(post) {
+            if (replyData.parentReplyId) {
+                // Add nested reply
+                const findAndAddReply = (replies) => {
+                    for (let reply of replies) {
+                        if (reply.id === replyData.parentReplyId) {
+                            reply.replies = reply.replies || [];
+                            reply.replies.push(newReply);
+                            return true;
+                        }
+                        if (reply.replies && findAndAddReply(reply.replies)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                findAndAddReply(post.replies);
+            } else {
+                // Add direct reply to post
+                post.replies = post.replies || [];
+                post.replies.push(newReply);
+            }
+        }
+
+        // Find the post and add the reply
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            addReplyToPost(post);
+            localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+        }
+
+        return newReply;
     },
     vote: async (postId, value) => {
         return new Promise(resolve => setTimeout(() => resolve({ success: true }), 100));
@@ -545,10 +597,13 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const title = document.getElementById('post-title').value;
         const content = document.getElementById('post-content').value;
+        
+        if (!title.trim() || !content.trim()) return; // Don't submit empty posts
+        
         try {
             await api.createPost(forumId, { title, content });
-            await loadPosts();
-            postForm.reset();
+            postForm.reset(); // Clear the form
+            await loadPosts(); // Refresh the posts to show new post
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -567,9 +622,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.submitReply = async function (postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         const replyContent = post.querySelector('.reply-form textarea').value;
+        if (!replyContent.trim()) return; // Don't submit empty replies
+        
         try {
             await api.createReply(postId, { content: replyContent });
-            await loadPosts();
+            post.querySelector('.reply-form').style.display = 'none'; // Hide form after submission
+            post.querySelector('.reply-form textarea').value = ''; // Clear textarea
+            await loadPosts(); // Refresh the posts to show new reply
         } catch (error) {
             console.error('Error creating reply:', error);
         }
@@ -578,9 +637,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.submitNestedReply = async function (postId, replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         const nestedReplyContent = reply.querySelector('.nested-reply-form textarea').value;
+        if (!nestedReplyContent.trim()) return; // Don't submit empty replies
+        
         try {
-            await api.createReply(postId, { content: nestedReplyContent, parentReplyId: replyId });
-            await loadPosts();
+            await api.createReply(postId, { 
+                content: nestedReplyContent, 
+                parentReplyId: replyId 
+            });
+            reply.querySelector('.nested-reply-form').style.display = 'none'; // Hide form after submission
+            reply.querySelector('.nested-reply-form textarea').value = ''; // Clear textarea
+            await loadPosts(); // Refresh the posts to show new reply
         } catch (error) {
             console.error('Error creating nested reply:', error);
         }
@@ -662,6 +728,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error voting on reply:', error);
         }
+    };
+
+    // Add these functions to handle toggling flagged content
+    window.toggleFlaggedContent = function(postId) {
+        const post = document.querySelector(`[data-post-id="${postId}"]`);
+        const hiddenContent = post.querySelector('.hidden-content');
+        hiddenContent.style.display = hiddenContent.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.toggleFlaggedReply = function(replyId) {
+        const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
+        const hiddenContent = reply.querySelector('.hidden-content');
+        hiddenContent.style.display = hiddenContent.style.display === 'none' ? 'block' : 'none';
     };
 
     loadForumContent();

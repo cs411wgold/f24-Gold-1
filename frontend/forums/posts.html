@@ -27,15 +27,9 @@
         <div id="new-post-form" class="mt-4 container bg-light p-md-3" style="--bs-bg-opacity:0.90; margin-bottom:1%">
             <h3>Create a New Post</h3>
             <form id="post-form">
-                <div class="mb-3">
-                    <label for="post-title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="post-title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="post-content" class="form-label">Content</label>
-                    <textarea class="form-control" id="post-content" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Post</button>
+                <input type="text" id="post-title" placeholder="Post Title" required>
+                <textarea id="post-content" placeholder="Post Content" required></textarea>
+                <button type="submit">Submit Post</button>
             </form>
         </div>
     </div>
