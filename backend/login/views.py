@@ -57,24 +57,17 @@ def signup_view(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print("Received data in signup_view:", data)  # Debugging statement
             form = SignUpForm(data)
             if form.is_valid():
                 user = form.save()
-                logger.info(f"User saved: {user.username}")
-
-                # Automatically log in the user after signup
-                login(request, user)
                 return JsonResponse({'status': 'success', 'message': 'Signup successful!'})
             else:
-                print("Form validation errors:", form.errors)  # Print form errors for debugging
                 return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': form.errors.as_json()}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed.'}, status=405)
-from django.http import JsonResponse
-
+    
 @csrf_exempt
 def list_upcoming_assignments_view(request, course_id):
     try:
