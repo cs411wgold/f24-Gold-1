@@ -46,12 +46,12 @@
                         if (!response.ok) {
                             throw new Error("Network response was not ok");
                         }
-                        return response.json();  // Ensure the response is JSON
+                        return response.json(); 
                     })
                     .then((data) => {
                         if (data.status === "success") {
                             alert("Signup successful!");
-                            window.location.href = "/login";  // Redirect on success
+                            window.location.href = "../home/home.html";  
                         } else {
                             alert(`Error: ${data.message}`);
                         }
