@@ -16,36 +16,43 @@ course_id = 161613
 CANVAS_API_URL = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments?order_by=due_at"
 REGGIE_ACCESS_TOKEN = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r"
 
-# Function to fetch all assignment data from Canvas
-def fetch_assignments():
+
+# Function to fetch assignment data from Canvas, handling pagination
+def fetch_all_assignments():
     headers = {
         "Authorization": f"Bearer {REGGIE_ACCESS_TOKEN}",
         "Content-Type": "application/json"
     }
     
-    all_assignments = []
-    next_page_url = CANVAS_API_URL
-    
-    while next_page_url:
-        response = requests.get(next_page_url, headers=headers)
+    assignments = []
+    page = 1
+    while True:
+        # Correct URL with proper parameter separator
+        response = requests.get(f"{CANVAS_API_URL}&per_page=100&page={page}", headers=headers)
         response.raise_for_status()
-
-        # Add the assignments from this page to the list
-        all_assignments.extend(response.json())
-
-        # Get the next page URL from the response headers
-        if 'Link' in response.headers:
-            links = response.headers['Link'].split(',')
-            next_page_url = None
-            for link in links:
-                parts = link.split(';')
-                if 'rel="next"' in parts[1]:
-                    next_page_url = parts[0].strip()[1:-1]  # Removing < > from the URL
-                    break
+        data = response.json()
+        
+        # Check if data is a list (meaning it's already the assignments list)
+        if isinstance(data, list):
+            assignments_list = data
+        elif isinstance(data, dict):
+            # If it's a dictionary, assume assignments are in the 'assignments' key
+            assignments_list = data.get('assignments', [])
         else:
-            next_page_url = None
+            assignments_list = []
 
-    return all_assignments
+        if not assignments_list:
+            # No more data, break out of the loop
+            break
+        
+        # Extend the main assignments list with this page's assignments
+        assignments.extend(assignments_list)
+        page += 1
+
+    return assignments
+
+
+
 
 # Function to insert assignments into the database
 def insert_assignments(assignments):
@@ -97,7 +104,7 @@ def insert_assignments(assignments):
 if __name__ == "__main__":
     # Fetch assignments from Canvas API
     try:
-        assignments = fetch_assignments()
+        assignments = fetch_all_assignments()
         if assignments:
             # Insert fetched assignments into the database
             insert_assignments(assignments)

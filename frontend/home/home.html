@@ -46,78 +46,69 @@
             <h2>Welcome Back!</h2>
             <h3>Upcoming Assignments</h3>
             </div>
-            <div id="upcoming-assignments" class="assignments-container">
-              <!--
-                <script>
-                  document.addEventListener("DOMContentLoaded", function() {
-                      fetch('http://127.0.0.1:8000/upcoming/')
-                          .then(response => response.json())
-                          .then(data => {
-                              const assignmentsContainer = document.getElementById('upcoming-assignments');
-                              assignmentsContainer.innerHTML = "";  // Clear previous content if any
-                              
-                              data.assignments.forEach(assignment => {
-                                  const assignmentCard = `
-                                      <div class="assignment-card">
-                                          <div class="date">${assignment.due_at}</div>
-                                          <div class="details">
-                                              <h3>${assignment.name}</h3>
-                                          </div>
-                                      </div>
-                                  `;
-                                  assignmentsContainer.innerHTML += assignmentCard;
-                              });
-                          })
-                          .catch(error => {
-                              console.error("Error fetching assignments:", error);
-                          });
-                  });
-              </script>
-              -->
+            <div id="upcoming-assignments" class="assignments-container">  
+              <!-- Upcoming assignments will be populated here -->
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    fetch(`http://127.0.0.1:8000/upcoming/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("API Response:", data);
             
-                
-                <script>
-                  document.addEventListener("DOMContentLoaded", function() {
-                      const courseId = 161613;  // Replace with your actual course ID
-                      fetch(`http://127.0.0.1:8000/upcoming/`)
-                          .then(response => response.json())
-                          .then(data => {
-                              if (Array.isArray(data.assignments) && data.assignments.length > 0) {
-                                  const assignmentsContainer = document.getElementById('upcoming-assignments');
-                                  assignmentsContainer.innerHTML = "";  // Clear previous content if any
-                                  
-                                  // Iterate over the first 3 assignments
-                                  data.assignments.slice(0, 3).forEach(assignment => {
-                                      const dueDate = new Date(assignment.due_at);
-                                      const formattedDate = `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
-              
-                                      // Create assignment card HTML
-                                      const assignmentCard = `
-                                          <div class="assignment-card">
-                                              <div class="date">${formattedDate}</div>
-                                              <div class="details">
-                                                  <h3>CS 411W: ${assignment.name}</h3>
-                                              </div>
-                                          </div>
-                                      `;
-                                      
-                                      assignmentsContainer.innerHTML += assignmentCard;
-                                  });
-                              } else {
-                                  console.error("No assignments found or error in response format.");
-                              }
-                          })
-                          .catch(error => {
-                              console.error("Error fetching assignments:", error);
-                          });
-                  });
+                            if (Array.isArray(data.assignments) && data.assignments.length > 0) {
+                                const assignmentsContainer = document.getElementById('upcoming-assignments');
+                                assignmentsContainer.innerHTML = "";  // Clear previous content if any
+            
+                                // Get today's date and set to midnight to only compare date parts
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+            
+                                // Array to hold assignments due today or later
+                                let upcomingAssignments = [];
+            
+                                // Iterate through the assignments and filter out those with due date before today
+                                data.assignments.forEach(assignment => {
+                                    const dueDate = new Date(assignment.due_at);
+                                    dueDate.setHours(0, 0, 0, 0);  // Set to start of the day for comparison
+            
+                                    if (dueDate >= today) {
+                                        upcomingAssignments.push(assignment);
+                                    }
+                                });
+            
+                                console.log("Upcoming Assignments after Filtering:", upcomingAssignments);
+            
+                                // Take the first 3 assignments and create HTML cards for them
+                                if (upcomingAssignments.length > 0) {
+                                    upcomingAssignments.slice(0, 3).forEach(assignment => {
+                                        const dDate = new Date(assignment.due_at);
+                                        const fDate = `${dDate.getMonth() + 1}/${dDate.getDate()}/${dDate.getFullYear()}`;
+            
+                                        // Create assignment card HTML
+                                        const assignmentCard = `
+                                            <div class="assignment-card">
+                                                <div class="date">${fDate}</div>
+                                                <div class="details">
+                                                    <h3>CS 411W: ${assignment.name}</h3>
+                                                </div>
+                                            </div>
+                                        `;
+            
+                                        assignmentsContainer.innerHTML += assignmentCard;
+                                    });
+                                } else {
+                                    assignmentsContainer.innerHTML = "<p>No upcoming assignments.</p>";
+                                }
+                            } else {
+                                console.error("No assignments found or error in response format.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching assignments:", error);
+                        });
+                });
               </script>
-             
-              
-                <!-- Upcoming assignments will be populated here -->
-              </div>
-          
-          
+            </div>
         </section>
     </main>
 
