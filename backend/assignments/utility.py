@@ -1,13 +1,7 @@
 import requests
-import psycopg2
+import psycopg2  # Assuming PostgreSQL, use the appropriate library for your database
 from psycopg2 import sql
 from datetime import datetime
-
-# Canvas API details
-user_id = 40892
-course_id = 161613
-CANVAS_API_URL = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments"
-REGGIE_ACCESS_TOKEN = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r"
 
 # Database credentials
 DB_NAME = "knowtime"
@@ -16,23 +10,47 @@ DB_PASSWORD = "TestMe123"
 DB_HOST = "kt-db"
 DB_PORT = "5432"
 
+# Canvas API details
+user_id = 40892  
+course_id = 161613
+CANVAS_API_URL = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments?order_by=due_at"
+REGGIE_ACCESS_TOKEN = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r"
 
-# Function to fetch assignment data from Canvas
+# Function to fetch all assignment data from Canvas
 def fetch_assignments():
     headers = {
         "Authorization": f"Bearer {REGGIE_ACCESS_TOKEN}",
         "Content-Type": "application/json"
     }
-    response = requests.get(CANVAS_API_URL, headers=headers)
-    response.raise_for_status()  # Raise an exception for HTTP errors
-    return response.json()  # Return the JSON data from Canvas API
+    
+    all_assignments = []
+    next_page_url = CANVAS_API_URL
+    
+    while next_page_url:
+        response = requests.get(next_page_url, headers=headers)
+        response.raise_for_status()
 
+        # Add the assignments from this page to the list
+        all_assignments.extend(response.json())
+
+        # Get the next page URL from the response headers
+        if 'Link' in response.headers:
+            links = response.headers['Link'].split(',')
+            next_page_url = None
+            for link in links:
+                parts = link.split(';')
+                if 'rel="next"' in parts[1]:
+                    next_page_url = parts[0].strip()[1:-1]  # Removing < > from the URL
+                    break
+        else:
+            next_page_url = None
+
+    return all_assignments
 
 # Function to insert assignments into the database
 def insert_assignments(assignments):
-    cursor = None
     try:
-        # Connect to the PostgreSQL database
+        # Connect to your PostgreSQL database
         connection = psycopg2.connect(
             dbname=DB_NAME,
             user=DB_USER,
@@ -59,17 +77,16 @@ def insert_assignments(assignments):
                 datetime.strptime(assignment['due_at'], "%Y-%m-%dT%H:%M:%SZ") if assignment.get('due_at') else None,
                 assignment.get('points_possible', None),
                 assignment.get('grading_type', None),
-                ', '.join(assignment.get('submission_types', []))
+                assignment.get('submission_types', None)
             )
 
             cursor.execute(insert_query, assignment_data)
 
         # Commit the transaction
         connection.commit()
-        print("Assignments successfully imported into the database.")
 
     except Exception as e:
-        print("An error occurred while inserting assignments:", e)
+        print("An error occurred:", e)
 
     finally:
         if cursor:
@@ -77,18 +94,15 @@ def insert_assignments(assignments):
         if connection:
             connection.close()
 
-
-# Main script execution
 if __name__ == "__main__":
+    # Fetch assignments from Canvas API
     try:
-        # Fetch assignments from Canvas API
         assignments = fetch_assignments()
-
-        # Insert fetched assignments into the database if any are found
         if assignments:
+            # Insert fetched assignments into the database
             insert_assignments(assignments)
+            print("Assignments successfully imported into the database.")
         else:
             print("No assignments were found.")
-
     except requests.exceptions.RequestException as e:
         print("Error fetching assignments:", e)

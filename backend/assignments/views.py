@@ -2,7 +2,7 @@ import requests
 from django.http import JsonResponse
 from assignments.models import Assignment
 
-CANVAS_API_URL = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments"
+CANVAS_API_URL = "https://canvas.odu.edu/api/v1/users/40892/courses/161613/assignments?order_by=due_at"
 REGGIE_ACCESS_TOKEN = "21066~GhuReAXccZe732w4RytQDT86FktFUTAGnL4VPweHkVYNn4k7FaZQDGAwyAcKzV3r"
 
 # Function to fetch assignment data from Canvas
