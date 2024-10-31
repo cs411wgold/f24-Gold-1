@@ -416,6 +416,69 @@ const api = {
         return new Promise(resolve => setTimeout(() => resolve({
             subscribed: localStorage.getItem(`subscribed_${postId}`) === 'true'
         }), 100));
+    },
+
+    deletePost: async (forumId, postId) => {
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        const updatedPosts = posts.filter(post => post.id !== postId);
+        localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(updatedPosts));
+        return { success: true };
+    },
+
+    deleteReply: async (forumId, postId, replyId) => {
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        const post = posts.find(p => p.id === postId);
+        
+        if (post) {
+            // Function to remove reply recursively
+            const removeReply = (replies) => {
+                const index = replies.findIndex(r => r.id === replyId);
+                if (index !== -1) {
+                    replies.splice(index, 1);
+                    return true;
+                }
+                return replies.some(reply => reply.replies && removeReply(reply.replies));
+            };
+            
+            removeReply(post.replies);
+            localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+        }
+        return { success: true };
+    },
+
+    editPost: async (forumId, postId, newContent) => {
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            post.content = newContent;
+            post.edited = true;
+            post.editedAt = new Date().toISOString();
+            localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+        }
+        return { success: true };
+    },
+
+    editReply: async (forumId, postId, replyId, newContent) => {
+        const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+        const post = posts.find(p => p.id === postId);
+        
+        if (post) {
+            // Function to edit reply recursively
+            const editReplyContent = (replies) => {
+                const reply = replies.find(r => r.id === replyId);
+                if (reply) {
+                    reply.content = newContent;
+                    reply.edited = true;
+                    reply.editedAt = new Date().toISOString();
+                    return true;
+                }
+                return replies.some(r => r.replies && editReplyContent(r.replies));
+            };
+            
+            editReplyContent(post.replies);
+            localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+        }
+        return { success: true };
     }
 };
 
@@ -484,12 +547,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 ` : ''}
                 
                 <h5 class="card-title">${post.title}</h5>
-                <p class="card-text">${post.content}</p>
+                <div class="post-content" id="post-content-${post.id}">
+                    <p class="card-text">${post.content}</p>
+                </div>
+                <div class="edit-form" id="edit-form-${post.id}" style="display: none;">
+                    <textarea class="form-control mb-2">${post.content}</textarea>
+                    <button class="btn btn-sm btn-primary" onclick="submitPostEdit(${post.id})">Save</button>
+                    <button class="btn btn-sm btn-secondary" onclick="cancelPostEdit(${post.id})">Cancel</button>
+                </div>
                 
                 ${isHidden ? '</div>' : ''}
                 
                 <div class="post-meta">
-                    <small>Posted by ${post.author} on ${new Date(post.createdAt).toLocaleString()}</small>
+                    <small>
+                        Posted by ${post.author} on ${new Date(post.createdAt).toLocaleString()}
+                        ${post.edited ? `(edited ${new Date(post.editedAt).toLocaleString()})` : ''}
+                    </small>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div class="vote-buttons">
@@ -509,7 +582,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                         </button>
                     </div>
-                    <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showReplyForm(${post.id})">Reply</button>
+                    <div class="action-buttons">
+                        ${post.author === 'jimbo' ? `
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="editPost(${post.id})">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger me-2" onclick="deletePost(${post.id})">Delete</button>
+                        ` : ''}
+                        <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showReplyForm(${post.id})">Reply</button>
+                    </div>
                 </div>
                 <div class="reply-form mt-3" style="display: none;">
                     <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
@@ -539,12 +618,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="hidden-content" style="display: none;">
                 ` : ''}
                 
-                <p class="card-text">${reply.content}</p>
+                <div class="reply-content" id="reply-content-${reply.id}">
+                    <p class="card-text">${reply.content}</p>
+                </div>
+                <div class="edit-form" id="edit-form-reply-${reply.id}" style="display: none;">
+                    <textarea class="form-control mb-2">${reply.content}</textarea>
+                    <button class="btn btn-sm btn-primary" onclick="submitReplyEdit(${postId}, ${reply.id})">Save</button>
+                    <button class="btn btn-sm btn-secondary" onclick="cancelReplyEdit(${reply.id})">Cancel</button>
+                </div>
                 
                 ${isHidden ? '</div>' : ''}
                 
                 <div class="reply-meta">
-                    <small>Replied by ${reply.author} on ${new Date(reply.createdAt).toLocaleString()}</small>
+                    <small>
+                        Replied by ${reply.author} on ${new Date(reply.createdAt).toLocaleString()}
+                        ${reply.edited ? `(edited ${new Date(reply.editedAt).toLocaleString()})` : ''}
+                    </small>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="vote-buttons">
@@ -559,7 +648,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fas fa-arrow-down"></i> ${reply.downvotes}
                         </button>
                     </div>
-                    <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showNestedReplyForm(${postId}, ${reply.id})">Reply</button>
+                    <div class="action-buttons">
+                        ${reply.author === 'jimbo' ? `
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="editReply(${postId}, ${reply.id})">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger me-2" onclick="deleteReply(${postId}, ${reply.id})">Delete</button>
+                        ` : ''}
+                        <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showNestedReplyForm(${postId}, ${reply.id})">Reply</button>
+                    </div>
                 </div>
                 <div class="nested-reply-form mt-2" style="display: none;">
                     <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
@@ -741,6 +836,80 @@ document.addEventListener('DOMContentLoaded', () => {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         const hiddenContent = reply.querySelector('.hidden-content');
         hiddenContent.style.display = hiddenContent.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.editPost = function(postId) {
+        const post = document.querySelector(`[data-post-id="${postId}"]`);
+        post.querySelector(`#post-content-${postId}`).style.display = 'none';
+        post.querySelector(`#edit-form-${postId}`).style.display = 'block';
+    };
+
+    window.cancelPostEdit = function(postId) {
+        const post = document.querySelector(`[data-post-id="${postId}"]`);
+        post.querySelector(`#post-content-${postId}`).style.display = 'block';
+        post.querySelector(`#edit-form-${postId}`).style.display = 'none';
+    };
+
+    window.submitPostEdit = async function(postId) {
+        const forumId = new URLSearchParams(window.location.search).get('id');
+        const post = document.querySelector(`[data-post-id="${postId}"]`);
+        const newContent = post.querySelector(`#edit-form-${postId} textarea`).value;
+        
+        try {
+            await api.editPost(forumId, postId, newContent);
+            await loadPosts(); // Refresh the posts
+        } catch (error) {
+            console.error('Error editing post:', error);
+        }
+    };
+
+    window.deletePost = async function(postId) {
+        if (!confirm('Are you sure you want to delete this post?')) return;
+        
+        const forumId = new URLSearchParams(window.location.search).get('id');
+        try {
+            await api.deletePost(forumId, postId);
+            await loadPosts(); // Refresh the posts
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
+    };
+
+    window.editReply = function(postId, replyId) {
+        const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
+        reply.querySelector(`#reply-content-${replyId}`).style.display = 'none';
+        reply.querySelector(`#edit-form-reply-${replyId}`).style.display = 'block';
+    };
+
+    window.cancelReplyEdit = function(replyId) {
+        const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
+        reply.querySelector(`#reply-content-${replyId}`).style.display = 'block';
+        reply.querySelector(`#edit-form-reply-${replyId}`).style.display = 'none';
+    };
+
+    window.submitReplyEdit = async function(postId, replyId) {
+        const forumId = new URLSearchParams(window.location.search).get('id');
+        const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
+        const newContent = reply.querySelector(`#edit-form-reply-${replyId} textarea`).value;
+        
+        try {
+            await api.editReply(forumId, postId, replyId, newContent);
+            await loadPosts(); // Refresh the posts
+        } catch (error) {
+            console.error('Error editing reply:', error);
+        }
+    };
+
+    window.deleteReply = async function(postId, replyId) {
+        if (!confirm('Are you sure you want to delete this reply?')) return;
+        
+        const forumId = new URLSearchParams(window.location.search).get('id');
+        try {
+            await api.deleteReply(forumId, postId, replyId);
+            await loadPosts(); // Refresh the posts
+        } catch (error) {
+            console.error('Error deleting reply:', error);
+        }
     };
 
     loadForumContent();
