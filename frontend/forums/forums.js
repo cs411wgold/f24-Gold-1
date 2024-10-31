@@ -515,7 +515,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="mb-0">${forum.description}</p>
                     </div>
                 </div>
+                <div class="d-flex justify-content-end mb-3">
+                    <select id="sort-select" class="form-select" style="width: auto;">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="most-upvoted">Most Upvoted</option>
+                    </select>
+                </div>
             `;
+
+            // Add event listener for sort selection
+            document.getElementById('sort-select').addEventListener('change', loadPosts);
         } catch (error) {
             forumContent.innerHTML = '<p>Error loading forum information.</p>';
         }
@@ -524,8 +534,26 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadPosts() {
         try {
             const posts = await api.getPosts(forumId);
-            postsContainer.innerHTML = posts.map(post => createPostHTML(post)).join('');
+            const sortSelect = document.getElementById('sort-select');
+            const sortMethod = sortSelect ? sortSelect.value : 'newest';
+            
+            // Sort posts based on selected method
+            const sortedPosts = [...posts].sort((a, b) => {
+                switch (sortMethod) {
+                    case 'newest':
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    case 'oldest':
+                        return new Date(a.createdAt) - new Date(b.createdAt);
+                    case 'most-upvoted':
+                        return (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes);
+                    default:
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                }
+            });
+            
+            postsContainer.innerHTML = sortedPosts.map(post => createPostHTML(post)).join('');
         } catch (error) {
+            console.error('Error loading posts:', error);
             postsContainer.innerHTML = '<p>Error loading posts.</p>';
         }
     }
