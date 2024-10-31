@@ -116,6 +116,26 @@ const api = {
                             ]
                         }
                     ]
+                },
+                {
+                    id: 13,
+                    title: "Test Flagged Post",
+                    content: "This is a test post that should be flagged due to having 10+ downvotes.",
+                    author: "User12345",
+                    createdAt: new Date().toISOString(),
+                    upvotes: 2,
+                    downvotes: 15,
+                    replies: [
+                        {
+                            id: 160,
+                            content: "This is a test reply that should also be flagged.",
+                            author: "User67890",
+                            createdAt: new Date().toISOString(),
+                            upvotes: 1,
+                            downvotes: 12,
+                            replies: []
+                        }
+                    ]
                 }
             ],
             history: [
