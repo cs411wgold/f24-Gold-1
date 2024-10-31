@@ -1,9 +1,11 @@
 main {
-  flex: 1;
+  background-image: url('../img/bk.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .calendar-container {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   text-align: center;
   background-color: rgb(252,252,252);
@@ -142,4 +144,14 @@ ul {
   justify-content: center;
   align-items: center;
   width: 100%;
+  background-color: rgba(232,226,218,255);
+  padding:20px;
+}
+
+#footer-common{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: rgba(232,226,218,255);
 }
