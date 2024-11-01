@@ -50,7 +50,7 @@
               <!-- Upcoming assignments will be populated here -->
               <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    fetch(`http://127.0.0.1:8000/upcoming/`)
+                    fetch(`http://127.0.0.1:8000/assignments/upcoming/`)
                         .then(response => response.json())
                         .then(data => {
                             console.log("API Response:", data);
