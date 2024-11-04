@@ -366,7 +366,6 @@ const api = {
         return newPost;
     },
     createReply: async (postId, replyData) => {
-        // Find the post in all forums
         const forumId = new URLSearchParams(window.location.search).get('id');
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         
@@ -409,6 +408,17 @@ const api = {
         if (post) {
             addReplyToPost(post);
             localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+            
+            // Check if anyone is subscribed to this thread and notify them
+            const subscriptions = JSON.parse(localStorage.getItem('threadSubscriptions') || '[]');
+            if (subscriptions.includes(postId)) {
+                notifications.add({
+                    id: Date.now(),
+                    message: `New reply in "${post.title}"`,
+                    postId: postId,
+                    createdAt: new Date().toISOString()
+                });
+            }
         }
 
         return newReply;
@@ -512,6 +522,44 @@ function saveVotes() {
     localStorage.setItem('userPostVotes', JSON.stringify(userVotes.posts));
     localStorage.setItem('userReplyVotes', JSON.stringify(userVotes.replies));
 }
+
+// Add after userVotes object
+const notifications = {
+    list: JSON.parse(localStorage.getItem('notifications') || '[]'),
+    
+    add: function(notification) {
+        this.list.unshift(notification);
+        localStorage.setItem('notifications', JSON.stringify(this.list));
+        this.showToast(notification);
+    },
+    
+    showToast: function(notification) {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast show';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        
+        toast.innerHTML = `
+            <div class="toast-header">
+                <strong class="me-auto">New Reply</strong>
+                <small>${new Date().toLocaleTimeString()}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${notification.message}
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Remove toast after 10 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 10000);
+    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const forumContent = document.getElementById('forum-content');
@@ -959,6 +1007,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error deleting reply:', error);
         }
     };
+
+    // Add toast container to the DOM
+    const toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+    document.body.appendChild(toastContainer);
 
     loadForumContent();
     loadPosts();
