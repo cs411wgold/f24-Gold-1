@@ -779,7 +779,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             localStorage.setItem('threadSubscriptions', JSON.stringify([...subscriptions]));
-            await loadPosts(); // Refresh the view
+            
+            // Update just the subscription button without reloading all posts
+            const post = document.querySelector(`[data-post-id="${postId}"]`);
+            const subscribeBtn = post.querySelector('.subscribe-btn');
+            const isSubscribed = subscriptions.has(postId);
+            
+            subscribeBtn.className = `btn btn-sm ${isSubscribed ? 'btn-primary' : 'btn-outline-primary'} ms-2 subscribe-btn`;
+            subscribeBtn.innerHTML = `
+                <i class="fas ${isSubscribed ? 'fa-bell-slash' : 'fa-bell'}"></i>
+                ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+            `;
         } catch (error) {
             console.error('Error toggling subscription:', error);
         }
