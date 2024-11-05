@@ -543,6 +543,7 @@ const notifications = {
         
         toast.innerHTML = `
             <div class="toast-header">
+                <img src="../resources/tomato.png" class="me-2" alt="Tomato" style="width: 20px; height: 20px;">
                 <strong class="me-auto">New Reply</strong>
                 <small>${new Date().toLocaleTimeString()}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
