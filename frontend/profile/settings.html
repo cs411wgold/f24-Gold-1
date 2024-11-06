@@ -58,12 +58,31 @@
         </div>
         <a href="#"><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
       </div>
-      <button onclick="openPopup('public-profile')">Public Profile</button> 
-      <button onclick="openPopup('account')">Account</button> 
-      <button onclick="openPopup('view-users')">View/Manage Users</button> 
-      <div id="public-profile" class="popup">placeholder <button onclick="closePopup('public-profile')">Close</button></div> 
-      <div id="account" class="popup">Placeholder <button onclick="closePopup('account')">Close</button></div> 
-      <div id="view-users" class="popup">Placeholder <button onclick="closePopup('view-users')">Close</button></div>
+      <!--Modal Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
+      <button id="PublicProfile" style="font-size:medium">Public Profile</button></a>
+      <div id="PublicProfile-modal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+          <h1>Public Profile</h1>
+          <h2>Notifications</h2>
+          <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
+          <label class="Notifications-switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          <h2>Time Zone</h2>
+          <div class="TimeZone-dropdown">
+            <button onclick="dropMenu()" class="TimeZone-button">Select</button>
+            <div id="TimeZone" class="TimeZone-content"></div>
+          </div>
+        </div>
+      </div>
+      <div class="Account-container">
+        <button style="font-size:medium">Account</button></a>
+      </div>
+      <div class="View/ManageFriendsList-container">
+        <button style="font-size:medium">View/Manage Friends List</button></a>
+      </div>
     </main>
 
       <!-- Footer Section -->
