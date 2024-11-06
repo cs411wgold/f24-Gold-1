@@ -562,6 +562,10 @@ const notifications = {
     }
 };
 
+// Add these constants near the top of the file
+const POSTS_PER_PAGE = 5; // Adjust this number as needed
+let currentPage = 1;
+
 document.addEventListener('DOMContentLoaded', () => {
     const forumContent = document.getElementById('forum-content');
     const postsContainer = document.getElementById('posts-container');
@@ -619,8 +623,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         return new Date(b.createdAt) - new Date(a.createdAt);
                 }
             });
+
+            // Calculate pagination
+            const totalPosts = sortedPosts.length;
+            const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+            const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+            const endIndex = startIndex + POSTS_PER_PAGE;
+            const paginatedPosts = sortedPosts.slice(startIndex, endIndex);
             
-            postsContainer.innerHTML = sortedPosts.map(post => createPostHTML(post)).join('');
+            // Render posts and pagination controls
+            postsContainer.innerHTML = `
+                ${paginatedPosts.map(post => createPostHTML(post)).join('')}
+                <div class="pagination-controls d-flex justify-content-center align-items-center mt-4">
+                    <button class="btn btn-outline-primary me-2" 
+                            onclick="changePage(${currentPage - 1})"
+                            ${currentPage === 1 ? 'disabled' : ''}>
+                        Previous
+                    </button>
+                    <span class="mx-3">
+                        Page ${currentPage} of ${totalPages}
+                    </span>
+                    <button class="btn btn-outline-primary ms-2" 
+                            onclick="changePage(${currentPage + 1})"
+                            ${currentPage === totalPages ? 'disabled' : ''}>
+                        Next
+                    </button>
+                </div>
+            `;
         } catch (error) {
             console.error('Error loading posts:', error);
             postsContainer.innerHTML = '<p>Error loading posts.</p>';
@@ -834,12 +863,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.getElementById('post-title').value;
         const content = document.getElementById('post-content').value;
         
-        if (!title.trim() || !content.trim()) return; // Don't submit empty posts
+        if (!title.trim() || !content.trim()) return;
         
         try {
             await api.createPost(forumId, { title, content });
-            postForm.reset(); // Clear the form
-            await loadPosts(); // Refresh the posts to show new post
+            postForm.reset();
+            currentPage = 1; // Reset to first page
+            await loadPosts();
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -1062,4 +1092,18 @@ document.addEventListener('DOMContentLoaded', () => {
     loadForumContent();
     loadPosts();
     postForm.addEventListener('submit', submitPost);
+
+    // Add this to your existing event listeners
+    document.getElementById('sort-select')?.addEventListener('change', () => {
+        currentPage = 1; // Reset to first page when sorting changes
+        loadPosts();
+    });
+
+    // Add this function to handle page changes
+    window.changePage = function(newPage) {
+        currentPage = newPage;
+        loadPosts();
+        // Scroll to top of posts container
+        postsContainer.scrollIntoView({ behavior: 'smooth' });
+    };
 });
