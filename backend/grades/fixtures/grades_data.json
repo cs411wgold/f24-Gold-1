@@ -1,0 +1,468 @@
+[
+    {
+        "model": "grades.Grade",
+        "pk": 1,
+        "fields": {
+            "assignment": 2446321,
+            "grade": 85.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 2,
+        "fields": {
+            "assignment": 2444375,
+            "grade": 90.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 3,
+        "fields": {
+            "assignment": 2446322,
+            "grade": 78.5
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 4,
+        "fields": {
+            "assignment": 2444399,
+            "grade": 88.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 5,
+        "fields": {
+            "assignment": 2444426,
+            "grade": 95.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 6,
+        "fields": {
+            "assignment": 2446318,
+            "grade": 87.5
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 7,
+        "fields": {
+            "assignment": 2444953,
+            "grade": 98.5
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 8,
+        "fields": {
+            "assignment": 2444381,
+            "grade": 85.3
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 9,
+        "fields": {
+            "assignment": 2444415,
+            "grade": 99.9
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 10,
+        "fields": {
+            "assignment": 2444424,
+            "grade": 89.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 11,
+        "fields": {
+            "assignment": 2444398,
+            "grade": 100.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 12,
+        "fields": {
+            "assignment": 2444390,
+            "grade": 100.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 13,
+        "fields": {
+            "assignment": 2444954,
+            "grade": 89.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 14,
+        "fields": {
+            "assignment": 2444397,
+            "grade": 98.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 15,
+        "fields": {
+            "assignment": 2444395,
+            "grade": 87.5
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 16,
+        "fields": {
+            "assignment": 2446329,
+            "grade": 94.3
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 17,
+        "fields": {
+            "assignment": 2444416,
+            "grade": 98.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 18,
+        "fields": {
+            "assignment": 2444425,
+            "grade": 89.4
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 19,
+        "fields": {
+            "assignment": 2444382,
+            "grade": 100.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 20,
+        "fields": {
+            "assignment": 2444421,
+            "grade": 98.9
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 21,
+        "fields": {
+            "assignment": 2444391,
+            "grade": 81.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 22,
+        "fields": {
+            "assignment": 2444394,
+            "grade": 85.6
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 23,
+        "fields": {
+            "assignment": 2444417,
+            "grade": 98.8
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 24,
+        "fields": {
+            "assignment": 2444374,
+            "grade": 96.3
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 25,
+        "fields": {
+            "assignment": 2444946,
+            "grade": 100.0
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 26,
+        "fields": {
+            "assignment": 2446328,
+            "grade": 98.4
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 27,
+        "fields": {
+            "assignment": 2444420,
+            "grade": 95.7
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 28,
+        "fields": {
+            "assignment": 2444409,
+            "grade": 91.4
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 29,
+        "fields": {
+            "assignment": 2446326,
+            "grade": 96.3
+        }
+    },
+    {
+        "model": "grades.Grade",
+        "pk": 30,
+        "fields": {
+            "assignment": 2444392,
+            "grade": 87.6
+        }
+    },
+    
+        {
+            "model": "grades.Grade",
+            "pk": 31,
+            "fields": {
+                "assignment": 2444418,
+                "grade": 98.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 32,
+            "fields": {
+                "assignment": 2446327,
+                "grade": 84.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 33,
+            "fields": {
+                "assignment": 2444400,
+                "grade": 99.9
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 34,
+            "fields": {
+                "assignment": 2444402,
+                "grade": 94.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 35,
+            "fields": {
+                "assignment": 2444408,
+                "grade": 98.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 36,
+            "fields": {
+                "assignment": 2444422,
+                "grade": 94.7
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 37,
+            "fields": {
+                "assignment": 2444393,
+                "grade": 82.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 38,
+            "fields": {
+                "assignment": 2444404,
+                "grade": 45.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 39,
+            "fields": {
+                "assignment": 2446325,
+                "grade": 0.0
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 40,
+            "fields": {
+                "assignment": 2444385,
+                "grade": 100.0
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 41,
+            "fields": {
+                "assignment": 2444401,
+                "grade": 95.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 42,
+            "fields": {
+                "assignment": 2444403,
+                "grade": 48.8
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 43,
+            "fields": {
+                "assignment": 2444388,
+                "grade": 98.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 44,
+            "fields": {
+                "assignment": 2444405,
+                "grade": 94.5
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 45,
+            "fields": {
+                "assignment": 2444383,
+                "grade": 87.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 46,
+            "fields": {
+                "assignment": 2444423,
+                "grade": 91.8
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 47,
+            "fields": {
+                "assignment": 2444384,
+                "grade": 94.6
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 48,
+            "fields": {
+                "assignment": 2444419,
+                "grade": 85.4
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 49,
+            "fields": {
+                "assignment": 2444376,
+                "grade": 88.1
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 50,
+            "fields": {
+                "assignment": 2444377,
+                "grade": 94.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 51,
+            "fields": {
+                "assignment": 2444378,
+                "grade": 97.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 52,
+            "fields": {
+                "assignment": 2444379,
+                "grade": 99.4
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 53,
+            "fields": {
+                "assignment": 2444380,
+                "grade": 94.1
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 54,
+            "fields": {
+                "assignment": 2444387,
+                "grade": 97.9
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 55,
+            "fields": {
+                "assignment": 2444410,
+                "grade": 89.4
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 56,
+            "fields": {
+                "assignment": 2444413,
+                "grade": 83.4
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 57,
+            "fields": {
+                "assignment": 2444411,
+                "grade": 92.3
+            }
+        },
+        {
+            "model": "grades.Grade",
+            "pk": 58,
+            "fields": {
+                "assignment": 2444412,
+                "grade": 97.6
+            }
+        }
+    ]
+    

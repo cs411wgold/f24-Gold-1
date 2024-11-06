@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'timer',
     'rest_framework',
     'assignments',
+    'grades',
 ]
 
 MIDDLEWARE = [

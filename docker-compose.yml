@@ -25,15 +25,22 @@ services:
       POSTGRES_PASSWORD: TestMe123
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+      DJANGO_SETTINGS_MODULE: "djangoConfig.settings"
+      PYTHONPATH: "/app"
     volumes:
       - ./backend/login/fixtures/user_data.json:/app/login/fixtures/user_data.json
+      - ./backend/grades/fixtures/grades_data.json:/app/grades/fixtures/grades_data.json
+
     command: >
-      sh -c "while ! nc -z kt-db 5432; do sleep 1; done;
-            python manage.py makemigrations && configs:
+      sh -c "
+            while ! nc -z kt-db 5432; do sleep 1; done;
+            python manage.py makemigrations &&
             python manage.py migrate &&
             python assignments/utility.py &&
+            python grades/utility.py &&
             python manage.py loaddata /app/login/fixtures/user_data.json &&
-            python manage.py loaddata /app/timer/fixtures/study_data.json 
+            python manage.py loaddata /app/timer/fixtures/study_data.json &&
+            python manage.py loaddata /app/grades/fixtures/grades_data.json &&
             python manage.py runserver 0.0.0.0:8000"
 
   db:
