@@ -631,140 +631,174 @@ document.addEventListener('DOMContentLoaded', () => {
         const isHidden = post.downvotes >= 10;
         const isSubscribed = subscriptions.has(post.id);
         const userVote = userVotes.posts[post.id] || 0;
+        
+        // Add avatar mapping
+        const avatarMap = {
+            'User12345': '../img/avatars/tomato_warrior.png',
+            'User67890': '../img/avatars/timer_beginner.png',
+            'User78901': '../img/avatars/grade_tracker_1.png',
+            'User90123': '../img/avatars/tomato_bundle.png',
+            'jimbo': '../img/avatars/new_user_seedling.png'
+        };
 
         return `
-        <div class="post card mb-3 ${isHidden ? 'flagged-post' : ''}" data-post-id="${post.id}">
-            <div class="card-body">
-                ${isHidden ? `
-                    <div class="flagged-content alert alert-warning">
-                        This post has been flagged due to community feedback.
-                        <button class="btn btn-sm btn-link" onclick="toggleFlaggedContent(${post.id})">Show Content</button>
+            <div class="post card mb-3 ${isHidden ? 'flagged-post' : ''}" data-post-id="${post.id}">
+                <div class="card-body">
+                    ${isHidden ? `
+                        <div class="flagged-content alert alert-warning">
+                            This post has been flagged due to community feedback.
+                            <button class="btn btn-sm btn-link" onclick="toggleFlaggedContent(${post.id})">Show Content</button>
+                        </div>
+                        <div class="hidden-content" style="display: none;">
+                    ` : ''}
+                    
+                    <div class="d-flex align-items-start">
+                        <img src="${avatarMap[post.author] || '../img/avatars/new_user_seedling.png'}" 
+                             alt="avatar" 
+                             class="rounded-circle me-3" 
+                             style="width: 50px; height: 50px; object-fit: cover;">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title">${post.title}</h5>
+                            <div class="post-content" id="post-content-${post.id}">
+                                <p class="card-text">${post.content}</p>
+                            </div>
+                            <div class="edit-form" id="edit-form-${post.id}" style="display: none;">
+                                <textarea class="form-control mb-2">${post.content}</textarea>
+                                <button class="btn btn-sm btn-primary" onclick="submitPostEdit(${post.id})">Save</button>
+                                <button class="btn btn-sm btn-secondary" onclick="cancelPostEdit(${post.id})">Cancel</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hidden-content" style="display: none;">
-                ` : ''}
-                
-                <h5 class="card-title">${post.title}</h5>
-                <div class="post-content" id="post-content-${post.id}">
-                    <p class="card-text">${post.content}</p>
-                </div>
-                <div class="edit-form" id="edit-form-${post.id}" style="display: none;">
-                    <textarea class="form-control mb-2">${post.content}</textarea>
-                    <button class="btn btn-sm btn-primary" onclick="submitPostEdit(${post.id})">Save</button>
-                    <button class="btn btn-sm btn-secondary" onclick="cancelPostEdit(${post.id})">Cancel</button>
-                </div>
-                
-                ${isHidden ? '</div>' : ''}
-                
-                <div class="post-meta">
-                    <small>
-                        Posted by ${post.author} on ${new Date(post.createdAt).toLocaleString()}
-                        ${post.edited ? `(edited ${new Date(post.editedAt).toLocaleString()})` : ''}
-                    </small>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="vote-buttons">
-                        <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
-                                onclick="vote(${post.id}, 1)" 
-                                ${userVote === -1 ? 'disabled' : ''}>
-                            <i class="fas fa-arrow-up"></i> ${post.upvotes}
-                        </button>
-                        <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
-                                onclick="vote(${post.id}, -1)"
-                                ${userVote === 1 ? 'disabled' : ''}>
-                            <i class="fas fa-arrow-down"></i> ${post.downvotes}
-                        </button>
-                        <button class="btn btn-sm ${isSubscribed ? 'btn-primary' : 'btn-outline-primary'} ms-2 subscribe-btn" 
-                                onclick="toggleSubscription(${post.id})">
-                            <i class="fas ${isSubscribed ? 'fa-bell-slash' : 'fa-bell'}"></i>
-                            ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-                        </button>
+                    
+                    ${isHidden ? '</div>' : ''}
+                    
+                    <div class="post-meta mt-2">
+                        <small>
+                            Posted by ${post.author} on ${new Date(post.createdAt).toLocaleString()}
+                            ${post.edited ? `(edited ${new Date(post.editedAt).toLocaleString()})` : ''}
+                        </small>
                     </div>
-                    <div class="action-buttons">
-                        ${post.author === 'jimbo' ? `
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="editPost(${post.id})">Edit</button>
-                            <button class="btn btn-sm btn-outline-danger me-2" onclick="deletePost(${post.id})">Delete</button>
-                        ` : ''}
-                        <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showReplyForm(${post.id})">Reply</button>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="vote-buttons">
+                            <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
+                                    onclick="vote(${post.id}, 1)" 
+                                    ${userVote === -1 ? 'disabled' : ''}>
+                                <i class="fas fa-arrow-up"></i> ${post.upvotes}
+                            </button>
+                            <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
+                                    onclick="vote(${post.id}, -1)"
+                                    ${userVote === 1 ? 'disabled' : ''}>
+                                <i class="fas fa-arrow-down"></i> ${post.downvotes}
+                            </button>
+                            <button class="btn btn-sm ${isSubscribed ? 'btn-primary' : 'btn-outline-primary'} ms-2 subscribe-btn" 
+                                    onclick="toggleSubscription(${post.id})">
+                                <i class="fas ${isSubscribed ? 'fa-bell-slash' : 'fa-bell'}"></i>
+                                ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                            </button>
+                        </div>
+                        <div class="action-buttons">
+                            ${post.author === 'jimbo' ? `
+                                <button class="btn btn-sm btn-outline-primary me-2" onclick="editPost(${post.id})">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger me-2" onclick="deletePost(${post.id})">Delete</button>
+                            ` : ''}
+                            <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showReplyForm(${post.id})">Reply</button>
+                        </div>
                     </div>
-                </div>
-                <div class="reply-form mt-3" style="display: none;">
-                    <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
-                    <button class="btn btn-sm btn-primary" onclick="submitReply(${post.id})">Submit Reply</button>
-                </div>
-                <div class="replies mt-3">
-                    ${post.replies.map(reply => createReplyHTML(reply, post.id)).join('')}
+                    <div class="reply-form mt-3" style="display: none;">
+                        <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
+                        <button class="btn btn-sm btn-primary" onclick="submitReply(${post.id})">Submit Reply</button>
+                    </div>
+                    <div class="replies mt-3">
+                        ${post.replies.map(reply => createReplyHTML(reply, post.id)).join('')}
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
     }
 
     // Enhanced reply HTML with moderation
     function createReplyHTML(reply, postId) {
         const isHidden = reply.downvotes >= 10;
         const userVote = userVotes.replies[reply.id] || 0;
+        
+        // Use the same avatar mapping
+        const avatarMap = {
+            'User12345': '../img/avatars/tomato_warrior.png',
+            'User67890': '../img/avatars/timer_beginner.png',
+            'User78901': '../img/avatars/grade_tracker_1.png',
+            'User90123': '../img/avatars/tomato_bundle.png',
+            'jimbo': '../img/avatars/new_user_seedling.png'
+        };
 
         return `
-        <div class="reply card mb-2 ${isHidden ? 'flagged-reply' : ''}" data-reply-id="${reply.id}">
-            <div class="card-body">
-                ${isHidden ? `
-                    <div class="flagged-content alert alert-warning">
-                        This reply has been flagged due to community feedback.
-                        <button class="btn btn-sm btn-link" onclick="toggleFlaggedReply(${reply.id})">Show Content</button>
+            <div class="reply card mb-2 ${isHidden ? 'flagged-reply' : ''}" data-reply-id="${reply.id}">
+                <div class="card-body">
+                    ${isHidden ? `
+                        <div class="flagged-content alert alert-warning">
+                            This reply has been flagged due to community feedback.
+                            <button class="btn btn-sm btn-link" onclick="toggleFlaggedReply(${reply.id})">Show Content</button>
+                        </div>
+                        <div class="hidden-content" style="display: none;">
+                    ` : ''}
+                    
+                    <div class="d-flex align-items-start">
+                        <img src="${avatarMap[reply.author] || '../img/avatars/new_user_seedling.png'}" 
+                             alt="avatar" 
+                             class="rounded-circle me-3" 
+                             style="width: 40px; height: 40px; object-fit: cover;">
+                        <div class="flex-grow-1">
+                            <div class="reply-content" id="reply-content-${reply.id}">
+                                <p class="card-text">${reply.content}</p>
+                            </div>
+                            <div class="edit-form" id="edit-form-reply-${reply.id}" style="display: none;">
+                                <textarea class="form-control mb-2">${reply.content}</textarea>
+                                <button class="btn btn-sm btn-primary" onclick="submitReplyEdit(${postId}, ${reply.id})">Save</button>
+                                <button class="btn btn-sm btn-secondary" onclick="cancelReplyEdit(${reply.id})">Cancel</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hidden-content" style="display: none;">
-                ` : ''}
-                
-                <div class="reply-content" id="reply-content-${reply.id}">
-                    <p class="card-text">${reply.content}</p>
-                </div>
-                <div class="edit-form" id="edit-form-reply-${reply.id}" style="display: none;">
-                    <textarea class="form-control mb-2">${reply.content}</textarea>
-                    <button class="btn btn-sm btn-primary" onclick="submitReplyEdit(${postId}, ${reply.id})">Save</button>
-                    <button class="btn btn-sm btn-secondary" onclick="cancelReplyEdit(${reply.id})">Cancel</button>
-                </div>
-                
-                ${isHidden ? '</div>' : ''}
-                
-                <div class="reply-meta">
-                    <small>
-                        Replied by ${reply.author} on ${new Date(reply.createdAt).toLocaleString()}
-                        ${reply.edited ? `(edited ${new Date(reply.editedAt).toLocaleString()})` : ''}
-                    </small>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                    <div class="vote-buttons">
-                        <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
-                                onclick="voteReply(${reply.id}, 1)"
-                                ${userVote === -1 ? 'disabled' : ''}>
-                            <i class="fas fa-arrow-up"></i> ${reply.upvotes}
-                        </button>
-                        <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
-                                onclick="voteReply(${reply.id}, -1)"
-                                ${userVote === 1 ? 'disabled' : ''}>
-                            <i class="fas fa-arrow-down"></i> ${reply.downvotes}
-                        </button>
+                    
+                    ${isHidden ? '</div>' : ''}
+                    
+                    <div class="reply-meta mt-2">
+                        <small>
+                            Replied by ${reply.author} on ${new Date(reply.createdAt).toLocaleString()}
+                            ${reply.edited ? `(edited ${new Date(reply.editedAt).toLocaleString()})` : ''}
+                        </small>
                     </div>
-                    <div class="action-buttons">
-                        ${reply.author === 'jimbo' ? `
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="editReply(${postId}, ${reply.id})">Edit</button>
-                            <button class="btn btn-sm btn-outline-danger me-2" onclick="deleteReply(${postId}, ${reply.id})">Delete</button>
-                        ` : ''}
-                        <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showNestedReplyForm(${postId}, ${reply.id})">Reply</button>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="vote-buttons">
+                            <button class="btn btn-sm ${userVote === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn" 
+                                    onclick="voteReply(${reply.id}, 1)"
+                                    ${userVote === -1 ? 'disabled' : ''}>
+                                <i class="fas fa-arrow-up"></i> ${reply.upvotes}
+                            </button>
+                            <button class="btn btn-sm ${userVote === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn" 
+                                    onclick="voteReply(${reply.id}, -1)"
+                                    ${userVote === 1 ? 'disabled' : ''}>
+                                <i class="fas fa-arrow-down"></i> ${reply.downvotes}
+                            </button>
+                        </div>
+                        <div class="action-buttons">
+                            ${reply.author === 'jimbo' ? `
+                                <button class="btn btn-sm btn-outline-primary me-2" onclick="editReply(${postId}, ${reply.id})">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger me-2" onclick="deleteReply(${postId}, ${reply.id})">Delete</button>
+                            ` : ''}
+                            <button class="btn btn-sm btn-outline-secondary reply-btn" onclick="showNestedReplyForm(${postId}, ${reply.id})">Reply</button>
+                        </div>
                     </div>
+                    <div class="nested-reply-form mt-2" style="display: none;">
+                        <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
+                        <button class="btn btn-sm btn-primary" onclick="submitNestedReply(${postId}, ${reply.id})">Submit Reply</button>
+                    </div>
+                    ${reply.replies ? `
+                    <div class="nested-replies mt-2 ms-4">
+                        ${reply.replies.map(nestedReply => createReplyHTML(nestedReply, postId)).join('')}
+                    </div>
+                    ` : ''}
                 </div>
-                <div class="nested-reply-form mt-2" style="display: none;">
-                    <textarea class="form-control mb-2" placeholder="Write your reply..."></textarea>
-                    <button class="btn btn-sm btn-primary" onclick="submitNestedReply(${postId}, ${reply.id})">Submit Reply</button>
-                </div>
-                ${reply.replies ? `
-                <div class="nested-replies mt-2 ms-4">
-                    ${reply.replies.map(nestedReply => createReplyHTML(nestedReply, postId)).join('')}
-                </div>
-                ` : ''}
             </div>
-        </div>
-    `;
+        `;
     }
 
     // Toggle subscription status
