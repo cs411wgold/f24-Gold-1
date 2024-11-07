@@ -540,12 +540,32 @@ const notifications = {
         toast.setAttribute('role', 'alert');
         toast.setAttribute('aria-live', 'assertive');
         toast.setAttribute('aria-atomic', 'true');
+        toast.setAttribute('data-notification-type', notification.type || 'reply');
+        
+        // Customize toast based on notification type
+        const getToastIcon = (type) => {
+            switch(type) {
+                case 'edit':
+                    return '<i class="fas fa-edit me-2"></i>';
+                default:
+                    return '<img src="../resources/tomato.png" class="me-2" alt="Tomato" style="width: 20px; height: 20px;">';
+            }
+        };
+        
+        const getToastTitle = (type) => {
+            switch(type) {
+                case 'edit':
+                    return 'Post Edited';
+                default:
+                    return 'New Reply';
+            }
+        };
         
         toast.innerHTML = `
             <div class="toast-header">
-                <img src="../resources/tomato.png" class="me-2" alt="Tomato" style="width: 20px; height: 20px;">
-                <strong class="me-auto">New Reply</strong>
-                <small>${new Date().toLocaleTimeString()}</small>
+                ${getToastIcon(notification.type)}
+                <strong class="me-auto">${getToastTitle(notification.type)}</strong>
+                <small>${new Date(notification.createdAt).toLocaleTimeString()}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
@@ -921,31 +941,42 @@ document.addEventListener('DOMContentLoaded', () => {
     window.vote = async function (postId, value) {
         try {
             const currentVote = userVotes.posts[postId] || 0;
+            const forumId = new URLSearchParams(window.location.search).get('id');
             
             // If clicking the same vote button again, remove the vote
             if (currentVote === value) {
                 value = 0;
             }
             
+            // Get posts from localStorage and update the vote counts
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                // Remove previous vote if it exists
+                if (currentVote === 1) post.upvotes--;
+                if (currentVote === -1) post.downvotes--;
+                
+                // Add new vote
+                if (value === 1) post.upvotes++;
+                if (value === -1) post.downvotes++;
+                
+                // Save updated posts back to localStorage
+                localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+            }
+            
             // Update the post in the DOM immediately
-            const post = document.querySelector(`[data-post-id="${postId}"]`);
-            const upvoteBtn = post.querySelector('.upvote-btn');
-            const downvoteBtn = post.querySelector('.downvote-btn');
-            
-            // Update vote counts
-            const upvoteCount = parseInt(upvoteBtn.textContent);
-            const downvoteCount = parseInt(downvoteBtn.textContent);
-            
-            if (currentVote === 1) upvoteBtn.textContent = ` ${upvoteCount - 1}`;
-            if (currentVote === -1) downvoteBtn.textContent = ` ${downvoteCount - 1}`;
-            if (value === 1) upvoteBtn.textContent = ` ${upvoteCount + 1}`;
-            if (value === -1) downvoteBtn.textContent = ` ${downvoteCount + 1}`;
+            const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+            const upvoteBtn = postElement.querySelector('.upvote-btn');
+            const downvoteBtn = postElement.querySelector('.downvote-btn');
             
             // Update button states
             userVotes.posts[postId] = value;
             saveVotes();
             
             // Update UI without full reload
+            upvoteBtn.innerHTML = `<i class="fas fa-arrow-up"></i> ${post.upvotes}`;
+            downvoteBtn.innerHTML = `<i class="fas fa-arrow-down"></i> ${post.downvotes}`;
             upvoteBtn.className = `btn btn-sm ${value === 1 ? 'btn-primary' : 'btn-outline-primary'} upvote-btn`;
             downvoteBtn.className = `btn btn-sm ${value === -1 ? 'btn-danger' : 'btn-outline-danger'} downvote-btn`;
             upvoteBtn.disabled = value === -1;
@@ -960,25 +991,57 @@ document.addEventListener('DOMContentLoaded', () => {
     window.voteReply = async function (replyId, value) {
         try {
             const currentVote = userVotes.replies[replyId] || 0;
+            const forumId = new URLSearchParams(window.location.search).get('id');
             
             // If clicking the same vote button again, remove the vote
             if (currentVote === value) {
                 value = 0;
             }
             
+            // Get posts from localStorage and find the reply
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            
+            // Function to find and update reply recursively
+            const updateReplyVotes = (replies) => {
+                for (let reply of replies) {
+                    if (reply.id === replyId) {
+                        // Remove previous vote if it exists
+                        if (currentVote === 1) reply.upvotes--;
+                        if (currentVote === -1) reply.downvotes--;
+                        
+                        // Add new vote
+                        if (value === 1) reply.upvotes++;
+                        if (value === -1) reply.downvotes++;
+                        return true;
+                    }
+                    if (reply.replies && updateReplyVotes(reply.replies)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            
+            // Update votes in all posts' replies
+            posts.forEach(post => {
+                if (post.replies) {
+                    updateReplyVotes(post.replies);
+                }
+            });
+            
+            // Save updated posts back to localStorage
+            localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
+            
             // Update the reply in the DOM immediately
             const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
             const upvoteBtn = reply.querySelector('.upvote-btn');
             const downvoteBtn = reply.querySelector('.downvote-btn');
             
-            // Update vote counts
-            const upvoteCount = parseInt(upvoteBtn.textContent);
-            const downvoteCount = parseInt(downvoteBtn.textContent);
-            
-            if (currentVote === 1) upvoteBtn.textContent = ` ${upvoteCount - 1}`;
-            if (currentVote === -1) downvoteBtn.textContent = ` ${downvoteCount - 1}`;
-            if (value === 1) upvoteBtn.textContent = ` ${upvoteCount + 1}`;
-            if (value === -1) downvoteBtn.textContent = ` ${downvoteCount + 1}`;
+            // Find the current vote counts
+            const replyData = findReplyById(posts, replyId);
+            if (replyData) {
+                upvoteBtn.innerHTML = `<i class="fas fa-arrow-up"></i> ${replyData.upvotes}`;
+                downvoteBtn.innerHTML = `<i class="fas fa-arrow-down"></i> ${replyData.downvotes}`;
+            }
             
             // Update button states
             userVotes.replies[replyId] = value;
@@ -995,6 +1058,30 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error voting on reply:', error);
         }
     };
+
+    // Helper function to find a reply by ID
+    function findReplyById(posts, replyId) {
+        const searchReplies = (replies) => {
+            for (let reply of replies) {
+                if (reply.id === replyId) {
+                    return reply;
+                }
+                if (reply.replies) {
+                    const found = searchReplies(reply.replies);
+                    if (found) return found;
+                }
+            }
+            return null;
+        };
+        
+        for (let post of posts) {
+            if (post.replies) {
+                const found = searchReplies(post.replies);
+                if (found) return found;
+            }
+        }
+        return null;
+    }
 
     // Add these functions to handle toggling flagged content
     window.toggleFlaggedContent = function(postId) {
@@ -1025,9 +1112,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const forumId = new URLSearchParams(window.location.search).get('id');
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         const newContent = post.querySelector(`#edit-form-${postId} textarea`).value;
-        
+
         try {
             await api.editPost(forumId, postId, newContent);
+
+            // Check if anyone is subscribed to this thread and notify them
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            const editedPost = posts.find(p => p.id === postId);
+            const subscriptions = JSON.parse(localStorage.getItem('threadSubscriptions') || '[]');
+
+            if (subscriptions.includes(postId) && editedPost) {
+                notifications.add({
+                    id: Date.now(),
+                    message: `Post "${editedPost.title}" has been edited`,
+                    postId: postId,
+                    type: 'edit',
+                    createdAt: new Date().toISOString()
+                });
+            }
+
             await loadPosts(); // Refresh the posts
         } catch (error) {
             console.error('Error editing post:', error);
@@ -1039,7 +1142,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const forumId = new URLSearchParams(window.location.search).get('id');
         try {
+            // Get post information before deletion
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            const postToDelete = posts.find(p => p.id === postId);
+            const subscriptions = JSON.parse(localStorage.getItem('threadSubscriptions') || '[]');
+
             await api.deletePost(forumId, postId);
+
+            // Notify subscribers about the deletion
+            if (subscriptions.includes(postId) && postToDelete) {
+                notifications.add({
+                    id: Date.now(),
+                    message: `Post "${postToDelete.title}" has been deleted`,
+                    type: 'delete',
+                    createdAt: new Date().toISOString()
+                });
+            }
+
             await loadPosts(); // Refresh the posts
         } catch (error) {
             console.error('Error deleting post:', error);
@@ -1062,9 +1181,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const forumId = new URLSearchParams(window.location.search).get('id');
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         const newContent = reply.querySelector(`#edit-form-reply-${replyId} textarea`).value;
-        
+
         try {
             await api.editReply(forumId, postId, replyId, newContent);
+
+            // Check if anyone is subscribed to this thread and notify them
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            const parentPost = posts.find(p => p.id === postId);
+            const subscriptions = JSON.parse(localStorage.getItem('threadSubscriptions') || '[]');
+
+            if (subscriptions.includes(postId) && parentPost) {
+                notifications.add({
+                    id: Date.now(),
+                    message: `A reply in "${parentPost.title}" has been edited`,
+                    postId: postId,
+                    type: 'edit',
+                    createdAt: new Date().toISOString()
+                });
+            }
+
             await loadPosts(); // Refresh the posts
         } catch (error) {
             console.error('Error editing reply:', error);
@@ -1076,7 +1211,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const forumId = new URLSearchParams(window.location.search).get('id');
         try {
+            // Get post and reply information before deletion
+            const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
+            const parentPost = posts.find(p => p.id === postId);
+            const subscriptions = JSON.parse(localStorage.getItem('threadSubscriptions') || '[]');
+
             await api.deleteReply(forumId, postId, replyId);
+
+            // Notify subscribers about the deletion
+            if (subscriptions.includes(postId) && parentPost) {
+                notifications.add({
+                    id: Date.now(),
+                    message: `A reply in "${parentPost.title}" has been deleted`,
+                    type: 'delete',
+                    createdAt: new Date().toISOString()
+                });
+            }
+
             await loadPosts(); // Refresh the posts
         } catch (error) {
             console.error('Error deleting reply:', error);

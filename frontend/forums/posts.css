@@ -98,13 +98,134 @@
 
 .toast-container {
     z-index: 1050;
+    padding: 1rem;
 }
 
 .toast {
-    min-width: 250px;
+    min-width: 300px;
+    max-width: 400px;
     background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 1rem;
+    border: none;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.toast:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Toast Header Styles */
+.toast-header {
+    background-color: #f8f9fa;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Reply Notification Specific Styles */
+.toast[data-notification-type="reply"] .toast-header {
+    background-color: #e8f4ff;
+}
+
+.toast[data-notification-type="reply"] .toast-header img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Edit Notification Specific Styles */
+.toast[data-notification-type="edit"] .toast-header {
+    background-color: #fff3e6;
+}
+
+.toast[data-notification-type="edit"] .toast-header i {
+    color: #ff9933;
+    font-size: 1.1rem;
+    margin-right: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Delete Notification Specific Styles */
+.toast[data-notification-type="delete"] .toast-header {
+    background-color: #ffe6e6;
+}
+
+.toast[data-notification-type="delete"] .toast-header i {
+    color: #dc3545;
+    font-size: 1.1rem;
+    margin-right: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Common Toast Content Styles */
+.toast-header strong {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.toast-header small {
+    color: #6c757d;
+    margin-left: auto;
+    margin-right: 8px;
+    font-size: 0.85rem;
+}
+
+.toast-header .btn-close {
+    padding: 0.5rem;
+    margin: -0.5rem -0.5rem -0.5rem 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.toast-header .btn-close:hover {
+    opacity: 1;
+}
+
+.toast-body {
+    padding: 1rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    background-color: white;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Toast Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast.show {
+    animation: slideIn 0.3s ease forwards;
+}
+
+/* Toast Hover Link Style */
+.toast-body a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.toast-body a:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
 
 /* Pagination Controls */
