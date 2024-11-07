@@ -5,7 +5,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;  
+    height: auto;  
 }
 
 html {
@@ -26,3 +26,87 @@ h3 {
     color: #333;
 } 
 
+th {
+    padding: 20px 50px
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+tr td {
+    border-bottom: 1px solid rgba(212, 203, 190, 0.76);
+    border-top: 1px solid rgba(212, 203, 190, 0.76);
+    border-right: 1px solid rgba(212, 203, 190, 0.76);
+    border-left: 1px solid rgba(212, 203, 190, 0.76);
+    white-space: none;
+    word-wrap: nowrap;
+    padding: 20px 50px;
+    vertical-align: top;
+}
+
+/* ref https://codepen.io/m0skar/pen/WjBdVW for css for .headcol */
+.headcol {
+    width: 60px;
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.5);
+    padding: 1px 0;
+    text-align: center;
+    border: 0;
+    position: relative;
+    top: -12px;
+    border-bottom: 1px solid transparent;
+}
+
+.study-session {
+    background: #00B4FC;
+    color: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    z-index: 2;
+    padding:10px;
+}
+  
+.study-session-placeholder {
+    background: #00B4FC;
+    color: #00B4FC;
+    border-radius: 2px;
+    font-size: 15px;
+    z-index: 2;
+}
+
+.break {
+    background: #68d628;
+    color: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    z-index: 2;
+    padding:10px;
+}
+
+.break-placeholder {
+    background: #68d628;
+    color: #68d628;
+    border-radius: 2px;
+}
+
+.busy {
+    background: tomato;
+    color: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    z-index: 2;
+}
+
+.busy-placeholder {
+    background: tomato;
+    color: tomato;
+    border-radius: 2px;
+    font-size: 15px;
+    z-index: 2;
+}

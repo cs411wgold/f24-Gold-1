@@ -50,17 +50,279 @@
     </script>
 
     <!-- Main Section -->
-    <main class="container text-center mt-5">
-        <h2>This is a placeholder.</h2>
-        <section class="mt-4">
-            <h3>Upcoming Work</h3>
-            <div class="assignment-list mt-3">
-                <div class="assignment-item d-flex justify-content-between align-items-center mb-3 p-3 rounded">
-                    <!-- Assignment content here -->
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- ref https://codepen.io/m0skar/pen/WjBdVW for weekly view of calendar in table format-->
+    <div class="container bg-light col-6 text-center m-4 p-3" style="--bs-bg-opacity:0.85">
+      <div class='container bg-light text-center'>
+        <div class="logo"> 
+          <span style="font-size: 40px; font-weight: bold; margin-top:20px">Study Plan</span>
+          <img src="../img/study_tomato.png" alt="study tomato" style="width:70px; margin-bottom:30px; margin-left:10px">
+      </div>
+      </div>
+    </div>
+    <div class='container bg-light' style="margin-bottom:25px; padding-top:20px">
+<!--Do we want a button here?-->
+      <!-- <button class="btn btn-primary" onclick="openAddTaskModal()">Add Study Session</button> -->
+      <div class="calendar">
+        <div class="wrap">
+          <table class="offset">
+            <thead>
+              <tr>
+                <th class="headcol"></th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="headcol">7:00</td>
+                <td></td>
+                <td class="busy">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">8:00</td>
+                <td></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">9:00</td>
+                <td></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">10:00</td>
+                <td class="study-session double">10:00 - 11:00 <br> CS 361</td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td class="study-session-placeholder">study</td>
+                <td class="busy-placeholder">Blocked</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">11:00</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+                <td class="break">11:00 - 11:30 Lunch!</td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">12:00</td>
+                <td class="busy">Blocked</td>
+                <td class='study-session'>12:00 - 13:30 <br> CS 350</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td class="study-session-placeholder">study</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">13:00</td>
+                <td class="busy-placeholder">Blocked</td>
+                <td class="study-session-placeholder">study</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td class="busy-placeholder">Blocked</td>
+                <td class="break">Break Time!</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">14:00</td>
+                <td class="busy-placeholder">Blocked</td>
+                <td class="break-placeholder text-center"><img src="../img/resting_tomato.png" style="width:50px"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">15:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">16:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">17:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="headcol">18:00</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+                <td class='break'>18:00 - 19:00 Dinner!</td>
+              </tr>
+              <tr>
+                <td class="headcol"></td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+                <td class='break-placeholder'>18:00 - 19:00 Dinner!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     
     <!-- Footer Section -->
     <div id="footer-common"></div>
@@ -72,5 +334,6 @@
           document.getElementById('footer-common').innerHTML = data;
         });
     </script>
+    <script defer src="studyplan.js"></script>
 </body>
 </html>
