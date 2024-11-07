@@ -58,30 +58,40 @@
         </div>
         <a href="#"><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
       </div>
-      <!--Modal Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
-      <button id="PublicProfile" style="font-size:medium">Public Profile</button></a>
-      <div id="PublicProfile-modal" class="modal">
-        <div class="modal-content">
-        <span class="close">&times;</span>
-          <h1>Public Profile</h1>
-          <h2>Notifications</h2>
-          <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
-          <label class="Notifications-switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-          <h2>Time Zone</h2>
-          <div class="TimeZone-dropdown">
-            <button onclick="dropMenu()" class="TimeZone-button">Select</button>
-            <div id="TimeZone" class="TimeZone-content"></div>
-          </div>
+      <!--Tab Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'PublicProfile')">Public Profile</button>
+        <button class="tablinks" onclick="openTab(event, 'Account')">Account</button>
+        <button class="tablinks" onclick="openTab(event, 'View/ManageUsers')">View/Manage Users</button>
+      </div>
+      <div id="PublicProfile" class="tabcontent">
+        <h1>Public Profile</h1>
+        <h3>Notifications</h3>
+        <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
+        <label class="Notifications-switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        <h3>Time Zone</h3>
+        <div class="TimeZone-dropdown">
+          <button onclick="dropMenu()" class="TimeZone-button">Select</button>
+          <div id="TimeZone" class="TimeZone-content"></div>
         </div>
+        <button class="SaveChanges-button" style="font-size:medium">Save Changes</button>
       </div>
-      <div class="Account-container">
-        <button style="font-size:medium">Account</button></a>
+      <div id="Account" class="tabcontent">
+        <h2>Account</h2>
       </div>
-      <div class="View/ManageFriendsList-container">
-        <button style="font-size:medium">View/Manage Friends List</button></a>
+      <div id="View/ManageUsers" class="tabcontent">
+        <h2>View/Manage Users</h2>
+        <div class="FriendsList-container">
+          <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
+          <a href="friendsList.html"><button style="font-size:medium">Friends List</button></a>
+        </div>
+        <div class="Settings-container">
+          <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
+          <a href="blockedList.html"><button style="font-size:medium">Blocked List</button></a>
+        </div>
       </div>
     </main>
 
