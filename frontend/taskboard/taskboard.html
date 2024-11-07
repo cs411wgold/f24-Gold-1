@@ -66,45 +66,63 @@
             <div class="container p-5 my-5 bg-white border rounded-5">
                 <div class="container">
                     <div class="sortable-lists">
-                        <div class="task-column">
+                        <div class="task-column" data-status="new">
                             <h3>New</h3>
                             <ul id="new-tasks" class="sortable-list">
                             </ul>
                         </div>
 
-                        <div class="task-column">
+                        <div class="task-column" data-status="in-progress">
                             <h3>In Progress</h3>
                             <ul id="in-progress-tasks" class="sortable-list">
                             </ul>
                         </div>
 
-                        <div class="task-column">
+                        <div class="task-column" data-status="completed">
                             <h3>Completed</h3>
                             <ul id="completed-tasks" class="sortable-list">
                             </ul>
                         </div>
 
-                        <div class="task-column">
+                        <div class="task-column" data-status="on-hold">
                             <h3>On Hold</h3>
                             <ul id="on-hold-tasks" class="sortable-list">
                             </ul>
                         </div>
-                        <div class="tags-container">
+                          <div class="tags-container">
                             <h3>Tags</h3>
                             <ul id="tags-list">
-                                <li><span class="tag-circle" style="background-color: red;"></span> <span class="tag-name">Studying</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                                <li><span class="tag-circle" style="background-color: pink;"></span> <span class="tag-name">Program Assgn</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                                <li><span class="tag-circle" style="background-color: green;"></span> <span class="tag-name">CS 350 Meeting</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                                <li><span class="tag-circle" style="background-color: orange;"></span> <span class="tag-name">Discussion Board</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                                <li><span class="tag-circle" style="background-color: purple;"></span> <span class="tag-name">Other Homework</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                                <!-- Initially empty, tags will be added dynamically -->
                             </ul>
-                            <button id="add-tags-btn">Add Tags</button>
-                        </div>
+                            <button id="add-tags-btn" class="btn btn-primary">Add Tags</button>
+                          </div>
                     </div>
                 </div>
             </div>
         </section>
       </main>
+
+      <!-- The Modal for Adding Tags to a Task -->
+      <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addTagModalLabel">Add Tag</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="tagNameInput" class="form-control" placeholder="Enter tag name">
+                    <select id="taskSelect" class="form-select mt-3">
+                        <!-- Options will be populated dynamically by JS -->
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveTagBtn">Save Tag</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
 
       <!-- Assignment Selection Modal -->
       <div class="modal fade" id="selectAssignmentModal" tabindex="-1" aria-labelledby="selectAssignmentModalLabel" aria-hidden="true">

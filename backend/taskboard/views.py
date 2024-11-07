@@ -1,34 +1,44 @@
+# views.py
 from django.http import JsonResponse
+from django.views import View
+from .models import Task
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views import View
-from .modals import Task
 import json
 
-def get_task_by_id(request, task_id):
-    try:
-        task = Task.objects.get(id=task_id)
-        data = {
-            'id': task.id,
-            'title': task.title,
-            'status': task.status,
-        }
-        return JsonResponse(data, status=200)
-    except Task.DoesNotExist:
-        return JsonResponse({'error': 'Task not found.'}, status=404)
-    
-tasks = []
+@method_decorator(csrf_exempt, name='dispatch')
+class TaskView(View):
+    def get(self, request, task_id=None):
+        if task_id:
+            # Retrieve specific task by ID
+            try:
+                task = Task.objects.get(id=task_id)
+                data = {
+                    'id': task.id,
+                    'title': task.title,
+                    'status': task.status,
+                }
+                return JsonResponse(data, status=200)
+            except Task.DoesNotExist:
+                return JsonResponse({'error': 'Task not found.'}, status=404)
+        else:
+            # Retrieve all tasks
+            tasks = Task.objects.all()
+            tasks_data = [
+                {'id': task.id, 'title': task.title, 'status': task.status}
+                for task in tasks
+            ]
+            return JsonResponse(tasks_data, safe=False)
 
-@csrf_exempt
-def add_task(request):
-    if request.method == 'POST':
+    def post(self, request):
+        # Create a new task
         try:
             data = json.loads(request.body)
             title = data.get('title')
-            status = data.get('status')
+            status = data.get('status', 'new')
 
-            if not title or not status:
-                return JsonResponse({'error': 'Title and status are required.'}, status=400)
+            if not title:
+                return JsonResponse({'error': 'Title is required.'}, status=400)
 
             task = Task.objects.create(title=title, status=status)
             return JsonResponse({'id': task.id, 'title': task.title, 'status': task.status}, status=201)
@@ -36,27 +46,92 @@ def add_task(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
 
+    def put(self, request, task_id):
+        # Update an existing task
+        try:
+            task = Task.objects.get(id=task_id)
+            data = json.loads(request.body)
+
+            title = data.get('title', task.title)
+            status = data.get('status', task.status)
+
+            task.title = title
+            task.status = status
+            task.save()
+
+            return JsonResponse({'id': task.id, 'title': task.title, 'status': task.status}, status=200)
+
+        except Task.DoesNotExist:
+            return JsonResponse({'error': 'Task not found.'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
+
+    def delete(self, request, task_id):
+        # Delete an existing task
+        try:
+            task = Task.objects.get(id=task_id)
+            task.delete()
+            return JsonResponse({'message': 'Task deleted successfully.'}, status=200)
+        except Task.DoesNotExist:
+            return JsonResponse({'error': 'Task not found.'}, status=404)
+
+@csrf_exempt
+def add_tag(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            tag_name = data.get('tagName')
+            color = data.get('color')
+            task_id = data.get('taskId')
+
+            if not tag_name or not color or not task_id:
+                return JsonResponse({'error': 'Tag name, color, and task ID are required.'}, status=400)
+
+            # Get the task by ID
+            try:
+                task = Task.objects.get(id=task_id)
+            except Task.DoesNotExist:
+                return JsonResponse({'error': 'Task not found.'}, status=404)
+
+            # Create the tag and associate it with the task
+            tag = Tag.objects.create(name=tag_name, color=color, task=task)
+
+            return JsonResponse({'id': tag.id, 'name': tag.name, 'color': tag.color, 'task_id': task.id}, status=201)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
+
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
-# Function to list tasks in the "New" column
 @csrf_exempt
-def list_tasks(request):
-    try:
-        # Fetch tasks with status "new" from the Task model
-        new_tasks = Task.objects.filter(status="new").order_by('-created_at')
-        
-        # Prepare the data to be returned
-        tasks_data = [
-            {
-                "id": task.id,
-                "name": task.name,
-                "description": task.description,
-                "status": task.status
-            }
-            for task in new_tasks
-        ]
+def delete_tag(request, tag_id):
+    if request.method == 'DELETE':
+        try:
+            tag = Tag.objects.get(id=tag_id)
+            tag.delete()
+            return JsonResponse({'message': 'Tag deleted successfully.'}, status=200)
+        except Tag.DoesNotExist:
+            return JsonResponse({'error': 'Tag not found.'}, status=404)
 
-        # Return the tasks as JSON data
-        return JsonResponse({"tasks": tasks_data})
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+@csrf_exempt
+def list_tags(request):
+    if request.method == 'GET':
+        try:
+            tags = Tag.objects.all()
+            tags_data = [
+                {
+                    'id': tag.id,
+                    'name': tag.name,
+                    'color': tag.color,
+                    'task_id': tag.task.id
+                }
+                for tag in tags
+            ]
+            return JsonResponse({"tags": tags_data}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
