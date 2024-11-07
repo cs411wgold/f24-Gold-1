@@ -1,145 +1,127 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize sortable lists
-    $(".sortable-list").sortable({
-        connectWith: ".sortable-list",
-        placeholder: "sortable-placeholder",
-        tolerance: "pointer",
-        start: function (event, ui) {
-            ui.item.addClass("dragging");
-        },
-        stop: function (event, ui) {
-            ui.item.removeClass("dragging");
-        }
-    }).disableSelection();
+    // Function to populate the assignment selection modal
+    function populateAssignmentModal() {
+        fetch("http://127.0.0.1:8000/assignments/list/")
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data); // Log the API response to check its structure
 
-    let currentEditingTagElement = null;
-    let tagToDelete = null; // Keep track of which tag should be deleted
-    const tagColors = ['red', 'pink', 'green', 'orange', 'purple', 'blue', 'yellow', 'teal', 'brown', 'gray'];
-    let colorIndex = 0;
+                let assignments;
 
-    // Event listeners for existing Edit buttons to open the Edit Modal
-    document.querySelectorAll('.edit-tag-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            // Store the tag element being edited
-            currentEditingTagElement = this.previousElementSibling;
-            
-            // Pre-fill the input field with the current tag name
-            document.getElementById('editTagInput').value = currentEditingTagElement.textContent;
-            
-            // Show the modal
-            let editTagModal = new bootstrap.Modal(document.getElementById('editTagModal'));
-            editTagModal.show();
+                // Handle different response formats
+                if (Array.isArray(data)) {
+                    assignments = data; // If the response is already an array of assignments
+                } else if (data.assignments && Array.isArray(data.assignments)) {
+                    assignments = data.assignments; // If assignments are wrapped in an object
+                } else {
+                    console.error("The API response format is incorrect, expected an array of assignments.");
+                    return;
+                }
+
+                const assignmentSelect = document.getElementById("assignmentSelect");
+                assignmentSelect.innerHTML = "";  // Clear existing options
+
+                assignments.forEach(assignment => {
+                    const option = document.createElement("option");
+                    option.value = assignment.id;
+                    option.textContent = assignment.name;
+                    assignmentSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Error fetching assignments:", error));
+    }
+
+    // Get the button element that triggers the modal
+    const selectAssignmentButton = document.getElementById("selectAssignmentButton");
+    const selectAssignmentModalElement = document.getElementById("selectAssignmentModal");
+    const addAssignmentBtn = document.getElementById("addAssignmentBtn");
+    const assignmentSelect = document.getElementById("assignmentSelect");
+
+    if (selectAssignmentButton && selectAssignmentModalElement) {
+        const selectAssignmentModal = new bootstrap.Modal(selectAssignmentModalElement, {
+            backdrop: 'static',
+            keyboard: false
         });
-    });
 
-    // Save button functionality for the modal
-    document.getElementById('saveEditTagBtn').addEventListener('click', function () {
-        const newTagName = document.getElementById('editTagInput').value.trim();
-        
-        if (newTagName && currentEditingTagElement) {
-            // Update the tag name and close the modal
-            currentEditingTagElement.textContent = newTagName;
-            
-            // Hide the modal
-            let editTagModalInstance = bootstrap.Modal.getInstance(document.getElementById('editTagModal'));
-            editTagModalInstance.hide();
-            
-            // Clear the current editing reference
-            currentEditingTagElement = null;
-        } else {
-            alert('Please enter a valid tag name.');
-        }
-    });
-
-    // Event listener for existing Delete buttons to open the Delete Modal
-    document.querySelectorAll('.delete-tag-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            tagToDelete = this.parentElement; // Set the tag to be deleted
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteTagModal'));
-            deleteModal.show(); // Show the modal
+        selectAssignmentButton.addEventListener("click", function () {
+            populateAssignmentModal(); // Call the function to populate the modal
+            selectAssignmentModal.show(); // Show the modal after populating
         });
-    });
 
-    // Confirm delete button inside the modal
-    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-        if (tagToDelete) {
-            tagToDelete.remove(); // Remove the tag from the list
-            tagToDelete = null; // Reset the variable
-            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteTagModal'));
-            deleteModal.hide(); // Hide the modal
-        }
-    });
-
-    // Add Tags Button Logic
-    document.getElementById('add-tags-btn').addEventListener('click', function () {
-        createTagInputRow();
-    });
-
-    function createTagInputRow() {
-        // Create a new list item
-        const newTagItem = document.createElement('li');
-        newTagItem.classList.add('new-tag-item');
-
-        // Create the input field
-        const tagInput = document.createElement('input');
-        tagInput.setAttribute('type', 'text');
-        tagInput.classList.add('tag-input');
-        tagInput.setAttribute('placeholder', 'Enter tag name');
-
-        // Create the save button
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Save';
-        saveButton.classList.add('save-tag-btn');
-
-        // Add an event listener to handle the saving
-        saveButton.addEventListener('click', function () {
-            const tagName = tagInput.value.trim();
-            if (tagName) {
-                addNewTag(tagName);
-                newTagItem.remove(); // Remove the input row after saving
+        // Add assignment to taskboard when "Add Assignment" button is clicked
+        addAssignmentBtn.addEventListener("click", function () {
+            const selectedAssignmentId = assignmentSelect.value;
+            if (selectedAssignmentId) {
+                addAssignmentToTaskboard(selectedAssignmentId);
+                selectAssignmentModal.hide(); // Close the modal after adding
             } else {
-                alert('Please enter a valid tag name.');
+                alert("Please select an assignment to add.");
             }
         });
-
-        // Append input and button to the list item
-        newTagItem.appendChild(tagInput);
-        newTagItem.appendChild(saveButton);
-
-        // Add the list item to the tags list
-        document.getElementById('tags-list').appendChild(newTagItem);
-    }
-
-    function addNewTag(tagName) {
-        // Get the next color from the array
-        let color = tagColors[colorIndex];
-        colorIndex = (colorIndex + 1) % tagColors.length; // Loop back to start when all colors are used
-
-        // Create new tag element
-        const newTagItem = document.createElement('li');
-        newTagItem.innerHTML = `
-            <span class="tag-circle" style="background-color: ${color};"></span> 
-            <span class="tag-name">${tagName}</span> 
-            <button class="edit-tag-btn">Edit</button>
-            <button class="delete-tag-btn">Delete</button>
-        `;
-
-        // Add event listener to the edit button
-        newTagItem.querySelector('.edit-tag-btn').addEventListener('click', function () {
-            currentEditingTagElement = this.previousElementSibling;
-            document.getElementById('editTagInput').value = currentEditingTagElement.textContent;
-            let editTagModal = new bootstrap.Modal(document.getElementById('editTagModal'));
-            editTagModal.show();
-        });
-
-        // Add event listener to the delete button
-        newTagItem.querySelector('.delete-tag-btn').addEventListener('click', function () {
-            tagToDelete = newTagItem;
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteTagModal'));
-            deleteModal.show();
-        });
-
-        // Append the new tag to the list
-        document.getElementById('tags-list').appendChild(newTagItem);
+    } else {
+        console.error("Element with ID 'selectAssignmentButton' or 'selectAssignmentModal' was not found.");
     }
 });
+
+// Function to add selected assignment to the "New" task column
+function addAssignmentToTaskboard(assignmentId) {
+    fetch(`http://127.0.0.1:8000/taskboard/task/${assignmentId}/`)
+        .then(response => response.json())
+        .then(assignment => {
+            const taskHTML = `
+                <li class="sortable-item" data-id="${assignment.id}">
+                    CS411W: ${assignment.name} 
+                    <button class="delete-task-btn" onclick="deleteTask(${assignment.id})">Delete</button>
+                </li>
+            `;
+
+            document.getElementById("new-tasks").innerHTML += taskHTML;
+
+            // Save new task to the backend
+            const taskTitle = `CS411W: ${assignment.name}`;
+            const taskStatus = "new";
+            saveTaskToBackend(taskTitle, taskStatus);
+        })
+        .catch(error => console.error("Error adding assignment to taskboard:", error));
+}
+
+// Function to save a new task to the backend
+function saveTaskToBackend(title, status) {
+    console.log("Saving task with title:", title, "and status:", status);
+
+    if (!title || !status) {
+        console.error("Title or status is missing. Cannot save task to backend.");
+        return;
+    }
+
+    fetch("http://127.0.0.1:8000/taskboard/task/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, status }),
+    })
+        .then(async response => {
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Network response was not ok: ${text}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Task saved to backend:", data);
+        })
+        .catch(error => console.error("Error saving task to backend:", error));
+}
+
+// Function to delete task
+function deleteTask(taskId) {
+    fetch(`http://127.0.0.1:8000/taskboard/task/${taskId}/`, {
+        method: "DELETE",
+    })
+        .then(() => {
+            document.querySelector(`li[data-id="${taskId}"]`).remove();
+            console.log("Task deleted:", taskId);
+        })
+        .catch(error => console.error("Error deleting task:", error));
+}

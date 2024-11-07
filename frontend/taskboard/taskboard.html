@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="taskboard.js"></script>
+
     
   </head>
 
@@ -57,63 +57,79 @@
     </script>
 
     <!-- Main Section -->
-    <main class="container text-center mt-5">
-      <div class="container text-center bg-white col-4 p-md-2 rounded" style="--bs-bg-opacity: 0.8;">
-        <h2>Task Board</h2>
-      </div>
+      <main class="container text-center mt-5">
+        <div class="container text-center bg-white col-4 p-md-2 rounded" style="--bs-bg-opacity: 0.8;">
+            <h2>Task Board</h2>
+        </div>
         <section class="mt-4">
-          <div class="alert alert-warning alert-dismissible fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>Warning!</strong> 1 Assignment(s) due soon.
-          </div>
-          <div class="alert alert-danger alert-dismissible fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>Danger!</strong> 2 Assignment(s) past due.
-          </div>
-            <div class="container p-5 my-5 bg-white border rounded-5" >
-              <div class="container">
-                <div class="sortable-lists">
-                    <div class="task-column">
-                        <h3>New</h3>
-                        <ul id="new-tasks" class="sortable-list">
-                            <li class="sortable-item">Gather materials for CS 350 Exam <span class="tag studying">#Studying</span></li>
-                            <li class="sortable-item">CS 350 Meeting for Phase 3 <span class="tag program-assign">#CS 350 Meeting, #Program Assgn</span></li>
-                        </ul>
+            <button id="selectAssignmentButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#selectAssignmentModal">Select an Assignment</button>
+            <div class="container p-5 my-5 bg-white border rounded-5">
+                <div class="container">
+                    <div class="sortable-lists">
+                        <div class="task-column">
+                            <h3>New</h3>
+                            <ul id="new-tasks" class="sortable-list">
+                            </ul>
+                        </div>
+
+                        <div class="task-column">
+                            <h3>In Progress</h3>
+                            <ul id="in-progress-tasks" class="sortable-list">
+                            </ul>
+                        </div>
+
+                        <div class="task-column">
+                            <h3>Completed</h3>
+                            <ul id="completed-tasks" class="sortable-list">
+                            </ul>
+                        </div>
+
+                        <div class="task-column">
+                            <h3>On Hold</h3>
+                            <ul id="on-hold-tasks" class="sortable-list">
+                            </ul>
+                        </div>
+                        <div class="tags-container">
+                            <h3>Tags</h3>
+                            <ul id="tags-list">
+                                <li><span class="tag-circle" style="background-color: red;"></span> <span class="tag-name">Studying</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                                <li><span class="tag-circle" style="background-color: pink;"></span> <span class="tag-name">Program Assgn</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                                <li><span class="tag-circle" style="background-color: green;"></span> <span class="tag-name">CS 350 Meeting</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                                <li><span class="tag-circle" style="background-color: orange;"></span> <span class="tag-name">Discussion Board</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                                <li><span class="tag-circle" style="background-color: purple;"></span> <span class="tag-name">Other Homework</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
+                            </ul>
+                            <button id="add-tags-btn">Add Tags</button>
+                        </div>
                     </div>
-        
-                    <div class="task-column">
-                        <h3>In Progress</h3>
-                        <ul id="in-progress-tasks" class="sortable-list">
-                            <li class="sortable-item">CS 361 Homework 4 <span class="tag program-assign">#Program Assgn, #Other Homework</span></li>
-                            <li class="sortable-item">CS 350 Lab <span class="tag program-assign">#Program Assgn, #Other Homework</span></li>
-                            <li class="sortable-item">CS 450 Homework 5 <span class="tag other-homework">#Other Homework</span></li>
-                        </ul>
-                    </div>
-        
-                    <div class="task-column">
-                        <h3>Completed</h3>
-                        <ul id="completed-tasks" class="sortable-list">
-                            <li class="sortable-item">CS 450 Discussion Board Post on Module 5 <span class="tag discussion-board">#Discussion Board</span></li>
-                        </ul>
-                    </div>
-        
-                    <div class="task-column">
-                        <h3>On Hold</h3>
-                        <ul id="on-hold-tasks" class="sortable-list">
-                            <li class="sortable-item">CS 350 Start Phase 3 <span class="tag program-assign">#Program Assgn</span></li>
-                        </ul>
-                    </div>
-                    <div class="tags-container">
-                      <h3>Tags</h3>
-                      <ul id="tags-list">
-                          <li><span class="tag-circle" style="background-color: red;"></span> <span class="tag-name">Studying</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                          <li><span class="tag-circle" style="background-color: pink;"></span> <span class="tag-name">Program Assgn</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                          <li><span class="tag-circle" style="background-color: green;"></span> <span class="tag-name">CS 350 Meeting</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                          <li><span class="tag-circle" style="background-color: orange;"></span> <span class="tag-name">Discussion Board</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                          <li><span class="tag-circle" style="background-color: purple;"></span> <span class="tag-name">Other Homework</span> <button class="edit-tag-btn">Edit</button><button class="delete-tag-btn">Delete</button></li>
-                      </ul>
-                      <button id="add-tags-btn">Add Tags</button>
-                  </div>
+                </div>
+            </div>
+        </section>
+      </main>
+
+      <!-- Assignment Selection Modal -->
+      <div class="modal fade" id="selectAssignmentModal" tabindex="-1" aria-labelledby="selectAssignmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="selectAssignmentModalLabel">Select an Assignment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select id="assignmentSelect" class="form-select">
+                        <!-- Options will be populated dynamically by JS -->
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="addAssignmentBtn">Add Assignment to Taskboard</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+
+
+
                   <!-- The Modal for Editing Tags -->
                   <div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -171,5 +187,10 @@
           document.getElementById('footer-common').innerHTML = data;
         });
     </script>
+
+  
+    <script src="taskboard.js"></script>
+ 
+  
 </body>
 </html>
