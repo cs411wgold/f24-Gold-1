@@ -62,7 +62,7 @@
           document.getElementById('username').innerText = username;
         </script>
         <!--Placeholder-->
-        <p>You’ve spent a total of 349 hours studying on KnowTime!
+        <p id="study-time">You’ve spent a total of 349 hours studying on KnowTime!
           Your average grade has gone up!</p> 
         <section class="mt-4">
           <div class="Button-container">
@@ -110,4 +110,19 @@
         });
     </script>
 </body>
+
+<script>
+  const studyTimeParagraph = document.getElementById("study-time");
+  let totalTime = 0;
+  fetch(`http://127.0.0.1:8000/timer/`)
+                        .then(response => response.json())
+                        .then(data => {
+                          for(const session of data.study_sessions) {
+                          totalTime += session.task_time;
+                          }
+                          console.log(totalTime);
+                            studyTimeParagraph.textContent = `You've studied for ${Math.round(totalTime/60 * 10) / 10} hour(s) and have earned ${Math.round(totalTime/5)} points`
+                        })
+
+</script>
 </html>
