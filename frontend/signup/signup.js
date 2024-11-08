@@ -30,8 +30,8 @@
                 var formData = {
                     username: document.getElementById('usernameInput').value,
                     email: document.getElementById('email').value,
-                    password1: password.value,
-                    password2: confirmPassword.value
+                    password1: password.value,  // Updated to match the expected field name
+                    password2: confirmPassword.value  // Updated to match the expected field name
                 };
 
                 // Send data to the backend using Fetch API
@@ -42,24 +42,27 @@
                     },
                     body: JSON.stringify(formData),
                 })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json(); 
-                    })
-                    .then((data) => {
-                        if (data.status === "success") {
-                            alert("Signup successful!");
-                            window.location.href = "../home/home.html";  
-                        } else {
-                            alert(`Error: ${data.message}`);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                        alert("An error occurred during signup.");
-                    });
+                .then(async (response) => {
+                    if (!response.ok) {
+                        // Capture server response for debugging
+                        const errorDetails = await response.text();
+                        console.error("Server response error:", errorDetails);
+                        throw new Error(`Network response was not ok: ${errorDetails}`);
+                    }
+                    return response.json(); 
+                })
+                .then((data) => {
+                    if (data.status === "success") {
+                        alert("Signup successful!");
+                        window.location.href = "../home/home.html";  // Redirect on success
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    alert("An error occurred during signup.");
+                });
             }
 
             form.classList.add('was-validated');  // Bootstrap form validation class
