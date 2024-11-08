@@ -104,6 +104,14 @@ h3 {
     padding: 5px;
     border-radius: 5px;
 }
+.tag-badge {
+    display: inline-block;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 0.8em;
+}
 
 .tag-circle {
     display: inline-block;
