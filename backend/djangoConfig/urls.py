@@ -27,4 +27,5 @@ urlpatterns = [
     path('assignments/', include('assignments.urls')),
     path('taskboard/', include('taskboard.urls')),
     path('', include('timer.urls')),
+    path('', include('courses.urls')),
 ]

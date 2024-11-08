@@ -39,6 +39,7 @@ services:
             python assignments/utility.py &&
             python grades/utility.py &&
             python taskboard/utility.py &&
+            python courses/utility.py &&
             python manage.py loaddata /app/login/fixtures/user_data.json &&
             python manage.py loaddata /app/timer/fixtures/study_data.json &&
             python manage.py loaddata /app/grades/fixtures/grades_data.json &&
