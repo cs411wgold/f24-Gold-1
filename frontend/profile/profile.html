@@ -120,7 +120,6 @@
                           for(const session of data.study_sessions) {
                           totalTime += session.task_time;
                           }
-                          console.log(totalTime);
                             studyTimeParagraph.textContent = `You've studied for ${Math.round(totalTime/60 * 10) / 10} hour(s) and have earned ${Math.round(totalTime/5)} points`
                         })
 

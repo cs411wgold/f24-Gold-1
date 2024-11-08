@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="card mb-5">
                         <!--Need a way to access profile points and output here-->
-                        <h2 style="text-align:center">Achievement Points: 425</h2>
+                        <h2 style="text-align:center" id="points">Achievement Points: 425</h2>
                     </div>
                     <div class="container-fluid py-2 bg-light border rounded scrollmenu">
                         <!--https://blog.hubspot.com/website/horizontal-scrolling | horizontal scroll bar-->
@@ -137,4 +137,16 @@
         });
     </script>
 </body>
+<script>
+      const pointsHeader = document.getElementById("points");
+  let totalTime = 0;
+  fetch(`http://127.0.0.1:8000/timer/`)
+                        .then(response => response.json())
+                        .then(data => {
+                          for(const session of data.study_sessions) {
+                          totalTime += session.task_time;
+                          }
+                          pointsHeader.textContent = `Achievement Points: ${Math.round(totalTime/5)}`
+                        })
+</script>
 </html>
