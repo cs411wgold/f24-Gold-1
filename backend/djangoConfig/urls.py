@@ -26,6 +26,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('assignments/', include('assignments.urls')),
     path('taskboard/', include('taskboard.urls')),
+    path('courses/', include('courses.urls')),
     path('', include('timer.urls')),
-    path('', include('courses.urls')),
 ]

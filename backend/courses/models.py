@@ -9,3 +9,9 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+    
+class RegisteredCourse(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='registered_courses')
+
+    def __str__(self):
+        return f"Registered: {self.course.name}"
