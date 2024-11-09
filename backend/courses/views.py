@@ -58,19 +58,17 @@ class RegisterCourseView(View):
             return JsonResponse({"error": "Registered course not found."}, status=404)
 
 # View to list all registered courses
-class RegisteredCourseListView(View):
+class RegisteredCoursesView(View):
     def get(self, request):
         registered_courses = RegisteredCourse.objects.all()
-        course_data = [
+        registered_course_data = [
             {
                 "course_id": registered_course.course.course_id,
                 "name": registered_course.course.name,
-                "started_at": registered_course.course.started_at,
-                "ended_at": registered_course.course.ended_at,
             }
             for registered_course in registered_courses
         ]
-        return JsonResponse({"registered_courses": course_data}, safe=False)
+        return JsonResponse(registered_course_data, safe=False)
     
     def delete(self, request, course_id):
         try:
@@ -93,3 +91,5 @@ class DeleteRegisteredCourseView(View):
             return JsonResponse({"message": "Registered course deleted successfully."}, status=200)
         except RegisteredCourse.DoesNotExist:
             return JsonResponse({"error": "Registered course not found."}, status=404)
+        
+

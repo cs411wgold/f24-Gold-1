@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 console.log("API Response:", data); // Log the API response to check its structure
 
-                // Assuming the response looks like: { "courses": [...] }
                 let courses;
 
                 if (Array.isArray(data.courses)) {
@@ -36,7 +35,47 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error fetching courses:", error));
     }
 
+    // Function to load registered courses from the backend
+    function loadRegisteredCoursesFromBackend() {
+        fetch("http://127.0.0.1:8000/courses/registered/")
+            .then(response => response.json())
+            .then(courses => {
+                console.log("Registered Courses API Response:", courses);
+                
+                if (!Array.isArray(courses)) {
+                    console.error("The API response format is incorrect, expected an array of registered courses.");
+                    return;
+                }
+
+                // Populate the "Registered Courses" table
+                const courseTable = document.getElementById("courseTable");
+                courseTable.innerHTML = ""; // Clear existing courses
+
+                courses.forEach(course => {
+                    const tr = document.createElement("tr");
+                    const td = document.createElement("td");
+                    td.textContent = course.name;
+                    tr.appendChild(td);
+
+                    // Add a remove button
+                    const removeButtonTd = document.createElement("td");
+                    const removeButton = document.createElement("button");
+                    removeButton.classList.add("btn", "btn-danger");
+                    removeButton.textContent = "Remove";
+                    removeButton.onclick = () => removeCourse(course.course_id, tr);
+                    removeButtonTd.appendChild(removeButton);
+                    tr.appendChild(removeButtonTd);
+
+                    // Append the row to the table
+                    courseTable.appendChild(tr);
+                });
+            })
+            .catch(error => console.error("Error fetching registered courses:", error));
+    }
+
+    // Call functions to populate dropdown and load registered courses
     populateCourseDropdown();
+    loadRegisteredCoursesFromBackend();
 });
 
 // Function to add a selected course to the "Registered Courses" table and the backend
@@ -98,6 +137,7 @@ function removeCourse(course_id, rowElement) {
         })
         .catch(error => console.error("Error deleting course:", error));
 }
+
 
 // Function to add a custom course from the input field
     function addCustomCourse() {
