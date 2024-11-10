@@ -17,3 +17,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return f"{self.name} (Task: {self.task.title})"
+    
+class SelectedTask(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='selected_task')
+    is_selected = models.BooleanField(default=True)

@@ -1,4 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Load selected tasks into the taskboard
+    loadSelectedTasks();
+
+    // Function to load selected tasks from the backend
+    function loadSelectedTasks() {
+        fetch("http://127.0.0.1:8000/taskboard/selected_task/")
+            .then(response => response.json())
+            .then(data => {
+                console.log("Loaded selected tasks:", data);
+
+                const newTasksList = document.getElementById("new-tasks");
+                newTasksList.innerHTML = ""; // Clear existing tasks
+
+                if (data.selected_tasks) {
+                    data.selected_tasks.forEach(task => {
+                        const taskHTML = `
+                            <li class="sortable-item" data-id="${task.id}">
+                                ${task.title}
+                                <button class="delete-task-btn" onclick="deleteSelectedTask(${task.id})">Delete</button>
+                            </li>
+                        `;
+                        newTasksList.innerHTML += taskHTML;
+                    });
+                }
+            })
+            .catch(error => console.error("Error loading selected tasks:", error));
+    }
+
     // Initialize sortable lists with jQuery UI
     $(".sortable-list").sortable({
         connectWith: ".sortable-list",
@@ -85,102 +113,76 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Element with ID 'selectAssignmentButton' or 'selectAssignmentModal' was not found.");
     }
-});
 
-// Function to add a selected assignment to the "New" task column
-function addTaskToTaskboard(assignmentId) {
-    fetch(`http://127.0.0.1:8000/taskboard/task/${assignmentId}/`)
-        .then(response => response.json())
-        .then(assignment => {
-            if (!assignment || !assignment.id) {
-                console.error("Task not found in taskboard database.");
-                return;
-            }
+    // Function to add a selected assignment to the "New" task column
+    function addTaskToTaskboard(assignmentId) {
+        fetch(`http://127.0.0.1:8000/taskboard/task/${assignmentId}/`)
+            .then(response => response.json())
+            .then(assignment => {
+                if (!assignment || !assignment.id) {
+                    console.error("Task not found in taskboard database.");
+                    return;
+                }
 
-            const taskHTML = `
-                <li class="sortable-item" data-id="${assignment.id}">
-                    CS411W: ${assignment.title}
-                    <button class="delete-task-btn" onclick="deleteTask(${assignment.id})">Delete</button>
-                </li>
-            `;
-
-            const newTasksList = document.getElementById("new-tasks");
-            if (newTasksList) {
-                newTasksList.innerHTML += taskHTML;
-            } else {
-                console.error("Element with ID 'new-tasks' not found.");
-            }
-
-            // Save new task to the backend
-            const taskTitle = `CS411W: ${assignment.title}`;
-            const taskStatus = "new";
-            saveTaskToBackend(taskTitle, taskStatus);
-        })
-        .catch(error => console.error("Error adding assignment to taskboard:", error));
-}
-
-// Function to save a new task to the backend
-function saveTaskToBackend(title, status) {
-    console.log("Saving task with title:", title, "and status:", status);
-
-    if (!title || !status) {
-        console.error("Title or status is missing. Cannot save task to backend.");
-        return;
+                // Save new task to selected tasks backend
+                fetch("http://127.0.0.1:8000/taskboard/selected_task/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ task_id: assignment.id }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Task successfully selected:", data);
+                    loadSelectedTasks(); // Reload the taskboard to show new task
+                })
+                .catch(error => {
+                    console.error("Error selecting task:", error);
+                });
+            })
+            .catch(error => console.error("Error fetching assignment:", error));
     }
 
-    fetch("http://127.0.0.1:8000/taskboard/task/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, status }),
-    })
-        .then(async response => {
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`Network response was not ok: ${text}`);
-            }
-            return response.json();
+    // Function to save updated task status after moving to another column
+    function saveTaskStatus(taskId, newStatus) {
+        fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: newStatus }),
         })
-        .then(data => {
-            console.log("Task saved to backend:", data);
-        })
-        .catch(error => console.error("Error saving task to backend:", error));
-}
+            .then(async response => {
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Network response was not ok: ${text}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Task status updated in backend:", data);
+            })
+            .catch(error => console.error("Error updating task status in backend:", error));
+    }
 
-// Function to save updated task status after moving to another column
-function saveTaskStatus(taskId, newStatus) {
-    fetch(`http://127.0.0.1:8000/taskboard/task/${taskId}/`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-    })
-        .then(async response => {
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`Network response was not ok: ${text}`);
-            }
-            return response.json();
+    // Function to delete selected task
+    function deleteSelectedTask(taskId) {
+        fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
+            method: "DELETE",
         })
-        .then(data => {
-            console.log("Task status updated in backend:", data);
-        })
-        .catch(error => console.error("Error updating task status in backend:", error));
-}
-
-// Function to delete task
-function deleteTask(taskId) {
-    fetch(`http://127.0.0.1:8000/taskboard/task/${taskId}/`, {
-        method: "DELETE",
-    })
-        .then(() => {
-            document.querySelector(`li[data-id="${taskId}"]`).remove();
-            console.log("Task deleted:", taskId);
-        })
-        .catch(error => console.error("Error deleting task:", error));
-}
+            .then(() => {
+                document.querySelector(`li[data-id="${taskId}"]`).remove();
+                console.log("Selected task deleted:", taskId);
+            })
+            .catch(error => console.error("Error deleting selected task:", error));
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize the Add Tags Button Logic

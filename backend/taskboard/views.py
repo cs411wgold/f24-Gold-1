@@ -1,10 +1,97 @@
 # views.py
 from django.http import JsonResponse
 from django.views import View
-from .models import Tag, Task
+from .models import Tag, Task, SelectedTask
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SelectedTaskView(View):
+    def get(self, request, task_id=None):
+        if task_id:
+            try:
+                selected_task = SelectedTask.objects.get(task__id=task_id)
+                data = {
+                    'id': selected_task.task.id,
+                    'title': selected_task.task.title,
+                    'status': selected_task.task.status,
+                    'is_selected': selected_task.is_selected
+                }
+                return JsonResponse(data, status=200)
+            except SelectedTask.DoesNotExist:
+                return JsonResponse({'error': 'Selected Task not found.'}, status=404)
+        else:
+            selected_tasks = SelectedTask.objects.filter(is_selected=True)
+            selected_tasks_data = [
+                {
+                    'id': selected_task.task.id,
+                    'title': selected_task.task.title,
+                    'status': selected_task.task.status,
+                    'is_selected': selected_task.is_selected
+                }
+                for selected_task in selected_tasks
+            ]
+            return JsonResponse({'selected_tasks': selected_tasks_data}, safe=False)
+
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            task_id = data.get('task_id')
+
+            if not task_id:
+                return JsonResponse({'error': 'Task ID is required.'}, status=400)
+
+            try:
+                task = Task.objects.get(id=task_id)
+            except Task.DoesNotExist:
+                return JsonResponse({'error': 'Task not found.'}, status=404)
+
+            selected_task, created = SelectedTask.objects.get_or_create(task=task)
+
+            return JsonResponse({
+                'message': 'Task has been selected successfully.',
+                'task_id': selected_task.task.id,
+                'title': selected_task.task.title,
+                'status': selected_task.task.status
+            }, status=201)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
+
+    def put(self, request, task_id):
+        try:
+            data = json.loads(request.body)
+
+            try:
+                selected_task = SelectedTask.objects.get(task__id=task_id)
+            except SelectedTask.DoesNotExist:
+                return JsonResponse({'error': 'Selected Task not found.'}, status=404)
+
+            title = data.get('title', selected_task.task.title)
+            status = data.get('status', selected_task.task.status)
+
+            selected_task.task.title = title
+            selected_task.task.status = status
+            selected_task.task.save()
+
+            return JsonResponse({
+                'id': selected_task.task.id,
+                'title': selected_task.task.title,
+                'status': selected_task.task.status
+            }, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
+
+    def delete(self, request, task_id):
+        try:
+            selected_task = SelectedTask.objects.get(task__id=task_id)
+            selected_task.delete()
+            return JsonResponse({'message': 'Selected Task deleted successfully.'}, status=200)
+        except SelectedTask.DoesNotExist:
+            return JsonResponse({'error': 'Selected Task not found.'}, status=404)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class TaskView(View):
