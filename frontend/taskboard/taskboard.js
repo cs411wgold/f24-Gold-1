@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Task not found in taskboard database.");
                     return;
                 }
-
+    
                 // Save new task to selected tasks backend
                 fetch("http://127.0.0.1:8000/taskboard/selected_task/", {
                     method: "POST",
@@ -140,7 +140,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then(data => {
                     console.log("Task successfully selected:", data);
-                    loadSelectedTasks(); // Reload the taskboard to show new task
+    
+                    // Create task HTML element and append to the new tasks list
+                    const newTasksList = document.getElementById("new-tasks");
+                    if (newTasksList) {
+                        const taskElement = document.createElement("li");
+                        taskElement.className = "sortable-item";
+                        taskElement.dataset.id = assignment.id;
+                        taskElement.innerHTML = `
+                            ${assignment.title}
+                            <button class="delete-task-btn btn btn-danger btn-sm">Delete</button>
+                        `;
+                        newTasksList.appendChild(taskElement);
+    
+                        // Attach event listener to the delete button
+                        const deleteButton = taskElement.querySelector(".delete-task-btn");
+                        deleteButton.addEventListener("click", function() {
+                            deleteSelectedTask(assignment.id);
+                        });
+                    } else {
+                        console.error("Element with ID 'new-tasks' not found.");
+                    }
                 })
                 .catch(error => {
                     console.error("Error selecting task:", error);
@@ -148,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Error fetching assignment:", error));
     }
+    
 
     // Function to save updated task status after moving to another column
     function saveTaskStatus(taskId, newStatus) {
@@ -171,20 +192,23 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error updating task status in backend:", error));
     }
 
-    // Function to delete selected task
+    // Define deleteSelectedTask globally
     function deleteSelectedTask(taskId) {
         fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
             method: "DELETE",
         })
             .then(() => {
-                document.querySelector(`li[data-id="${taskId}"]`).remove();
+                const taskElement = document.querySelector(`li[data-id="${taskId}"]`);
+                if (taskElement) {
+                    taskElement.remove();
+                }
                 console.log("Selected task deleted:", taskId);
             })
             .catch(error => console.error("Error deleting selected task:", error));
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     // Initialize the Add Tags Button Logic
     const addTagsButton = document.getElementById("add-tags-btn");
     const addTagModalElement = document.getElementById("addTagModal");
@@ -219,20 +243,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to populate the task selection dropdown
     function populateTaskSelect() {
-        fetch("http://127.0.0.1:8000/taskboard/task/")
+        fetch("http://127.0.0.1:8000/taskboard/selected_task/")
             .then(response => response.json())
-            .then(tasks => {
-                taskSelect.innerHTML = "";  // Clear existing options
-
-                tasks.forEach(task => {
-                    const option = document.createElement("option");
-                    option.value = task.id;
-                    option.textContent = task.title;
-                    taskSelect.appendChild(option);
-                });
+            .then(data => {
+                console.log("API Response:", data); // Log the response to check the structure
+    
+                // Extract the "selected_tasks" array from the response
+                if (data.selected_tasks && Array.isArray(data.selected_tasks)) {
+                    const tasks = data.selected_tasks;
+    
+                    // Clear existing options
+                    taskSelect.innerHTML = "";
+    
+                    // Populate the dropdown with the tasks
+                    tasks.forEach(task => {
+                        const option = document.createElement("option");
+                        option.value = task.id;
+                        option.textContent = task.title;
+                        taskSelect.appendChild(option);
+                    });
+                } else {
+                    console.error("The response from the server is not an array as expected.", data);
+                }
             })
             .catch(error => console.error("Error fetching tasks:", error));
     }
+    
+    
 
     // Function to add a tag to a specific task
     function addTagToTask(tagName, taskId) {
