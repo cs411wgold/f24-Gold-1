@@ -56,16 +56,15 @@
             <img src="../img/avatars/timer_beginner.png" alt="timer beginner avatar" class="images">
             <h2 id="username">Username</h2>
         </div>
-        <a href="#"><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
+        <a href=""><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
       </div>
       <!--Tab Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
       <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'PublicProfile')">Public Profile</button>
-        <button class="tablinks" onclick="openTab(event, 'Account')">Account</button>
-        <button class="tablinks" onclick="openTab(event, 'View/ManageUsers')">View/Manage Users</button>
+        <button class="tab-links" onclick="openTab(event, 'PublicProfile')">Public Profile</button>
+        <button class="tab-links" onclick="openTab(event, 'Account')">Account</button>
+        <button class="tab-links" onclick="openTab(event, 'View/ManageUsers')">View/Manage Users</button>
       </div>
-      <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium">View Terms & Conditions</button></a>
-      <div id="PublicProfile" class="tabcontent">
+      <div id="PublicProfile" class="tab-content">
         <h1>Public Profile</h1>
         <h3>Notifications</h3>
         <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
@@ -75,25 +74,51 @@
         </label>
         <h3>Time Zone</h3>
         <div class="TimeZone-dropdown">
-          <button onclick="dropMenu()" class="TimeZone-button">Select</button>
-          <div id="TimeZone" class="TimeZone-content"></div>
+          <div id="TimeZone" class="TimeZone-content">
+            <select id="timezone" name="timezone">
+              <option value="Pacific/Midway">(GMT-11:00) Midway Island</option>
+              <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
+              <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
+              <option value="Pacific/Marquesas">(GMT-09:30) Marquesas Islands</option>
+              <option value="Pacific/Gambier">(GMT-09:00) Gambier Islands</option>
+              <option value="America/Anchorage">(GMT-09:00) Alaska</option>
+              <option value="America/Los_Angeles">(GMT-08:00) Pacific Time (US & Canada)</option>
+              <option value="America/Denver">(GMT-07:00) Mountain Time (US & Canada)</option>
+              <option value="America/Chicago">(GMT-06:00) Central Time (US & Canada)</option>
+              <option value="America/New_York">(GMT-05:00) Eastern Time (US & Canada)</option>
+              <option value="America/Sao_Paulo">(GMT-03:00) Brasilia</option>
+              <option value="Atlantic/Cape_Verde">(GMT-01:00) Cape Verde Is.</option>
+              <option value="Europe/London">(GMT+00:00) London</option>
+              <option value="Europe/Berlin">(GMT+01:00) Berlin</option>
+              <option value="Europe/Moscow">(GMT+03:00) Moscow</option>
+              <option value="Asia/Dubai">(GMT+04:00) Dubai</option>
+              <option value="Asia/Kolkata">(GMT+05:30) Kolkata</option>
+              <option value="Asia/Singapore">(GMT+08:00) Singapore</option>
+              <option value="Asia/Tokyo">(GMT+09:00) Tokyo</option>
+              <option value="Australia/Sydney">(GMT+10:00) Sydney</option>
+            </select>
+          </div>
         </div>
         <button class="SaveChanges-button" style="font-size:medium">Save Changes</button>
       </div>
-      <div id="Account" class="tabcontent">
+      <div id="Account" class="tab-content">
         <h2>Account</h2>
+        <button class="ChangeEmail-button" style="font-size:medium">Change Email</button>
+        <button class="ChangePassword-button" style="font-size:medium">Change Password</button>
       </div>
-      <div id="View/ManageUsers" class="tabcontent">
+      <div id="View/ManageUsers" class="tab-content">
         <h2>View/Manage Users</h2>
         <div class="FriendsList-container">
           <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
           <a href="friendsList.html"><button style="font-size:medium">Friends List</button></a>
         </div>
-        <div class="Settings-container">
+        <div class="BlockedList-container">
           <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
           <a href="blockedList.html"><button style="font-size:medium">Blocked List</button></a>
         </div>
       </div>
+      <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium">View Terms & Conditions</button></a>
+      <script src="settings.js"></script>
     </main>
 
       <!-- Footer Section -->

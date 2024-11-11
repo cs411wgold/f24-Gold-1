@@ -34,7 +34,7 @@ main {
     display: block;
     margin: 20px; 
     font-size: medium;
-    background-color: #008080;
+    background-color: #2ab7f3;
     color: rgb(255, 255, 255);
 }
 .tab button {
@@ -49,11 +49,57 @@ main {
     cursor: pointer;
     transition: 0.3s;
 }
-.tabcontent {
+.tab-content {
     float: left;
     padding: 0px 12px;
     border: 1px solid #ccc;
     width: 70%;
     border-left: none;
     height: 300px;
+}
+.FriendsList-container {
+    display: flex;
+    align-items: center;
+}
+.FriendsList-container img {
+    width: 65px; 
+    height: 65px;
+    margin-right: 15px; 
+}
+.FriendsList-container button {
+    padding: 10px 20px;
+    background-color: #2ab7f3;
+    color: rgb(255, 255, 255) 
+}
+.BlockedList-container {
+    display: flex;
+    align-items: center;
+}
+.BlockedList-container img {
+    width: 60px; 
+    height: 60px;
+    margin-right: 15px; 
+}
+.BlockedList-container button {
+    padding: 10px 20px;
+    background-color: #2ab7f3;
+    color: rgb(255, 255, 255)
+}
+.ChangeEmail-button, .ChangePassword-button {
+    padding: 10px 20px;
+    background-color: #2ab7f3;
+    color: rgb(255, 255, 255);
+    display: block; 
+    width: 100%; 
+    margin-bottom: 10px; 
+}
+.SaveChanges-button {
+    padding: 10px 20px;
+    background-color: #2ab7f3;
+    color: rgb(255, 255, 255) 
+}
+.TimeZone-button {
+    padding: 10px 20px;
+    background-color: #2ab7f3;
+    color: rgb(255, 255, 255) 
 }
