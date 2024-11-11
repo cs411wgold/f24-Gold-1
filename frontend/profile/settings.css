@@ -85,14 +85,6 @@ main {
     background-color: #2ab7f3;
     color: rgb(255, 255, 255)
 }
-.ChangeEmail-button, .ChangePassword-button {
-    padding: 10px 20px;
-    background-color: #2ab7f3;
-    color: rgb(255, 255, 255);
-    display: block; 
-    width: 100%; 
-    margin-bottom: 10px; 
-}
 .SaveChanges-button {
     padding: 10px 20px;
     background-color: #2ab7f3;
@@ -102,4 +94,35 @@ main {
     padding: 10px 20px;
     background-color: #2ab7f3;
     color: rgb(255, 255, 255) 
+}
+.popup {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

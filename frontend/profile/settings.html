@@ -103,9 +103,34 @@
       </div>
       <div id="Account" class="tab-content">
         <h2>Account</h2>
-        <button class="ChangeEmail-button" style="font-size:medium">Change Email</button>
-        <button class="ChangePassword-button" style="font-size:medium">Change Password</button>
+        <button class="popup-button" onclick="openPopup('changeEmail-Form')">Change Email</button> 
+        <button class="popup-button" onclick="openPopup('changePassword-Form')">Change Password</button>
       </div>
+      <div id="changeEmail-Form" class="popup"> 
+        <div class="popup-content"> 
+          <span class="close" onclick="closePopup('changeEmail-Form')">&times;</span> 
+          <h2>Change Email</h2> 
+          <form id="changeEmailForm"> 
+            <label for="email">New Email:</label> 
+            <input type="email" id="email" name="email" required> 
+            <button type="submit">Submit</button> 
+          </form> 
+        </div> 
+      </div> 
+      <div id="changePassword-Form" class="popup"> 
+        <div class="popup-content"> 
+          <span class="close" onclick="closePopup('changePassword-Form')">&times;</span> 
+          <h2>Change Password</h2> 
+          <form id="passwordForm"> 
+            <label for="currentPassword">Current Password:</label> 
+            <input type="password" id="currentPassword" name="currentPassword" required> 
+            <label for="newPassword">New Password:</label> 
+            <input type="password" id="newPassword" name="newPassword" required> 
+            <button type="submit">Submit</button> 
+          </form> 
+        </div>
+      </div>
+      <script src="settings.js"></script>
       <div id="View/ManageUsers" class="tab-content">
         <h2>View/Manage Users</h2>
         <div class="FriendsList-container">
@@ -118,7 +143,6 @@
         </div>
       </div>
       <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium">View Terms & Conditions</button></a>
-      <script src="settings.js"></script>
     </main>
 
       <!-- Footer Section -->
