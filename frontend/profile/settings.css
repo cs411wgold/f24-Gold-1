@@ -32,7 +32,8 @@ main {
 }
 .edit-avatar-button {
     display: block;
-    margin: 20px; 
+    margin-left:55px;
+    margin-bottom:20px;
     font-size: medium;
     background-color: #2ab7f3;
     color: rgb(255, 255, 255);
@@ -88,7 +89,8 @@ main {
 .SaveChanges-button {
     padding: 10px 20px;
     background-color: #2ab7f3;
-    color: rgb(255, 255, 255) 
+    color: rgb(255, 255, 255);
+    margin-top:20px;
 }
 .TimeZone-button {
     padding: 10px 20px;
