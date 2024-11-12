@@ -1,12 +1,27 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     setupDate();
     document.getElementById('saveTaskBtn').addEventListener('click', saveTask);
+
+    // Fetch assignments and display them on the calendar
+    fetchAssignmentsAndDisplay();
 });
 
 let currentDay = ''; // Used to track the selected day for adding tasks
 
-// Function to set up the calendar for a specific date
-function setupDate(date) {
+// Function to fetch assignments and display them on the calendar
+function fetchAssignmentsAndDisplay() {
+    fetch("http://127.0.0.1:8000/assignments/list/")
+        .then(response => response.json())
+        .then(data => {
+            // Assume the assignments array is in data.assignments
+            const assignments = data.assignments || [];
+            setupDate(null, assignments);
+        })
+        .catch(error => console.error("Error fetching assignments:", error));
+}
+
+// Function to set up the calendar for a specific date and display assignments
+function setupDate(date, assignments = []) {
     const monthHeading = document.querySelector('.month h2');
     const daysContainer = document.querySelector('.days');
     const currentDate = date ?? new Date();
@@ -48,7 +63,6 @@ function setupDate(date) {
         daySpan.textContent = day; // Display the date number
         dayContentDiv.appendChild(daySpan); // Append the date number to the content div
         dayLi.appendChild(dayContentDiv); // Append the day content div to the dayLi element
-
         // Check if there are saved tasks for this day
         let savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
 
@@ -86,6 +100,37 @@ function setupDate(date) {
         });
 
         dayLi.appendChild(taskDiv); // Append the taskDiv to the day element
+
+        // Filter and add assignments for this day
+        const assignmentsForDay = assignments.filter(assignment => {
+            const dueDate = new Date(assignment.due_at);
+            return (
+                dueDate.getFullYear() === year &&
+                dueDate.getMonth() === numeralMonth &&
+                dueDate.getDate() === day
+            );
+        });
+
+        if (assignmentsForDay.length > 0) {
+            assignmentsForDay.forEach(assignment => {
+                const assignmentItem = document.createElement('div');
+                assignmentItem.classList.add('assignment-item');
+                const link = parseAssignmentLink(assignment.description);
+
+                if (link) {
+                    const assignmentLink = document.createElement('a');
+                    assignmentLink.href = link;
+                    assignmentLink.target = '_blank';
+                    assignmentLink.textContent = assignment.name;
+                    assignmentItem.appendChild(assignmentLink);
+                } else {
+                    assignmentItem.textContent = assignment.name;
+                }
+
+                dayContentDiv.appendChild(assignmentItem);
+            });
+        }
+
         daysContainer.appendChild(dayLi); // Append the day li to the calendar
     }
 }
@@ -99,7 +144,13 @@ function openTaskModal(day, month, year) {
     taskModal.show();
 }
 
-// Function to save the task
+// Function to parse the assignment link from the description
+function parseAssignmentLink(description) {
+    const linkMatch = description.match(/https:\/\/www\.cs\.odu\.edu\/[^"]+/);
+    return linkMatch ? linkMatch[0] : null;
+}
+
+// Function to save the task (local storage only for user-added tasks)
 function saveTask() {
     const task = document.getElementById('taskInput').value;
     const time = document.getElementById('taskTime').value;
@@ -112,20 +163,14 @@ function saveTask() {
 
     // Retrieve existing tasks from localStorage
     const tasks = JSON.parse(localStorage.getItem(selectedDate)) || [];
-
-    // Add the new task to the array
     tasks.push({ task, time });
-
-    // Sort the tasks by time
     const sortedTasks = sortTasksByTime(tasks);
 
-    // Save the sorted tasks back to local storage
     localStorage.setItem(selectedDate, JSON.stringify(sortedTasks));
 
-    // Close modal and refresh the calendar
     const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
     taskModal.hide();
-    setupDate(); // Refresh the calendar to show the added task
+    fetchAssignmentsAndDisplay(); // Refresh the calendar to show the added task
 }
 
 // Function to delete a task
@@ -134,20 +179,14 @@ function deleteTask(year, month, day, taskIndex) {
     const tasks = JSON.parse(localStorage.getItem(dateKey)) || [];
     tasks.splice(taskIndex, 1); // Remove the task at the given index
 
-    // Update local storage
     localStorage.setItem(dateKey, JSON.stringify(tasks));
 
-    // Refresh the calendar
-    setupDate();
+    fetchAssignmentsAndDisplay();
 }
 
 // Function to sort tasks by time in ascending order
 function sortTasksByTime(tasks) {
-    return tasks.sort((a, b) => {
-        const timeA = convertTo24Hour(a.time);
-        const timeB = convertTo24Hour(b.time);
-        return timeA.localeCompare(timeB); // Compare the 24-hour formatted times
-    });
+    return tasks.sort((a, b) => convertTo24Hour(a.time).localeCompare(convertTo24Hour(b.time)));
 }
 
 // Function to convert 24-hour time to 12-hour format
@@ -155,7 +194,7 @@ function convertTo12Hour(time) {
     let [hours, minutes] = time.split(':');
     hours = parseInt(hours);
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+    hours = hours % 12 || 12;
     return `${hours}:${minutes} ${ampm}`;
 }
 
@@ -164,15 +203,15 @@ function convertTo24Hour(time12h) {
     const [time, modifier] = time12h.split(' ');
     let [hours, minutes] = time.split(':');
     if (hours === '12') {
-        hours = '00'; // Midnight case
+        hours = '00';
     }
     if (modifier === 'PM' && hours !== '12') {
-        hours = parseInt(hours, 10) + 12; // Convert PM to 24-hour format
+        hours = parseInt(hours, 10) + 12;
     }
     return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
-// Function to get the previous month
+// Functions to get the previous and next month
 function getPreviousMonth() {
     const monthHeading = document.querySelector('.month h2');
     const parts = monthHeading.textContent.split(" ");
@@ -188,10 +227,9 @@ function getPreviousMonth() {
     }
 
     const calendarDate = new Date(year, months.indexOf(previousMonth));
-    setupDate(calendarDate);
+    fetchAssignmentsAndDisplay(calendarDate);
 }
 
-// Function to get the next month
 function getNextMonth() {
     const monthHeading = document.querySelector('.month h2');
     const parts = monthHeading.textContent.split(" ");
@@ -207,5 +245,5 @@ function getNextMonth() {
     }
 
     const calendarDate = new Date(year, months.indexOf(nextMonth));
-    setupDate(calendarDate);
+    fetchAssignmentsAndDisplay(calendarDate);
 }

@@ -4,6 +4,20 @@ main {
   background-position: center;
 }
 
+.assignment {
+  padding: 5px;
+  background-color: #f0f0f0;
+  margin-top: 5px;
+  border-radius: 4px;
+}
+
+.assignment.clickable {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
 .calendar-container {
   width: 90%;
   margin: 0 auto;
