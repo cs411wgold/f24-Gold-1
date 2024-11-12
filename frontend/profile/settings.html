@@ -59,87 +59,104 @@
         <a href=""><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
       </div>
       <!--Tab Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
-      <div class="tab">
-        <button class="tab-links" onclick="openTab(event, 'PublicProfile')">Public Profile</button>
-        <button class="tab-links" onclick="openTab(event, 'Account')">Account</button>
-        <button class="tab-links" onclick="openTab(event, 'View/ManageUsers')">View/Manage Users</button>
-      </div>
-      <div id="PublicProfile" class="tab-content">
-        <h1>Public Profile</h1>
-        <h3>Notifications</h3>
-        <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
-        <label class="Notifications-switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-        <h3>Time Zone</h3>
-        <div class="TimeZone-dropdown">
-          <div id="TimeZone" class="TimeZone-content">
-            <select id="timezone" name="timezone">
-              <option value="Pacific/Midway">(GMT-11:00) Midway Island</option>
-              <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
-              <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
-              <option value="Pacific/Marquesas">(GMT-09:30) Marquesas Islands</option>
-              <option value="Pacific/Gambier">(GMT-09:00) Gambier Islands</option>
-              <option value="America/Anchorage">(GMT-09:00) Alaska</option>
-              <option value="America/Los_Angeles">(GMT-08:00) Pacific Time (US & Canada)</option>
-              <option value="America/Denver">(GMT-07:00) Mountain Time (US & Canada)</option>
-              <option value="America/Chicago">(GMT-06:00) Central Time (US & Canada)</option>
-              <option value="America/New_York">(GMT-05:00) Eastern Time (US & Canada)</option>
-              <option value="America/Sao_Paulo">(GMT-03:00) Brasilia</option>
-              <option value="Atlantic/Cape_Verde">(GMT-01:00) Cape Verde Is.</option>
-              <option value="Europe/London">(GMT+00:00) London</option>
-              <option value="Europe/Berlin">(GMT+01:00) Berlin</option>
-              <option value="Europe/Moscow">(GMT+03:00) Moscow</option>
-              <option value="Asia/Dubai">(GMT+04:00) Dubai</option>
-              <option value="Asia/Kolkata">(GMT+05:30) Kolkata</option>
-              <option value="Asia/Singapore">(GMT+08:00) Singapore</option>
-              <option value="Asia/Tokyo">(GMT+09:00) Tokyo</option>
-              <option value="Australia/Sydney">(GMT+10:00) Sydney</option>
-            </select>
+      <div class="tabs">
+        <input type="radio" id="publicProfile" name="settingsTabs" checked="checked">
+        <label for="publicProfile" class="tab-label">Public Profile</label>
+        <div class="tab-content">
+          <h1>Public Profile</h1>
+          <h3>Notifications</h3>
+          <!--Toggle Switch Reference: https://www.w3schools.com/howto/howto_css_switch.asp-->
+          <label class="notificationsSwitch" id="notificationSwitch-label">
+            <input type="checkbox">
+            <span class="notificationsSwitch-slider"></span>
+          </label>
+          <h3>Time Zone</h3>
+          <div class="TimeZone-dropdown">
+            <div id="TimeZone" class="TimeZone-content">
+              <select id="timezone" name="timezone">
+                <option value="Pacific/Midway">(GMT-11:00) Midway Island</option>
+                <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
+                <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
+                <option value="Pacific/Marquesas">(GMT-09:30) Marquesas Islands</option>
+                <option value="Pacific/Gambier">(GMT-09:00) Gambier Islands</option>
+                <option value="America/Anchorage">(GMT-09:00) Alaska</option>
+                <option value="America/Los_Angeles">(GMT-08:00) Pacific Time (US & Canada)</option>
+                <option value="America/Denver">(GMT-07:00) Mountain Time (US & Canada)</option>
+                <option value="America/Chicago">(GMT-06:00) Central Time (US & Canada)</option>
+                <option value="America/New_York">(GMT-05:00) Eastern Time (US & Canada)</option>
+                <option value="America/Sao_Paulo">(GMT-03:00) Brasilia</option>
+                <option value="Atlantic/Cape_Verde">(GMT-01:00) Cape Verde Is.</option>
+                <option value="Europe/London">(GMT+00:00) London</option>
+                <option value="Europe/Berlin">(GMT+01:00) Berlin</option>
+                <option value="Europe/Moscow">(GMT+03:00) Moscow</option>
+                <option value="Asia/Dubai">(GMT+04:00) Dubai</option>
+                <option value="Asia/Kolkata">(GMT+05:30) Kolkata</option>
+                <option value="Asia/Singapore">(GMT+08:00) Singapore</option>
+                <option value="Asia/Tokyo">(GMT+09:00) Tokyo</option>
+                <option value="Australia/Sydney">(GMT+10:00) Sydney</option>
+              </select>
+            </div>
           </div>
+          <button class="SaveChanges-button" style="font-size:medium">Save Changes</button>
         </div>
-        <button class="SaveChanges-button" style="font-size:medium">Save Changes</button>
-      </div>
-      <div id="Account" class="tab-content">
-        <h2>Account</h2>
-        <button class="popup-button" onclick="openPopup('changeEmail-Form')">Change Email</button> 
-        <button class="popup-button" onclick="openPopup('changePassword-Form')">Change Password</button>
-      </div>
-      <div id="changeEmail-Form" class="popup"> 
-        <div class="popup-content"> 
-          <span class="close" onclick="closePopup('changeEmail-Form')">&times;</span> 
-          <h2>Change Email</h2> 
-          <form id="changeEmailForm"> 
-            <label for="email">New Email:</label> 
-            <input type="email" id="email" name="email" required> 
-            <button type="submit">Submit</button> 
-          </form> 
-        </div> 
-      </div> 
-      <div id="changePassword-Form" class="popup"> 
-        <div class="popup-content"> 
-          <span class="close" onclick="closePopup('changePassword-Form')">&times;</span> 
-          <h2>Change Password</h2> 
-          <form id="passwordForm"> 
-            <label for="currentPassword">Current Password:</label> 
-            <input type="password" id="currentPassword" name="currentPassword" required> 
-            <label for="newPassword">New Password:</label> 
-            <input type="password" id="newPassword" name="newPassword" required> 
-            <button type="submit">Submit</button> 
-          </form> 
+        <input type="radio" id="Account" name="settingsTabs">
+        <label for="Account" class="tab-label">Account</label>
+        <div class="tab-content">
+          <h2>Account</h2>
+          <button class="popup-button" onclick="openPopup('changeEmail-Form')">Change Email</button> 
+          <button class="popup-button" onclick="openPopup('changePassword-Form')">Change Password</button>
+          <div id="changeEmail-Form" class="popup"> 
+            <div class="popup-content"> 
+              <span class="close" onclick="closePopup('changeEmail-Form')">&times;</span> 
+              <h2>Change Email</h2> 
+              <form id="changeEmailForm">
+                <div>
+                  <label for="currentEmail">Current Email:</label> 
+                  <input type="text" id="currentEmail" placeholder="Enter Current Email" class="emailForm-input" required/> 
+                </div>
+                <div>
+                  <label for="newEmail">New Email:</label> 
+                  <input type="text" id="newEmail" placeholder="Enter New Email" class="emailForm-input" required/> 
+                </div>
+                <button type="submit">Submit</button> 
+              </form> 
+            </div> 
+          </div>
+          <div id="changePassword-Form" class="popup"> 
+            <div class="popup-content"> 
+              <span class="close" onclick="closePopup('changePassword-Form')">&times;</span> 
+              <h2>Change Password</h2> 
+              <form id="passwordForm"> 
+                <div>
+                  <label for="currentPassword">Current Password:</label> 
+                  <input type="text" id="currentPassword" placeholder="Enter Current Password" class="passwordForm-input" required/> 
+                </div>
+                <div>
+                  <label for="newPassword">New Password:</label> 
+                  <input type="text" id="newPassword" placeholder="Enter New Password" class="passwordForm-input" required/>
+                </div>
+                <div>
+                  <label for="confirmPassword">Confirm Password:</label> 
+                  <input type="text" id="confirmPassword" placeholder="Confirm Password" class="passwordForm-input" required/>
+                </div>
+                <button type="submit">Submit</button> 
+              </form> 
+            </div>
+          </div>
+        <script src="settings.js"></script>
         </div>
-      </div>
-      <script src="settings.js"></script>
-      <div id="View/ManageUsers" class="tab-content">
-        <h2>View/Manage Users</h2>
-        <div class="FriendsList-container">
-          <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
-          <a href="friendsList.html"><button style="font-size:medium">Friends List</button></a>
-        </div>
-        <div class="BlockedList-container">
-          <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
-          <a href="blockedList.html"><button style="font-size:medium">Blocked List</button></a>
+        <input type="radio" id="viewUsers" name="settingsTabs">
+        <label for="viewUsers" class="tab-label">View/Manage Users</label>
+        <div class="tab-content">
+          <h2>View/Manage Users</h2>
+          <div class="FriendsList-container">
+            <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
+            <a href="friendsList.html"><button style="font-size:medium">Friends List</button></a>
+          </div>
+          <div class="BlockedList-container">
+            <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
+            <a href="blockedList.html"><button style="font-size:medium">Blocked List</button></a>
+          </div>
         </div>
       </div>
       <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium; margin-top:20px;">View Terms & Conditions</button></a>
