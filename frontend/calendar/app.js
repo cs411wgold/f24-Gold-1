@@ -3,28 +3,27 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('saveTaskBtn').addEventListener('click', saveTask);
 
     // Fetch assignments and display them on the calendar
-    fetchAssignmentsAndDisplay();
+    fetchAssignmentsAndDisplay(new Date());
 });
 
 let currentDay = ''; // Used to track the selected day for adding tasks
 
 // Function to fetch assignments and display them on the calendar
-function fetchAssignmentsAndDisplay() {
+function fetchAssignmentsAndDisplay(date) {
     fetch("http://127.0.0.1:8000/assignments/list/")
         .then(response => response.json())
         .then(data => {
-            // Assume the assignments array is in data.assignments
             const assignments = data.assignments || [];
-            setupDate(null, assignments);
+            setupDate(date, assignments);
         })
         .catch(error => console.error("Error fetching assignments:", error));
 }
 
 // Function to set up the calendar for a specific date and display assignments
-function setupDate(date, assignments = []) {
+function setupDate(date = new Date(), assignments = []) {
     const monthHeading = document.querySelector('.month h2');
     const daysContainer = document.querySelector('.days');
-    const currentDate = date ?? new Date();
+    const currentDate = date;
     const numeralMonth = currentDate.getMonth();
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthName = months[numeralMonth];
@@ -47,61 +46,48 @@ function setupDate(date, assignments = []) {
     // Render the actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
         const dayLi = document.createElement('li');
-        dayLi.classList.add('date-box'); // Add a class for the date box
+        dayLi.classList.add('date-box');
 
         // Add event listener to open the task modal when the date box is clicked
         dayLi.addEventListener('click', function () {
             openTaskModal(day, numeralMonth, year);
         });
 
-        // Create a div to hold the date number
         const dayContentDiv = document.createElement('div');
         dayContentDiv.classList.add('day-content');
 
-        // Add the date number
         const daySpan = document.createElement('span');
-        daySpan.textContent = day; // Display the date number
-        dayContentDiv.appendChild(daySpan); // Append the date number to the content div
-        dayLi.appendChild(dayContentDiv); // Append the day content div to the dayLi element
-        // Check if there are saved tasks for this day
-        let savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
+        daySpan.textContent = day;
+        dayContentDiv.appendChild(daySpan);
+        dayLi.appendChild(dayContentDiv);
 
-        // Sort the tasks before displaying them
+        let savedTasks = JSON.parse(localStorage.getItem(`${year}-${numeralMonth}-${day}`)) || [];
         savedTasks = sortTasksByTime(savedTasks);
 
-        // Show the task div if tasks exist
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('task');
-        if (savedTasks.length > 0) {
-            taskDiv.style.display = 'block'; // Show the task div if tasks exist
-        } else {
-            taskDiv.style.display = 'none'; // Hide the task div if no tasks exist
-        }
+        taskDiv.style.display = savedTasks.length > 0 ? 'block' : 'none';
 
-        taskDiv.innerHTML = ''; // Clear any previous tasks
-
-        // Render each task in sorted order
+        taskDiv.innerHTML = '';
         savedTasks.forEach((taskObj, index) => {
             const taskItem = document.createElement('div');
             taskItem.classList.add('task-item');
             taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
 
-            // Add delete button
             const deleteButton = document.createElement('button');
             deleteButton.textContent = "Delete";
             deleteButton.classList.add('delete-task-btn');
             deleteButton.addEventListener('click', function (e) {
-                e.stopPropagation(); // Prevent the click from opening the modal when deleting a task
+                e.stopPropagation();
                 deleteTask(year, numeralMonth, day, index);
             });
 
-            taskItem.appendChild(deleteButton); // Add delete button to the task item
+            taskItem.appendChild(deleteButton);
             taskDiv.appendChild(taskItem);
         });
 
-        dayLi.appendChild(taskDiv); // Append the taskDiv to the day element
+        dayLi.appendChild(taskDiv);
 
-        // Filter and add assignments for this day
         const assignmentsForDay = assignments.filter(assignment => {
             const dueDate = new Date(assignment.due_at);
             return (
@@ -131,7 +117,7 @@ function setupDate(date, assignments = []) {
             });
         }
 
-        daysContainer.appendChild(dayLi); // Append the day li to the calendar
+        daysContainer.appendChild(dayLi);
     }
 }
 
@@ -211,39 +197,27 @@ function convertTo24Hour(time12h) {
     return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
-// Functions to get the previous and next month
+
 function getPreviousMonth() {
     const monthHeading = document.querySelector('.month h2');
-    const parts = monthHeading.textContent.split(" ");
-    const oldMonth = parts[0];
-    let year = parts[1];
-
+    const [oldMonth, year] = monthHeading.textContent.split(" ");
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let previousMonth = months[months.indexOf(oldMonth) - 1];
+    const oldMonthIndex = months.indexOf(oldMonth);
+    const previousMonthIndex = (oldMonthIndex - 1 + 12) % 12;
+    const newYear = previousMonthIndex === 11 ? parseInt(year) - 1 : parseInt(year);
 
-    if (oldMonth === "January") {
-        previousMonth = 'December';
-        year = (parseInt(year) - 1).toString();
-    }
-
-    const calendarDate = new Date(year, months.indexOf(previousMonth));
-    fetchAssignmentsAndDisplay(calendarDate);
+    const previousMonthDate = new Date(newYear, previousMonthIndex, 1);
+    fetchAssignmentsAndDisplay(previousMonthDate);
 }
 
 function getNextMonth() {
     const monthHeading = document.querySelector('.month h2');
-    const parts = monthHeading.textContent.split(" ");
-    const oldMonth = parts[0];
-    let year = parts[1];
-
+    const [oldMonth, year] = monthHeading.textContent.split(" ");
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let nextMonth = months[months.indexOf(oldMonth) + 1];
+    const oldMonthIndex = months.indexOf(oldMonth);
+    const nextMonthIndex = (oldMonthIndex + 1) % 12;
+    const newYear = nextMonthIndex === 0 ? parseInt(year) + 1 : parseInt(year);
 
-    if (oldMonth === "December") {
-        nextMonth = 'January';
-        year = (parseInt(year) + 1).toString();
-    }
-
-    const calendarDate = new Date(year, months.indexOf(nextMonth));
-    fetchAssignmentsAndDisplay(calendarDate);
+    const nextMonthDate = new Date(newYear, nextMonthIndex, 1);
+    fetchAssignmentsAndDisplay(nextMonthDate);
 }
