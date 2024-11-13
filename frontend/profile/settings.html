@@ -50,13 +50,20 @@
     </script>
 
     <!-- Main Section -->
-    <main class="container bg-light text-center mt-5" style="--bs-bg-opacity:0.85; margin-bottom:255px">
+    <div class="container bg-light text-center m-3 col-3" style="--bs-bg-opacity:0.85;">
+      <h1>Settings</h1>
+    </div>
+    <main class="container bg-light text-center" style="--bs-bg-opacity:0.85; margin-bottom:255px">
       <div class="profile-container">
-        <div class="profile-header">
-            <img src="../img/avatars/new_user_seedling.png" alt="seedling tomato" class="images" style="width:200px; height:200px">
-            <p id="username" style="font-size:50px; font-weight:bold; margin-top:50px">Jimbo</p>
+        <div class="card bg-light col-4 p-3" style="margin-top:20px">
+          <div class="profile-header">
+            <div class="card bg-light text-center rounded" style="--bs-bg-opacity:.80">
+              <img src="../img/avatars/new_user_seedling.png" alt="seedling tomato" class="images" style="width:200px; height:200px; background-color:white; padding-right:10px">
+            </div>
+            <p id="username" style="font-size:50px; font-weight:bold; margin-top:50px; margin-left:15px">Jimbo</p>
+          </div>
         </div>
-        <a href=""><button class="edit-avatar-button" style="font-size:medium">Edit Avatar</button></a>
+        <a href=""><button class="edit-avatar-button" style="font-size:medium;">Edit Avatar</button></a>
       </div>
       <!--Tab Reference: https://www.w3schools.com/howto/howto_css_modals.asp-->
       <div class="tabs">
@@ -159,7 +166,7 @@
           </div>
         </div>
       </div>
-      <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium; margin-top:20px;">View Terms & Conditions</button></a>
+      <a href="../signup/termsAndCond_loggedin.html"><button class="button" style="font-size:medium; margin-bottom:50px">View Terms & Conditions</button></a>
     </main>
 
       <!-- Footer Section -->

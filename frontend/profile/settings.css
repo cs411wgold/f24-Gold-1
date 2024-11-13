@@ -32,8 +32,9 @@ main {
 }
 .edit-avatar-button {
     display: block;
-    margin-left:55px;
+    margin-left:155px;
     margin-bottom:20px;
+    margin-top:10px;
     font-size: medium;
     background-color: #2ab7f3;
     color: rgb(255, 255, 255);
@@ -42,7 +43,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     max-width: 800px;
-    margin: 50px auto;
+    margin-left: 20%;
     padding: 25px;
 }
 .tabs input[type="radio"] {
