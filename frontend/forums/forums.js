@@ -1,5 +1,11 @@
 // Mock API functions
 const api = {
+ /**
+ * Get forum information based on the forum ID.
+ * @async
+ * @param {string} forumId - The ID of the forum to retrieve information for.
+ * @returns {Promise<Object>} The forum data containing title, description, and icon.
+ */
     getForumInfo: async (forumId) => {
         const forumData = {
             math: {
@@ -30,6 +36,12 @@ const api = {
         };
         return new Promise(resolve => setTimeout(() => resolve(forumData[forumId]), 100));
     },
+
+    /**
+     * Get posts for a specific forum
+     * @param {string} forumId - The ID of the forum to retrieve posts from
+     * @returns {Promise<Array>} An array of posts
+     */
     getPosts: async (forumId) => {
         // Get posts from localStorage or use default data
         const storedPosts = localStorage.getItem(`forum_posts_${forumId}`);
@@ -349,6 +361,14 @@ const api = {
         localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(samplePosts[forumId]));
         return samplePosts[forumId];
     },
+
+   /**
+    * Create a new post in the specified forum.
+    * @async
+    * @param {string} forumId - The ID of the forum to create the post in.
+    * @param {Object} postData - The data of the post to be created.
+    * @returns {Promise<Object>} The newly created post object.
+    */
     createPost: async (forumId, postData) => {
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         const newPost = {
@@ -365,6 +385,14 @@ const api = {
         localStorage.setItem(`forum_posts_${forumId}`, JSON.stringify(posts));
         return newPost;
     },
+
+    /**
+     * Create a new reply to a post in the specified forum.
+     * @async
+     * @param {number} postId - The ID of the post to reply to.
+     * @param {Object} replyData - The data of the reply to be created.
+     * @returns {Promise<Object>} The newly created reply object.
+     */
     createReply: async (postId, replyData) => {
         const forumId = new URLSearchParams(window.location.search).get('id');
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
@@ -378,7 +406,10 @@ const api = {
             downvotes: 0
         };
 
-        // Function to add reply to post or nested reply
+        /**
+         * Add a reply to a post or nested reply.
+         * @param {Object} post - The post object to add the reply to.
+         */
         function addReplyToPost(post) {
             if (replyData.parentReplyId) {
                 // Add nested reply
@@ -423,31 +454,74 @@ const api = {
 
         return newReply;
     },
+
+    /**
+     * Vote on a post.
+     * @async
+     * @param {number} postId - The ID of the post to vote on.
+     * @param {number} value - The value of the vote (1 for upvote, -1 for downvote).
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     vote: async (postId, value) => {
         return new Promise(resolve => setTimeout(() => resolve({ success: true }), 100));
     },
+
+    /**
+     * Vote on a reply.
+     * @async
+     * @param {number} replyId - The ID of the reply to vote on.
+     * @param {number} value - The value of the vote (1 for upvote, -1 for downvote).
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     voteReply: async (replyId, value) => {
         return new Promise(resolve => setTimeout(() => resolve({ success: true }), 100));
     },
 
+    /**
+     * Subscribe to a thread.
+     * @async
+     * @param {number} postId - The ID of the post to subscribe to.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     subscribeToThread: async (postId) => {
         return new Promise(resolve => setTimeout(() => resolve({
             success: true,
             subscribed: true
         }), 100));
     },
+
+    /**
+     * Unsubscribe from a thread.
+     * @async
+     * @param {number} postId - The ID of the post to unsubscribe from.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     unsubscribeFromThread: async (postId) => {
         return new Promise(resolve => setTimeout(() => resolve({
             success: true,
             subscribed: false
         }), 100));
     },
+
+    /**
+     * Get the subscription status of a thread.
+     * @async
+     * @param {number} postId - The ID of the post to get the subscription status for.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating the subscription status.
+     */
     getSubscriptionStatus: async (postId) => {
         return new Promise(resolve => setTimeout(() => resolve({
             subscribed: localStorage.getItem(`subscribed_${postId}`) === 'true'
         }), 100));
     },
 
+    /**
+     * Delete a post.
+     * @async
+     * @param {string} forumId - The ID of the forum containing the post.
+     * @param {number} postId - The ID of the post to delete.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     deletePost: async (forumId, postId) => {
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         const updatedPosts = posts.filter(post => post.id !== postId);
@@ -455,6 +529,14 @@ const api = {
         return { success: true };
     },
 
+    /**
+     * Delete a reply.
+     * @async
+     * @param {string} forumId - The ID of the forum containing the post.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to delete.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     deleteReply: async (forumId, postId, replyId) => {
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         const post = posts.find(p => p.id === postId);
@@ -476,6 +558,14 @@ const api = {
         return { success: true };
     },
 
+    /**
+     * Edit a post.
+     * @async
+     * @param {string} forumId - The ID of the forum containing the post.
+     * @param {number} postId - The ID of the post to edit.
+     * @param {string} newContent - The new content for the post.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     editPost: async (forumId, postId, newContent) => {
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         const post = posts.find(p => p.id === postId);
@@ -488,6 +578,15 @@ const api = {
         return { success: true };
     },
 
+    /**
+     * Edit a reply.
+     * @async
+     * @param {string} forumId - The ID of the forum containing the post.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to edit.
+     * @param {string} newContent - The new content for the reply.
+     * @returns {Promise<Object>} A promise that resolves to an object indicating success.
+     */
     editReply: async (forumId, postId, replyId, newContent) => {
         const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
         const post = posts.find(p => p.id === postId);
@@ -518,6 +617,9 @@ const userVotes = {
     replies: JSON.parse(localStorage.getItem('userReplyVotes') || '{}')
 };
 
+/**
+ * Save user votes to localStorage.
+ */
 function saveVotes() {
     localStorage.setItem('userPostVotes', JSON.stringify(userVotes.posts));
     localStorage.setItem('userReplyVotes', JSON.stringify(userVotes.replies));
@@ -527,12 +629,20 @@ function saveVotes() {
 const notifications = {
     list: JSON.parse(localStorage.getItem('notifications') || '[]'),
     
+    /**
+     * Add a notification to the list and show a toast.
+     * @param {Object} notification - The notification object to add.
+     */
     add: function(notification) {
         this.list.unshift(notification);
         localStorage.setItem('notifications', JSON.stringify(this.list));
         this.showToast(notification);
     },
     
+    /**
+     * Show a toast notification.
+     * @param {Object} notification - The notification object to display.
+     */
     showToast: function(notification) {
         const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -542,7 +652,11 @@ const notifications = {
         toast.setAttribute('aria-atomic', 'true');
         toast.setAttribute('data-notification-type', notification.type || 'reply');
         
-        // Customize toast based on notification type
+        /**
+         * Get the icon for the toast based on the notification type.
+         * @param {string} type - The type of notification.
+         * @returns {string} The icon for the toast.
+         */
         const getToastIcon = (type) => {
             switch(type) {
                 case 'edit':
@@ -552,6 +666,11 @@ const notifications = {
             }
         };
         
+        /**
+         * Get the title for the toast based on the notification type.
+         * @param {string} type - The type of notification.
+         * @returns {string} The title for the toast.
+         */
         const getToastTitle = (type) => {
             switch(type) {
                 case 'edit':
@@ -582,8 +701,8 @@ const notifications = {
     }
 };
 
-// Add these constants near the top of the file
-const POSTS_PER_PAGE = 5; // Adjust this number as needed
+
+const POSTS_PER_PAGE = 5; // Max number of posts per page
 let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -597,6 +716,9 @@ document.addEventListener('DOMContentLoaded', () => {
         JSON.parse(localStorage.getItem('threadSubscriptions') || '[]')
     );
 
+    /**
+     * Load forum content.
+     */
     async function loadForumContent() {
         try {
             const forum = await api.getForumInfo(forumId);
@@ -624,6 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Load posts for the current forum.
+     */
     async function loadPosts() {
         try {
             const posts = await api.getPosts(forumId);
@@ -676,12 +801,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Create HTML for a post.
+     * @param {Object} post - The post object to create HTML for.
+     * @returns {string} The HTML string for the post.
+     */
     function createPostHTML(post) {
         const isHidden = post.downvotes >= 10;
         const isSubscribed = subscriptions.has(post.id);
         const userVote = userVotes.posts[post.id] || 0;
         
-        // Add avatar mapping
+        /**
+         * Add avatar mapping
+         */
         const avatarMap = {
             'User12345': '../img/avatars/tomato_warrior.png',
             'User67890': '../img/avatars/timer_beginner.png',
@@ -765,7 +897,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Enhanced reply HTML with moderation
+    /**
+     * Create HTML for a reply.
+     * @param {Object} reply - The reply object to create HTML for.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @returns {string} The HTML string for the reply.
+     */
     function createReplyHTML(reply, postId) {
         const isHidden = reply.downvotes >= 10;
         const userVote = userVotes.replies[reply.id] || 0;
@@ -850,7 +987,10 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Toggle subscription status
+    /**
+     * Toggle subscription status.
+     * @param {number} postId - The ID of the post to toggle subscription for.
+     */
     window.toggleSubscription = async function (postId) {
         try {
             if (subscriptions.has(postId)) {
@@ -878,6 +1018,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Submit a new post.
+     * @param {Event} event - The event object.
+     */
     async function submitPost(event) {
         event.preventDefault();
         const title = document.getElementById('post-title').value;
@@ -895,16 +1039,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Show the reply form for a post.
+     * @param {number} postId - The ID of the post to show the reply form for.
+     */
     window.showReplyForm = function (postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         post.querySelector('.reply-form').style.display = 'block';
     };
 
+    /**
+     * Show the nested reply form for a reply.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to show the nested reply form for.
+     */
     window.showNestedReplyForm = function (postId, replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         reply.querySelector('.nested-reply-form').style.display = 'block';
     };
 
+    /**
+     * Submit a reply to a post.
+     * @param {number} postId - The ID of the post to submit the reply to.
+     */
     window.submitReply = async function (postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         const replyContent = post.querySelector('.reply-form textarea').value;
@@ -920,6 +1077,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Submit a nested reply to a reply.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to submit the nested reply to.
+     */
     window.submitNestedReply = async function (postId, replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         const nestedReplyContent = reply.querySelector('.nested-reply-form textarea').value;
@@ -938,6 +1100,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Vote on a post.
+     * @param {number} postId - The ID of the post to vote on.
+     * @param {number} value - The value of the vote (1 for upvote, -1 for downvote).
+     */
     window.vote = async function (postId, value) {
         try {
             const currentVote = userVotes.posts[postId] || 0;
@@ -988,6 +1155,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Vote on a reply.
+     * @param {number} replyId - The ID of the reply to vote on.
+     * @param {number} value - The value of the vote (1 for upvote, -1 for downvote).
+     */
     window.voteReply = async function (replyId, value) {
         try {
             const currentVote = userVotes.replies[replyId] || 0;
@@ -1001,7 +1173,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Get posts from localStorage and find the reply
             const posts = JSON.parse(localStorage.getItem(`forum_posts_${forumId}`) || '[]');
             
-            // Function to find and update reply recursively
+            /**
+             * Update the vote counts for a reply and its nested replies.
+             * @param {Array} replies - The array of replies to update.
+             * @returns {boolean} True if the reply was found and updated, false otherwise.
+             */
             const updateReplyVotes = (replies) => {
                 for (let reply of replies) {
                     if (reply.id === replyId) {
@@ -1059,7 +1235,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Helper function to find a reply by ID
+    /**
+     * Find a reply by ID.
+     * @param {Array} posts - The array of posts to search through.
+     * @param {number} replyId - The ID of the reply to find.
+     * @returns {Object|null} The reply object if found, null otherwise.
+     */
     function findReplyById(posts, replyId) {
         const searchReplies = (replies) => {
             for (let reply of replies) {
@@ -1083,31 +1264,50 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Add these functions to handle toggling flagged content
+    /**
+     * Toggle flagged content for a post.
+     * @param {number} postId - The ID of the post to toggle flagged content for.
+     */
     window.toggleFlaggedContent = function(postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         const hiddenContent = post.querySelector('.hidden-content');
         hiddenContent.style.display = hiddenContent.style.display === 'none' ? 'block' : 'none';
     };
 
+    /**
+     * Toggle flagged content for a reply.
+     * @param {number} replyId - The ID of the reply to toggle flagged content for.
+     */
     window.toggleFlaggedReply = function(replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         const hiddenContent = reply.querySelector('.hidden-content');
         hiddenContent.style.display = hiddenContent.style.display === 'none' ? 'block' : 'none';
     };
 
+    /**
+     * Edit a post.
+     * @param {number} postId - The ID of the post to edit.
+     */
     window.editPost = function(postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         post.querySelector(`#post-content-${postId}`).style.display = 'none';
         post.querySelector(`#edit-form-${postId}`).style.display = 'block';
     };
 
+    /**
+     * Cancel the edit of a post.
+     * @param {number} postId - The ID of the post to cancel the edit for.
+     */
     window.cancelPostEdit = function(postId) {
         const post = document.querySelector(`[data-post-id="${postId}"]`);
         post.querySelector(`#post-content-${postId}`).style.display = 'block';
         post.querySelector(`#edit-form-${postId}`).style.display = 'none';
     };
 
+    /**
+     * Submit the edited content of a post.
+     * @param {number} postId - The ID of the post to submit the edited content for.
+     */
     window.submitPostEdit = async function(postId) {
         const forumId = new URLSearchParams(window.location.search).get('id');
         const post = document.querySelector(`[data-post-id="${postId}"]`);
@@ -1137,6 +1337,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Delete a post.
+     * @param {number} postId - The ID of the post to delete.
+     */
     window.deletePost = async function(postId) {
         if (!confirm('Are you sure you want to delete this post?')) return;
         
@@ -1165,18 +1369,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Edit a reply.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to edit.
+     */
     window.editReply = function(postId, replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         reply.querySelector(`#reply-content-${replyId}`).style.display = 'none';
         reply.querySelector(`#edit-form-reply-${replyId}`).style.display = 'block';
     };
 
+    /**
+     * Cancel the edit of a reply.
+     * @param {number} replyId - The ID of the reply to cancel the edit for.
+     */
     window.cancelReplyEdit = function(replyId) {
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
         reply.querySelector(`#reply-content-${replyId}`).style.display = 'block';
         reply.querySelector(`#edit-form-reply-${replyId}`).style.display = 'none';
     };
 
+    /**
+     * Submit the edited content of a reply.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to submit the edited content for.
+     */
     window.submitReplyEdit = async function(postId, replyId) {
         const forumId = new URLSearchParams(window.location.search).get('id');
         const reply = document.querySelector(`[data-reply-id="${replyId}"]`);
@@ -1206,6 +1424,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Delete a reply.
+     * @param {number} postId - The ID of the post containing the reply.
+     * @param {number} replyId - The ID of the reply to delete.
+     */
     window.deleteReply = async function(postId, replyId) {
         if (!confirm('Are you sure you want to delete this reply?')) return;
         
@@ -1250,7 +1473,10 @@ document.addEventListener('DOMContentLoaded', () => {
         loadPosts();
     });
 
-    // Add this function to handle page changes
+    /**
+     * Change the current page.
+     * @param {number} newPage - The new page number to change to.
+     */
     window.changePage = function(newPage) {
         currentPage = newPage;
         loadPosts();
