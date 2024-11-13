@@ -11,6 +11,7 @@ class Task(models.Model):
     
 
 class Tag(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     color = models.CharField(max_length=20)  # For storing the color of the tag
     task = models.ForeignKey(Task, related_name='tags', on_delete=models.CASCADE)

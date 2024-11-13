@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     // Initialize the Add Tags Button Logic
     const addTagsButton = document.getElementById("add-tags-btn");
     const addTagModalElement = document.getElementById("addTagModal");
@@ -294,6 +294,33 @@ document.addEventListener("DOMContentLoaded", function () {
         tagItem.querySelector('.delete-tag-btn').addEventListener('click', () => deleteTag(tagItem, taskId));
     }
 
+    // Function to add a tag to a specific task
+    function addTagToTask(tagName, taskId) {
+        const color = getRandomColor(); // Random color for the tag
+        
+        // Create new tag element
+        const tagItem = document.createElement('li');
+        tagItem.innerHTML = `
+            <span class="tag-circle" style="background-color: ${color};"></span> 
+            <span class="tag-name">${tagName}</span>
+            <button class="edit-tag-btn">Edit</button>
+            <button class="delete-tag-btn">Delete</button>
+        `;
+
+        // Add tag element to the tags list
+        tagsList.appendChild(tagItem);
+
+        // Save the tag and its association with the task
+        saveTagToBackend(tagName, taskId, color);
+
+        // Update task background color
+        updateTaskBackgroundColor(taskId, color);
+
+        // Add event listeners to the new tag buttons (Edit and Delete)
+        tagItem.querySelector('.edit-tag-btn').addEventListener('click', () => editTag(tagItem, taskId));
+        tagItem.querySelector('.delete-tag-btn').addEventListener('click', () => deleteTag(tagItem, taskId));
+    }
+
     // Function to get a random color for the tag
     function getRandomColor() {
         const colors = ['red', 'pink', 'green', 'orange', 'purple', 'blue', 'yellow', 'teal', 'brown', 'gray'];
@@ -322,12 +349,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to edit a tag
-    function editTag(tagItem) {
+    function editTag(tagItem, taskId) {
         const tagNameElement = tagItem.querySelector('.tag-name');
         const newTagName = prompt("Edit tag name:", tagNameElement.textContent);
 
         if (newTagName && newTagName.trim() !== "") {
             tagNameElement.textContent = newTagName.trim();
+            // Optionally, update the backend with the new tag name
+            updateTagOnBackend(taskId, newTagName);
         }
     }
 
@@ -336,6 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (confirm("Are you sure you want to delete this tag?")) {
             tagsList.removeChild(tagItem);
             deleteTagFromBackend(taskId);
+            updateTaskBackgroundColor(taskId, ''); // Reset background color
         }
     }
 
@@ -348,5 +378,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Tag deleted from backend:", taskId);
             })
             .catch(error => console.error("Error deleting tag from backend:", error));
+    }
+
+    // Function to update the tag name on the backend
+    function updateTagOnBackend(taskId, newTagName) {
+        fetch(`http://127.0.0.1:8000/taskboard/tags/${taskId}/`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tagName: newTagName }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to update tag.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Tag updated on backend:", data);
+            })
+            .catch(error => console.error("Error updating tag on backend:", error));
+    }
+
+    // Function to update task background color based on tag
+    function updateTaskBackgroundColor(taskId, color) {
+        const taskElement = document.querySelector(`.sortable-item[data-id='${taskId}']`);
+        if (taskElement) {
+            taskElement.style.backgroundColor = color;
+        }
     }
 });
