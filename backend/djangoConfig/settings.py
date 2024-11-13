@@ -25,10 +25,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$mfuzm==jfr+78pb^cix_hytd(#h*_yy@z0i54-ilzgt#23@g#'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['https://dev-backend-dot-cs411w.ue.r.appspot.com/', 'localhost', '127.0.0.1' ]
@@ -68,6 +66,8 @@ MIDDLEWARE = [
 #     "http://127.0.0.1:80",
 #     "http://localhost:80",
 # ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_ALL_ORIGINS = True 
 

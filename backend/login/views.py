@@ -2,6 +2,10 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
+
 import json, logging
 from .forms import SignUpForm, LoginForm
 from login.utils import list_upcoming_assignments 
@@ -78,3 +82,73 @@ def list_upcoming_assignments_view(request, course_id):
         logger.error(f"Error fetching assignments: {str(e)}")
         return JsonResponse({"message": "Error", "details": str(e)}, status=500)
 
+@csrf_exempt
+def change_password_view(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            # Check if all required fields are present
+            required_fields = ['current_password', 'new_password', 'confirm_password']
+            if not all(field in data for field in required_fields):
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Missing required fields'
+                }, status=400)
+
+            # Check if user is authenticated
+            user = request.user
+            if not user.is_authenticated:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Authentication required'
+                }, status=401)
+
+            # Verify current password
+            if not user.check_password(data['current_password']):
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Current password is incorrect'
+                }, status=403)  
+
+            # Verify new password matches confirmation
+            if data['new_password'] != data['confirm_password']:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'New passwords do not match'
+                }, status=400)
+
+            # Validate new password
+            try:
+                validate_password(data['new_password'], user)
+            except ValidationError as errors:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': errors.messages
+                }, status=400)
+
+            # Set new password
+            user.set_password(data['new_password'])
+            user.save()
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Password updated successfully'
+            })
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid JSON format'
+            }, status=400)
+        except Exception as e:
+            # Optionally log the error here
+            return JsonResponse({
+                'status': 'error',
+                'message': 'An unexpected error occurred'
+            }, status=500)
+    else:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Only POST requests are allowed'
+        }, status=405)
