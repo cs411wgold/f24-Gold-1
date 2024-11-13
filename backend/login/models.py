@@ -16,3 +16,15 @@ class UserProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+class Friend(models.Model):
+    user = models.ForeignKey(User, related_name='friend_set', on_delete=models.CASCADE)
+    friend = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=[('requested', 'Requested'), ('friend', 'Friend'), ('blocked', 'Blocked')])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'friend')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.friend.username} ({self.status})"

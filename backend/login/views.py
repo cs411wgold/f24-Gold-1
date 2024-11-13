@@ -3,6 +3,10 @@ from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Friend, User
+
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
@@ -152,3 +156,45 @@ def change_password_view(request):
             'status': 'error',
             'message': 'Only POST requests are allowed'
         }, status=405)
+    
+
+@login_required
+def friends_list_view(request):
+    # Retrieve all active friends for the logged-in user
+    friends = Friend.objects.filter(user=request.user, status='friend')
+    return render(request, 'friends_list.html', {'friends': friends})
+
+@login_required
+def add_friend(request, friend_id):
+    friend = get_object_or_404(User, id=friend_id)
+    relation, created = Friend.objects.get_or_create(user=request.user, friend=friend, defaults={'status': 'requested'})
+    if not created and relation.status == 'blocked':
+        return JsonResponse({'error': 'This user is blocked'}, status=400)
+    return JsonResponse({'message': 'Friend request sent'})
+
+@login_required
+def unfriend(request, friend_id):
+    friend = get_object_or_404(User, id=friend_id)
+    relation = Friend.objects.filter(user=request.user, friend=friend, status='friend').first()
+    if relation:
+        relation.delete()
+        return JsonResponse({'message': 'Unfriended successfully'})
+    return JsonResponse({'error': 'No active friendship found'}, status=400)
+
+@login_required
+def block_user(request, friend_id):
+    friend = get_object_or_404(User, id=friend_id)
+    relation, created = Friend.objects.get_or_create(user=request.user, friend=friend, defaults={'status': 'blocked'})
+    if not created:
+        relation.status = 'blocked'
+        relation.save()
+    return JsonResponse({'message': 'User blocked successfully'})
+
+@login_required
+def unblock_user(request, friend_id):
+    friend = get_object_or_404(User, id=friend_id)
+    relation = Friend.objects.filter(user=request.user, friend=friend, status='blocked').first()
+    if relation:
+        relation.delete()
+        return JsonResponse({'message': 'User unblocked successfully'})
+    return JsonResponse({'error': 'User is not blocked'}, status=400)
