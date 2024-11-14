@@ -231,9 +231,10 @@ document.addEventListener("DOMContentLoaded", function () {
         saveTagButton.addEventListener("click", function () {
             const tagName = tagNameInput.value.trim();
             const selectedTaskId = taskSelect.value;
+            const color = document.getElementById("colorpicker").value;
 
-            if (tagName && selectedTaskId) {
-                addTagToTask(tagName, selectedTaskId);
+            if (tagName && selectedTaskId && color) {
+                addTagToTask(tagName, selectedTaskId, color);
                 addTagModal.hide(); // Close the modal after saving
             } else {
                 alert("Please enter a valid tag name and select a task.");
@@ -272,10 +273,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     // Function to add a tag to a specific task
-    function addTagToTask(tagName, taskId) {
+    function addTagToTask(tagName, taskId, color) {
         // Create new tag element
         const tagItem = document.createElement('li');
-        const color = getRandomColor(); // Random color for the tag
         tagItem.innerHTML = `
             <span class="tag-circle" style="background-color: ${color};"></span> 
             <span class="tag-name">${tagName}</span>
@@ -295,8 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to add a tag to a specific task
-    function addTagToTask(tagName, taskId) {
-        const color = getRandomColor(); // Random color for the tag
+    function addTagToTask(tagName, taskId, color) {
         
         // Create new tag element
         const tagItem = document.createElement('li');
@@ -319,12 +318,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add event listeners to the new tag buttons (Edit and Delete)
         tagItem.querySelector('.edit-tag-btn').addEventListener('click', () => editTag(tagItem, taskId));
         tagItem.querySelector('.delete-tag-btn').addEventListener('click', () => deleteTag(tagItem, taskId));
-    }
-
-    // Function to get a random color for the tag
-    function getRandomColor() {
-        const colors = ['red', 'pink', 'green', 'orange', 'purple', 'blue', 'yellow', 'teal', 'brown', 'gray'];
-        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     // Function to save the tag to the backend

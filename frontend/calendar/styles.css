@@ -85,8 +85,9 @@ ul {
 .day-content {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
+  flex-direction: column;
 }
 
 .day-content span {
