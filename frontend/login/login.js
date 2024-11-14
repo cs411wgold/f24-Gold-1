@@ -1,16 +1,25 @@
+/**
+ * Initializes the login functionality once the DOM is fully loaded.
+ * Sets up event listeners and handles the login process.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     const testSubmit = document.getElementById("testSubmit");
 
     if (testSubmit) {  // Corrected variable name
-        testSubmit.addEventListener("click", function (event) {  // Attach to test submit button
+        /**
+         * Handles the click event on the test submit button.
+         * Prevents default form submission, validates input fields,
+         * and makes an AJAX request to the login endpoint.
+         *
+         * @param {Event} event - The click event object.
+         */
+        testSubmit.addEventListener("click", function (event) {
             event.preventDefault();  // Prevent any default action
             console.log("Test submit button clicked!");  // Check if this logs
 
             // Get the values from the input fields
             const email = document.getElementById("email").value;
-            
             const password = document.getElementById("password").value;
-            
 
             // Check if fields are populated
             if (email === "" || password === "") {
@@ -50,6 +59,12 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Test submit button not found!");
     }
 
+    /**
+     * Displays a message to the user in the login interface.
+     *
+     * @param {string} message - The message to display.
+     * @param {string} type - The type of message ('success' or 'error') to determine styling.
+     */
     function displayMessage(message, type) {
         const loginMessage = document.getElementById("loginMessage");
         if (loginMessage) {
