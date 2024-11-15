@@ -30,4 +30,14 @@ username: knowtimeAdmin
 email: admin@odu.edu
 password: TestMe123
 
+#
+Testing:
+for backend: 
+docker compose build test
+docker compose run test
 
+for frontend:
+docker compose build jest
+docker compose run jest
+
+New frontend test files must be formatted like "<testingfilename>.test.js
