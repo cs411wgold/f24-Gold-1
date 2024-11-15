@@ -97,7 +97,7 @@
    const alarm = new Audio("./alarm.wav");
    const taskDropdown = document.getElementById("tasks");
 
-   fetch('http://127.0.0.1:8000/assignments/list/')
+   fetch('http://127.0.0.1:8000/assignments/upcoming/')
   .then(response => response.json())
   .then(data => {
     data.assignments.forEach((task) => {
