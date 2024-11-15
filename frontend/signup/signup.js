@@ -3,6 +3,20 @@
  * https://getbootstrap.com/docs/5.0/forms/validation/
  * https://mdbootstrap.com/docs/standard/forms/validation/ 
  */
+/**
+ * Function to check signup information on the frontend with basic validation provided by Bootstrap.  
+ * Variables are created for the form itself, password, and confirmPassword.  The function
+ * checks all of the input to ensure that it is valid and varifies that the first
+ * and second passwords match.
+ * 
+ * If validation fails or if the passwords do not match, signup will fail and
+ * let the user know what error they are encountering.
+ * 
+ * If information is valid, the function then sends the information to the backend to be stored upon
+ * successfully signing up and directs the user to the home page.  If there
+ * is an error, the user remains on the signup page and no information is
+ * sent to the backend.
+ */
 (function () {
     'use strict';
 
