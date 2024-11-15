@@ -97,24 +97,33 @@ class SelectedTaskView(View):
 class TaskView(View):
     def get(self, request, task_id=None):
         if task_id:
-            # Retrieve specific task by ID
+            # Retrieve a specific task by ID
             try:
                 task = Task.objects.get(id=task_id)
+                tags = Tag.objects.filter(task=task)
+                tags_data = [{'id': tag.id, 'name': tag.name, 'color': tag.color} for tag in tags]
                 data = {
                     'id': task.id,
                     'title': task.title,
                     'status': task.status,
+                    'tags': tags_data
                 }
                 return JsonResponse(data, status=200)
             except Task.DoesNotExist:
                 return JsonResponse({'error': 'Task not found.'}, status=404)
         else:
-            # Retrieve all tasks
+            # Retrieve all tasks with their tags
             tasks = Task.objects.all()
-            tasks_data = [
-                {'id': task.id, 'title': task.title, 'status': task.status}
-                for task in tasks
-            ]
+            tasks_data = []
+            for task in tasks:
+                tags = Tag.objects.filter(task=task)
+                tags_data = [{'id': tag.id, 'name': tag.name, 'color': tag.color} for tag in tags]
+                tasks_data.append({
+                    'id': task.id,
+                    'title': task.title,
+                    'status': task.status,
+                    'tags': tags_data
+                })
             return JsonResponse(tasks_data, safe=False)
 
     def post(self, request):
@@ -161,6 +170,7 @@ class TaskView(View):
             return JsonResponse({'message': 'Task deleted successfully.'}, status=200)
         except Task.DoesNotExist:
             return JsonResponse({'error': 'Task not found.'}, status=404)
+        
 
 @csrf_exempt
 def add_tag(request):
@@ -188,6 +198,28 @@ def add_tag(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
 
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+@csrf_exempt
+def update_tag(request, tag_id):
+    if request.method == 'PUT':
+        try:
+            data = json.loads(request.body)
+            tag = Tag.objects.get(id=tag_id)
+
+            # Update tag details from request data
+            tag.name = data.get('name', tag.name)
+            tag.color = data.get('color', tag.color)
+            tag.save()
+
+            return JsonResponse({
+                'id': tag.id,
+                'name': tag.name,
+                'color': tag.color
+            }, status=200)
+        except Tag.DoesNotExist:
+            return JsonResponse({'error': 'Tag not found.'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 @csrf_exempt

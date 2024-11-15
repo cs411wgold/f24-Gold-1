@@ -70,6 +70,22 @@ h3 {
     cursor: move;
 }
 
+
+
+.tag-label {
+    font-size: 14px;
+}
+
+.task-tag {
+    display: inline-block;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
 .tag {
     font-size: 0.8em;
     color: #888;
