@@ -68,6 +68,14 @@ services:
       - backend
     command: pytest tests/
 
+  jest:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile.jest
+    depends_on:
+      - frontend
+    command: npm test    
+
 networks:
   app-network:
     driver: bridge

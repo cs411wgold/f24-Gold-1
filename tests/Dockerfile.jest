@@ -1,0 +1,10 @@
+FROM node:14
+
+WORKDIR /app
+
+COPY tests/package.json ./
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "test"]
