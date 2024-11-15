@@ -60,6 +60,14 @@ services:
     networks:
       - app-network
 
+  test:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile.test
+    depends_on:
+      - backend
+    command: pytest tests/
+
 networks:
   app-network:
     driver: bridge
