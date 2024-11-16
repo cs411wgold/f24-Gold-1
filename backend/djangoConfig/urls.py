@@ -28,4 +28,5 @@ urlpatterns = [
     path('taskboard/', include('taskboard.urls')),
     path('courses/', include('courses.urls')),
     path('', include('timer.urls')),
+    path('gradetracker/', include('gradeTracker.urls')),
 ]

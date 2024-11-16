@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'grades',
     'taskboard',
     'courses',
+    'gradeTracker',
 ]
 
 MIDDLEWARE = [
