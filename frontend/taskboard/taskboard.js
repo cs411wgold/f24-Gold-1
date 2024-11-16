@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load selected tasks into the taskboard
     loadSelectedTasks();
 
-    // Function to load selected tasks from the backend
+    /**
+     * Loads selected tasks from the backend and displays them in the taskboard
+     * Fetches tasks from the API and distributes them into appropriate columns
+     */
     function loadSelectedTasks() {
         fetch("http://127.0.0.1:8000/taskboard/selected_task/")
             .then(response => response.json())
@@ -45,7 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error loading selected tasks:", error));
             
     }
-
+    
+    /**
+     * Fetches tags from the backend and applies them to tasks
+     * Updates tag colors, populates tag dropdowns, and sets up event listeners
+     */
     function fetchAndRenderTags() {
         fetch("http://127.0.0.1:8000/taskboard/tags/list/")
             .then(response => response.json())
@@ -100,7 +107,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error fetching tags:", error));
     }
     
-    // Helper function to render each tag item
+    /**
+     * Creates and returns a DOM element for a tag
+     * @param {Object} tag - The tag object containing id, name, color, and task_id
+     * @returns {HTMLElement} The created tag list item element
+     */
     function renderTag(tag) {
         const tagItem = document.createElement('li');
         tagItem.classList.add('tag-item');
@@ -143,7 +154,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
     populateTaskSelect();
-    // Function to handle tag selection and apply the color to the relevant task
+
+    /**
+    * Handles tag selection and applies the color to the relevant task
+    */
     function onTagSelected() {
         // Fetch the tag details by tag ID (including color)
         fetch(`http://127.0.0.1:8000/taskboard/tags/list/`)
@@ -155,7 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error fetching tag:", error));
     }
 
-    // Function to apply the background color to `sortable-item` elements
+    /**
+     * Applies the background color to `sortable-item` elements
+     * @param {string} tagId - The ID of the tag
+     * @param {string} color - The color to apply (CSS color value)
+     */
     function applyTagColorToSortableItem(tagId, color) {
         // Find all sortable items associated with this tag and change their background
         document.querySelectorAll(`.sortable-item[data-tag-id="${tagId}"]`).forEach(item => {
@@ -204,7 +222,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     
-        // Function to populate the task selection dropdown with selected tasks
+        /**
+         * Populates the task selection dropdown with selected tasks
+         */
         function populateTaskSelect() {
             fetch("http://127.0.0.1:8000/taskboard/selected_task/")
                 .then(response => response.json())
@@ -238,7 +258,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
     });
     
-// Function to load tasks and their tags from the backend
+/**
+ * Loads tasks and their tags from the backend and displays them in the UI
+ */
 function loadTasks() {
     fetch("http://127.0.0.1:8000/taskboard/selected_task/")
         .then(response => response.json())
@@ -250,7 +272,10 @@ function loadTasks() {
         .catch(error => console.error("Error loading tasks:", error));
 }
 
-// Function to add a task to the UI
+/**
+ * Adds a task to the UI
+ * @param {Object} task - The task object containing id, title, status, and tags
+ */
 function addTaskToUI(task) {
     const taskHTML = `
         <li class="sortable-item" data-id="${task.id}">
@@ -275,7 +300,11 @@ function addTaskToUI(task) {
     }
 }
 
-// Function to display a tag for a task
+/**
+ * Displays a tag for a task
+ * @param {HTMLElement} taskElement - The task DOM element
+ * @param {Object} tag - The tag object containing name and color
+ */
 function displayTagForTask(taskElement, tag) {
     const tagDiv = document.createElement('span');
     tagDiv.classList.add('task-tag');
@@ -286,7 +315,9 @@ function displayTagForTask(taskElement, tag) {
 
 
 
-    // Function to populate the task selection dropdown
+/**
+ * Populates the task selection dropdown
+ */
 function populateTaskSelect() {
     fetch("http://127.0.0.1:8000/taskboard/selected_task/")
         .then(response => response.json())
@@ -315,7 +346,12 @@ function populateTaskSelect() {
 }
     
     
-    // Function to add a tag to a specific task
+   /**
+    * Adds a new tag to a specific task
+    * @param {string} tagName - The name of the tag
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} color - The color for the tag (CSS color value)
+    */
     function addTagToTask(tagName, taskId, color) {
         const tagsList = document.getElementById("tags-list");
         const tagItem = document.createElement('li');
@@ -333,7 +369,12 @@ function populateTaskSelect() {
     }
 
 
-// Function to save the tag to the backend
+/**
+ * Saves the tag to the backend
+ * @param {string} tagName - The name of the tag
+ * @param {string|number} taskId - The ID of the task
+ * @param {string} color - The color for the tag (CSS color value)
+ */
 function saveTagToBackend(tagName, taskId, color) {
     fetch("http://127.0.0.1:8000/taskboard/tags/", {
         method: "POST",
@@ -353,7 +394,12 @@ function saveTagToBackend(tagName, taskId, color) {
         })
         .catch(error => console.error("Error saving tag to backend:", error));
     }
-    // Function to edit a tag
+
+    /**
+     * Edits a tag
+     * @param {HTMLElement} tagItem - The tag DOM element
+     * @param {string|number} taskId - The ID of the task
+     */
     function editTag(tagItem, taskId) {
         const tagNameElement = tagItem.querySelector('.tag-name');
         const newTagName = prompt("Edit tag name:", tagNameElement.textContent);
@@ -365,7 +411,11 @@ function saveTagToBackend(tagName, taskId, color) {
         }
     }
 
-// Example function to update the tag in the backend (optional)
+/**
+ * Updates the tag in the backend
+ * @param {string|number} tagId - The ID of the tag
+ * @param {string} newTagName - The new name for the tag
+ */
 function updateTagInBackend(tagId, newTagName) {
     fetch(`http://127.0.0.1:8000/taskboard/tags/update/${tagId}/`, {
         method: "PUT",
@@ -380,7 +430,11 @@ function updateTagInBackend(tagId, newTagName) {
     })
     .catch(error => console.error("Error updating tag in backend:", error));
 }
-    // Function to delete a tag
+    /**
+     * Deletes a tag
+     * @param {HTMLElement} tagItem - The tag DOM element
+     * @param {string|number} taskId - The ID of the task
+     */
     function deleteTag(tagItem, taskId) {
         if (confirm("Are you sure you want to delete this tag?")) {
             const tagsList = document.getElementById('tags-list');
@@ -396,7 +450,10 @@ function updateTagInBackend(tagId, newTagName) {
         }
     }
     
-    // Function to delete tag from the backend
+   /**
+    * Deletes a tag from the backend
+    * @param {string|number} taskId - The ID of the task
+    */
     function deleteTagFromBackend(taskId) {
         fetch(`http://127.0.0.1:8000/taskboard/tags/${taskId}/`, {
             method: "DELETE",
@@ -406,7 +463,12 @@ function updateTagInBackend(tagId, newTagName) {
             })
             .catch(error => console.error("Error deleting tag from backend:", error));
     }
-    // Function to update the tag name on the backend
+
+   /**
+    * Updates a tag name in the backend
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} newTagName - The new name for the tag
+    */
     function updateTagOnBackend(taskId, newTagName) {
         fetch(`http://127.0.0.1:8000/taskboard/tags/update/${taskId}/`, {
             method: "PUT",
@@ -426,7 +488,12 @@ function updateTagInBackend(tagId, newTagName) {
             })
             .catch(error => console.error("Error updating tag on backend:", error));
     }
-    // Function to update task background color based on tag
+
+    /**
+     * Updates the background color of a task based on the tag
+     * @param {string|number} taskId - The ID of the task
+     * @param {string} color - The color to apply (CSS color value)
+     */
     function updateTaskBackgroundColor(taskId, color) {
         const taskElement = document.querySelector(`.sortable-item[data-id='${taskId}']`);
         if (taskElement) {
@@ -434,7 +501,9 @@ function updateTagInBackend(tagId, newTagName) {
         }
     }
 
-    // Function to populate the assignment selection modal
+   /**
+    * Populates the assignment selection modal with available assignments
+    */
     function populateAssignmentModal() {
         fetch("http://127.0.0.1:8000/assignments/list/")
             .then(response => response.json())
@@ -500,7 +569,10 @@ function updateTagInBackend(tagId, newTagName) {
         console.error("Element with ID 'selectAssignmentButton' or 'selectAssignmentModal' was not found.");
     }
 
-    // Function to add a selected assignment to the "New" task column
+   /**
+    * Adds a selected assignment to the taskboard
+    * @param {string|number} assignmentId - The ID of the assignment to add
+    */
     function addTaskToTaskboard(assignmentId) {
         fetch(`http://127.0.0.1:8000/taskboard/task/${assignmentId}/`)
             .then(response => response.json())
@@ -556,7 +628,11 @@ function updateTagInBackend(tagId, newTagName) {
     }
     
 
-    // Function to save updated task status after moving to another column
+   /**
+    * Saves the updated status of a task after moving to another column
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} newStatus - The new status of the task
+    */
     function saveTaskStatus(taskId, newStatus) {
         fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
             method: "PUT",
@@ -578,7 +654,10 @@ function updateTagInBackend(tagId, newTagName) {
             .catch(error => console.error("Error updating task status in backend:", error));
     }
 
-    // Define deleteSelectedTask globally
+   /**
+    * Deletes a selected task from the taskboard
+    * @param {string|number} taskId - The ID of the task to delete
+    */
     function deleteSelectedTask(taskId) {
         fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
             method: "DELETE",
