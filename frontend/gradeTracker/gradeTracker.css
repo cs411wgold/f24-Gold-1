@@ -54,3 +54,26 @@ canvas {
     width: 40px;
     height: 40px;
 }
+
+.controls-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.form-select, .form-control {
+    border: 1px solid #ced4da;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.goal-line {
+    border-top: 2px dashed #ff4444;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
