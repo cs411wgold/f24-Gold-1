@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let currentDay = ''; // Used to track the selected day for adding tasks
 
-// Function to fetch assignments and display them on the calendar
+/**
+ * Fetches assignments from the server and displays them on the calendar
+ * @param {Date} date - The date to display the calendar for
+ */
 function fetchAssignmentsAndDisplay(date) {
     fetch("http://127.0.0.1:8000/assignments/list/")
         .then(response => response.json())
@@ -19,7 +22,11 @@ function fetchAssignmentsAndDisplay(date) {
         .catch(error => console.error("Error fetching assignments:", error));
 }
 
-// Function to set up the calendar for a specific date and display assignments
+/**
+ * Sets up the calendar display for a specific month and renders assignments
+ * @param {Date} [date=new Date()] - The date to display the calendar for
+ * @param {Array} [assignments=[]] - Array of assignment objects to display
+ */
 function setupDate(date = new Date(), assignments = []) {
     const monthHeading = document.querySelector('.month h2');
     const daysContainer = document.querySelector('.days');
@@ -121,7 +128,12 @@ function setupDate(date = new Date(), assignments = []) {
     }
 }
 
-// Function to open the modal when clicking on a date
+/**
+ * Opens the task modal for adding a new task on a specific date
+ * @param {number} day - Day of the month
+ * @param {number} month - Month index (0-11)
+ * @param {number} year - Full year
+ */
 function openTaskModal(day, month, year) {
     currentDay = `${year}-${month}-${day}`;
     document.getElementById('selectedDate').value = currentDay; // Store the selected date
@@ -130,13 +142,19 @@ function openTaskModal(day, month, year) {
     taskModal.show();
 }
 
-// Function to parse the assignment link from the description
+/**
+ * Extracts assignment URL from description text
+ * @param {string} description - Assignment description text
+ * @returns {string|null} - Extracted URL or null if not found
+ */
 function parseAssignmentLink(description) {
     const linkMatch = description.match(/https:\/\/www\.cs\.odu\.edu\/[^"]+/);
     return linkMatch ? linkMatch[0] : null;
 }
 
-// Function to save the task (local storage only for user-added tasks)
+/**
+ * Saves a new task to local storage
+ */
 function saveTask() {
     const task = document.getElementById('taskInput').value;
     const time = document.getElementById('taskTime').value;
@@ -159,7 +177,13 @@ function saveTask() {
     fetchAssignmentsAndDisplay(); // Refresh the calendar to show the added task
 }
 
-// Function to delete a task
+/**
+ * Deletes a task from local storage
+ * @param {number} year - Full year
+ * @param {number} month - Month index (0-11)
+ * @param {number} day - Day of the month
+ * @param {number} taskIndex - Index of task to delete
+ */
 function deleteTask(year, month, day, taskIndex) {
     const dateKey = `${year}-${month}-${day}`;
     const tasks = JSON.parse(localStorage.getItem(dateKey)) || [];
@@ -170,12 +194,20 @@ function deleteTask(year, month, day, taskIndex) {
     fetchAssignmentsAndDisplay();
 }
 
-// Function to sort tasks by time in ascending order
+/**
+ * Sorts tasks by time in ascending order
+ * @param {Array} tasks - Array of task objects with time property
+ * @returns {Array} - Sorted array of tasks
+ */
 function sortTasksByTime(tasks) {
     return tasks.sort((a, b) => convertTo24Hour(a.time).localeCompare(convertTo24Hour(b.time)));
 }
 
-// Function to convert 24-hour time to 12-hour format
+/**
+ * Converts 24-hour time format to 12-hour format
+ * @param {string} time - Time in 24-hour format (HH:MM)
+ * @returns {string} - Time in 12-hour format with AM/PM
+ */
 function convertTo12Hour(time) {
     let [hours, minutes] = time.split(':');
     hours = parseInt(hours);
@@ -184,7 +216,11 @@ function convertTo12Hour(time) {
     return `${hours}:${minutes} ${ampm}`;
 }
 
-// Helper function to convert 12-hour time to 24-hour format
+/**
+ * Converts 12-hour time format to 24-hour format
+ * @param {string} time12h - Time in 12-hour format with AM/PM
+ * @returns {string} - Time in 24-hour format (HH:MM)
+ */
 function convertTo24Hour(time12h) {
     const [time, modifier] = time12h.split(' ');
     let [hours, minutes] = time.split(':');
@@ -197,7 +233,9 @@ function convertTo24Hour(time12h) {
     return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
-
+/**
+ * Updates calendar to display the previous month
+ */
 function getPreviousMonth() {
     const monthHeading = document.querySelector('.month h2');
     const [oldMonth, year] = monthHeading.textContent.split(" ");
@@ -210,6 +248,9 @@ function getPreviousMonth() {
     fetchAssignmentsAndDisplay(previousMonthDate);
 }
 
+/**
+ * Updates calendar to display the next month
+ */
 function getNextMonth() {
     const monthHeading = document.querySelector('.month h2');
     const [oldMonth, year] = monthHeading.textContent.split(" ");
