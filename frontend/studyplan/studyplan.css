@@ -110,3 +110,37 @@ tr td {
     font-size: 15px;
     z-index: 2;
 }
+
+.meeting {
+    background: rgb(166, 71, 255);
+    color: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    z-index: 2;
+}
+
+.meeting-placeholder {
+    background: rgb(166, 71, 255);
+    color: (166, 71, 255);
+    border-radius: 2px;
+    font-size: 15px;
+    z-index: 2;
+}
+
+.class {
+    background: rgb(248, 153, 65);
+    color: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    z-index: 2;
+}
+
+.class-placeholder {
+    background:  rgb(248, 153, 65);
+    color: (166, 71, 255);
+    border-radius: 2px;
+    font-size: 15px;
+    z-index: 2;
+}
