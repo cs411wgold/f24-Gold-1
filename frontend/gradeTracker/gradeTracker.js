@@ -1,3 +1,41 @@
+/**
+ * @fileoverview Grade Tracker visualization component that displays student grades and study time
+ * in a chart format, allowing students to track their academic progress and study habits.
+ * @requires Chart.js
+ * @requires Chart.js-annotation-plugin
+ */
+
+/**
+ * @typedef {Object} Assignment
+ * @property {number} id - Unique identifier for the assignment
+ * @property {string} name - Name of the assignment
+ * @property {number|null} grade - Grade received for the assignment (0-100 or null if not graded)
+ */
+
+/**
+ * @typedef {Object} Course
+ * @property {number} id - Unique identifier for the course
+ * @property {string} name - Name of the course
+ * @property {Assignment[]} assignments - Array of assignments for the course
+ */
+
+/**
+ * @typedef {Object} ChartDataset
+ * @property {string} label - Label for the dataset
+ * @property {number[]} data - Array of numerical values
+ * @property {string} backgroundColor - Color for the chart bars
+ * @property {string} borderColor - Color for the chart borders
+ * @property {number} borderWidth - Width of the chart borders
+ * @property {string} yAxisID - ID of the y-axis this dataset corresponds to
+ */
+
+/**
+ * Main initialization function that sets up the grade tracker chart and event listeners.
+ * This function is called when the DOM content is loaded.
+ * 
+ * @function
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('progressChart').getContext('2d');
     
@@ -170,6 +208,13 @@ document.addEventListener('DOMContentLoaded', function () {
             courseSelect.disabled = true;
         });
 
+    /**
+     * Event handler for course selection changes. Updates the assignment dropdown
+     * based on the selected course.
+     * 
+     * @function
+     * @param {Event} event - Change event from the course select element
+     */
     courseSelect.addEventListener('change', function() {
         const selectedCourse = this.value;
         
@@ -202,6 +247,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    /**
+     * Event handler for adding new data points to the chart. Validates input and
+     * updates the chart with new grade and study time information.
+     * 
+     * @function
+     * @param {Event} event - Click event from the add data button
+     */
     addDataBtn.addEventListener('click', function() {
         const course = courseSelect.value;
         const assignment = assignmentSelect.value;
@@ -250,6 +302,13 @@ document.addEventListener('DOMContentLoaded', function () {
         assignmentSelect.value = '';  // Reset selection but keep dropdown enabled
     });
 
+    /**
+     * Event handler for setting a goal grade line on the chart. Validates the
+     * input grade and updates the chart's annotation.
+     * 
+     * @function
+     * @param {Event} event - Click event from the set goal button
+     */
     setGoalBtn.addEventListener('click', function() {
         const goalGrade = parseInt(goalGradeInput.value);
         if (goalGrade >= 0 && goalGrade <= 100) {
