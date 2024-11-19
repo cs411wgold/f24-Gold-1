@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Handles course registration functionality including dropdown population,
+ * course addition/removal, and backend synchronization.
+ */
+
+/**
+ * Initializes the course registration functionality when the DOM is loaded.
+ * Sets up the course dropdown and loads registered courses.
+ * @listens DOMContentLoaded
+ */
 document.addEventListener("DOMContentLoaded", function () {
     // Function to populate the dropdown menu with available courses
     function populateCourseDropdown() {
@@ -35,7 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error fetching courses:", error));
     }
 
-    // Function to load registered courses from the backend
+    /**
+     * Loads registered courses from the backend and populates the UI table.
+     * @function loadRegisteredCoursesFromBackend
+     */
     function loadRegisteredCoursesFromBackend() {
         fetch("http://127.0.0.1:8000/courses/registered/")
             .then(response => response.json())
@@ -78,7 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
     loadRegisteredCoursesFromBackend();
 });
 
-// Function to add a selected course to the "Registered Courses" table and the backend
+/**
+ * Adds a selected course to the registered courses table and syncs with backend.
+ * @function addCourse
+ * @param {Object} course - The course object to add
+ * @param {string} course.name - The name of the course
+ * @param {number} course.course_id - The unique identifier of the course
+ */
 function addCourse(course) {
     const courseTable = document.getElementById("courseTable");
 
@@ -104,7 +123,13 @@ function addCourse(course) {
     registerCourseToBackend(course.course_id);
 }
 
-// Function to save the registered course to the backend
+/**
+ * Registers a course with the backend server.
+ * @async
+ * @function registerCourseToBackend
+ * @param {number} course_id - The ID of the course to register
+ * @throws {Error} If the network request fails
+ */
 function registerCourseToBackend(course_id) {
     fetch("http://127.0.0.1:8000/courses/register/", {
         method: "POST",
@@ -125,7 +150,14 @@ function registerCourseToBackend(course_id) {
         .catch(error => console.error("Error registering course:", error));
 }
 
-// Function to remove a course from the "Registered Courses" table and the backend
+/**
+ * Removes a course from both the UI table and backend server.
+ * @async
+ * @function removeCourse
+ * @param {number} course_id - The ID of the course to remove
+ * @param {HTMLElement} rowElement - The table row element to remove from the UI
+ * @throws {Error} If the deletion request fails
+ */
 function removeCourse(course_id, rowElement) {
     fetch(`http://127.0.0.1:8000/courses/register/${course_id}/`, {
         method: "DELETE",
@@ -138,49 +170,52 @@ function removeCourse(course_id, rowElement) {
         .catch(error => console.error("Error deleting course:", error));
 }
 
+/**
+ * Adds a custom course from user input to the registered courses table.
+ * Includes validation for empty input and duplicate courses.
+ * @function addCustomCourse
+ */
+function addCustomCourse() {
+    const courseInput = document.getElementById("customCourse");
+    const courseName = courseInput.value.trim(); //trim input to help clear white space
+    
+    // Check if the input is empty and send alert
+    if (courseName === "") {
+        alert("Please enter a course name.");
+        return;
+    }
+    
+    // Check if the course is already in the table
+    const tableBody = document.getElementById("courseTable");
+    const coursesInTable = Array.from(tableBody.getElementsByTagName("tr"));
+    if (coursesInTable.some(row => row.cells[0].textContent === courseName)) {
+        alert("This course is already added!");
+        return;
+    }
+    
+    // Create a new row with the course name and a remove button
+    const row = document.createElement("tr");
+        
+    // Assign course name to table data
+    const courseNameCell = document.createElement("td");
+    courseNameCell.textContent = courseName;
+    row.appendChild(courseNameCell);
+    
+    // Add remove button cell next to course
+    const removeButtonCell = document.createElement("td");
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.className = "btn btn-danger btn-sm";
+    removeButton.onclick = function() {
+        removeCourse(row);
+    };
+    removeButtonCell.appendChild(removeButton);
+    row.appendChild(removeButtonCell);
 
-// Function to add a custom course from the input field
-    function addCustomCourse() {
-        const courseInput = document.getElementById("customCourse");
-        const courseName = courseInput.value.trim(); //trim input to help clear white space
+    // Add new row to table
+    tableBody.appendChild(row);
     
-        // Check if the input is empty and send alert
-        if (courseName === "") {
-            alert("Please enter a course name.");
-            return;
-        }
-    
-        // Check if the course is already in the table
-        const tableBody = document.getElementById("courseTable");
-        const coursesInTable = Array.from(tableBody.getElementsByTagName("tr"));
-        if (coursesInTable.some(row => row.cells[0].textContent === courseName)) {
-            alert("This course is already added!");
-            return;
-        }
-    
-        // Create a new row with the course name and a remove button
-        const row = document.createElement("tr");
-            
-        // Assign course name to table data
-        const courseNameCell = document.createElement("td");
-        courseNameCell.textContent = courseName;
-        row.appendChild(courseNameCell);
-    
-        // Add remove button cell next to course
-        const removeButtonCell = document.createElement("td");
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.className = "btn btn-danger btn-sm";
-        removeButton.onclick = function() {
-            removeCourse(row);
-        };
-        removeButtonCell.appendChild(removeButton);
-        row.appendChild(removeButtonCell);
-
-        // Add new row to table
-        tableBody.appendChild(row);
-    
-        // Clear the input field after course is added to table
-        courseInput.value = "";
+    // Clear the input field after course is added to table
+    courseInput.value = "";
 }
 
