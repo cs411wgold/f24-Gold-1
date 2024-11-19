@@ -1,7 +1,28 @@
+/**
+ * Initializes and configures a study time chart using Chart.js.
+ * Sets up interactive toggle functionality for different assignments.
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('studyTimeChart').getContext('2d');
 
-    // Sample data for study time
+    /**
+     * @typedef {Object} StudyTimeDataset
+     * @property {string} label - The name of the assignment
+     * @property {number[]} data - Array of study duration values
+     * @property {string} borderColor - Color of the line border
+     * @property {string} backgroundColor - Color of the line and points
+     * @property {number} tension - Line curve tension
+     * @property {number} pointRadius - Size of data points
+     * @property {number} pointHoverRadius - Size of data points on hover
+     */
+
+    /**
+     * Configuration object for study time data
+     * @type {Object}
+     * @property {string[]} labels - Session labels
+     * @property {StudyTimeDataset[]} datasets - Array of study time datasets
+     */
     const data = {
         labels: ['Session 1', 'Session 2', 'Session 3', 'Session 4', 'Session 5'],
         datasets: [
@@ -35,7 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
         ]
     };
 
-    // Chart configuration
+    /**
+     * Chart.js configuration object
+     * @type {Object}
+     */
     const config = {
         type: 'line',
         data: data,
@@ -89,7 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize the chart
     const studyTimeChart = new Chart(ctx, config);
 
-    // Toggle functionality for assignment buttons
+    /**
+     * Sets up toggle functionality for assignment visibility
+     * @param {HTMLElement} button - The toggle button element
+     * @listens click
+     */
     const toggleButtons = document.querySelectorAll('.assignment-toggle');
     toggleButtons.forEach(button => {
         button.addEventListener('click', () => {
