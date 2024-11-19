@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
@@ -198,3 +198,13 @@ def unblock_user(request, friend_id):
         relation.delete()
         return JsonResponse({'message': 'User unblocked successfully'})
     return JsonResponse({'error': 'User is not blocked'}, status=400)
+
+@login_required
+def user_status(request):
+    return JsonResponse({'authenticated': True, 'user': request.user.username})
+
+@csrf_exempt
+@login_required
+def custom_logout(request):
+    logout(request)
+    return JsonResponse({'message': 'Logged out successfully'})

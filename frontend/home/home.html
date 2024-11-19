@@ -50,6 +50,23 @@
               <!-- Upcoming assignments will be populated here -->
               <script>
                 document.addEventListener("DOMContentLoaded", function() {
+                    // Check user authentication status
+                    fetch('http://127.0.0.1:8000/user_status/')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.authenticated) {
+                                // User is authenticated
+                                console.log(`User is authenticated: ${data.user}`);
+                                // ...additional code if needed...
+                            } else {
+                                // User is not authenticated, redirect to login page
+                                window.location.href = 'http://127.0.0.1:8000/login/';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching user status:", error);
+                        });
+
                     fetch(`http://127.0.0.1:8000/assignments/upcoming/`)
                         .then(response => response.json())
                         .then(data => {
