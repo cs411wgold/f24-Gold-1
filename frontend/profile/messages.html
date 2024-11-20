@@ -148,23 +148,54 @@
          const chatInput = chatModal.querySelector("#chatInput");
          
          sendMessageButton.onclick = () => {
-             const messageContent = chatInput.value.trim();
-             if (messageContent) {
-                 const newMessage = {
-                     sender: "jimbo",
-                     receiver: friend.name,
-                     content: messageContent,
-                     timestamp: new Date().toISOString(),
-                 };
-         
-                 const messageBubble = document.createElement("div");
-                 messageBubble.classList.add("message-bubble", "sent");
-                 messageBubble.textContent = `You: ${messageContent}`;
-                 chatMessages.appendChild(messageBubble);
-         
-                 chatInput.value = "";
-             }
-         };
+    const messageContent = chatInput.value.trim();
+    if (messageContent) {
+        const timestamp = new Date().toISOString(); // Current timestamp
+        const newMessage = {
+            sent_by: "jimbo",
+            sent_to: friend.name,
+            content: messageContent,
+            sent_at: timestamp, // Include the timestamp
+        };
+
+        fetch("http://127.0.0.1:8000/messages/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newMessage),
+        })
+        .then(response => {
+            if (response.ok) {
+                const messageBubble = document.createElement("div");
+                messageBubble.classList.add("message-bubble", "sent");
+
+                // Display the message content
+                const messageContentDiv = document.createElement("div");
+                messageContentDiv.textContent = `Jimbo: ${messageContent}`;
+
+                // Display the timestamp
+                const messageTimestamp = document.createElement("div");
+                messageTimestamp.classList.add("timestamp");
+                const displayTime = new Date(timestamp).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                });
+                messageTimestamp.textContent = displayTime;
+
+                messageBubble.appendChild(messageContentDiv);
+                messageBubble.appendChild(messageTimestamp);
+
+                chatMessages.appendChild(messageBubble);
+                chatInput.value = ""; // Clear the input field
+            } else {
+                console.error("Failed to send message:", response.statusText);
+            }
+        })
+        .catch(error => console.error("Error sending message:", error));
+    }
+};
          }
          })
          .catch(error => console.error("Error fetching messages:", error));

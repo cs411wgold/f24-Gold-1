@@ -12,8 +12,7 @@ def handle_messages_request(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            
-            # Add `sent_to` as a required field
+        
             required_fields = ['sent_by', 'sent_to', 'content']
             for field in required_fields:
                 if field not in data:
@@ -25,8 +24,7 @@ def handle_messages_request(request):
             sent_at = datetime.now()
             
             logger.info(f"Creating a new message with data: {data}")
-            
-            # Save the new message with `sent_to`
+
             usermessages.objects.create(
                 sent_by=sent_by,
                 sent_to=sent_to,  
@@ -37,7 +35,6 @@ def handle_messages_request(request):
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format.'}, status=400)
     elif request.method == 'GET':
-        # Retrieve all messages including `sent_to`
         all_messages = usermessages.objects.all()
         
         messages_data = [
