@@ -24,8 +24,8 @@ gradle-app.setting
 .vscode
 
 /backend/venv
-/backend/djangoConfig/__pycache__
-/backend/login/__pycache__
+# Ignore all pycache on backend regardless of page
+/backend/**/__pycache__
 
 project_structure.txt
 Scrap.txt

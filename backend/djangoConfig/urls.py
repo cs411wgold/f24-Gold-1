@@ -29,4 +29,5 @@ urlpatterns = [
     path('courses/', include('courses.urls')),
     path('', include('timer.urls')),
     path('gradetracker/', include('gradeTracker.urls')),
+    path('', include('usermessages.urls')),
 ]

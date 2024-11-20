@@ -1,0 +1,72 @@
+[
+  {
+    "model": "usermessages.usermessages",
+    "pk": 1,
+    "fields": {
+      "sent_by": "jimbo",
+      "sent_to": "alex",
+      "content": "Did you finish the homework yet?",
+      "sent_at": "2024-11-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 2,
+    "fields": {
+      "sent_by": "alex",
+      "sent_to": "jimbo",
+      "content": "Not yet, still working on it. How about you?",
+      "sent_at": "2024-11-01T10:05:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 3,
+    "fields": {
+      "sent_by": "jimbo",
+      "sent_to": "alex",
+      "content": "I'm almost done. Just struggling with the last question.",
+      "sent_at": "2024-11-01T10:10:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 4,
+    "fields": {
+      "sent_by": "alex",
+      "sent_to": "jimbo",
+      "content": "Same here, the math problem is tricky.",
+      "sent_at": "2024-11-01T10:15:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 5,
+    "fields": {
+      "sent_by": "jimbo",
+      "sent_to": "alex",
+      "content": "Want to compare notes later? Maybe we can figure it out together.",
+      "sent_at": "2024-11-01T10:20:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 6,
+    "fields": {
+      "sent_by": "alex",
+      "sent_to": "jimbo",
+      "content": "Sure, that sounds good. Let's meet after lunch.",
+      "sent_at": "2024-11-01T10:25:00Z"
+    }
+  },
+  {
+    "model": "usermessages.usermessages",
+    "pk": 7,
+    "fields": {
+      "sent_by": "jimbo",
+      "sent_to": "alex",
+      "content": "Great, see you then!",
+      "sent_at": "2024-11-01T10:30:00Z"
+    }
+  }
+]

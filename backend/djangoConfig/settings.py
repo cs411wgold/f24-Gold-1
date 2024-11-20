@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'taskboard',
     'courses',
     'gradeTracker',
+    'usermessages'
 ]
 
 MIDDLEWARE = [
