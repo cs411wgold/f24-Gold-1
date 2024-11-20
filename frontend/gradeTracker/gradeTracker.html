@@ -19,7 +19,7 @@
   <div id="header-common"></div>
 
   <script>
-    fetch('..shared/header.html')
+    fetch('../shared/header.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById('header-common').innerHTML = data;

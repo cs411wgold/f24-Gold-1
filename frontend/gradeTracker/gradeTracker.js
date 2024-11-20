@@ -86,22 +86,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 y1: {
                     beginAtZero: true,
-                    max: 20, // Changed to 20 hours
+                    max: isAssignmentView ? 90 : 20,
                     position: 'right',
                     title: {
                         display: true,
-                        text: 'Study Time' // Will be updated based on view
+                        text: 'Study Time'
                     },
                     grid: {
                         drawOnChartArea: false
                     },
                     ticks: {
-                        stepSize: 2, // Show ticks every 2 hours
                         callback: function(value) {
                             return isAssignmentView ? 
                                 value + ' min' : 
                                 value + ' hrs';
-                        }
+                        },
+                        ...(isAssignmentView ? {
+                            stepSize: 10,
+                            callback: function(value) {
+                                if ([0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(value)) {
+                                    return value + ' min';
+                                }
+                                return null;  // Hide other ticks
+                            }
+                        } : {
+                            stepSize: 2,
+                            callback: function(value) {
+                                return value + ' hrs';
+                            }
+                        })
                     }
                 },
                 x: {
@@ -119,11 +132,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             yMin: 0,
                             yMax: 0,
                             borderColor: '#ff4444',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
+                            borderWidth: 4,
+                            borderDash: [10, 10],
                             label: {
                                 content: 'Goal',
-                                display: true
+                                display: true,
+                                backgroundColor: '#ff4444',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                padding: 6
                             },
                             display: false
                         }
@@ -426,9 +445,30 @@ document.addEventListener('DOMContentLoaded', function () {
             'Assignments' : 
             'Courses';
         
-        // Update max value and step size for y1 axis
-        config.options.scales.y1.max = isAssignmentView ? 90 : 20;
-        config.options.scales.y1.ticks.stepSize = isAssignmentView ? 10 : 2;
+        // Update y1 axis configuration based on view
+        config.options.scales.y1 = {
+            ...config.options.scales.y1,
+            beginAtZero: true,
+            max: isAssignmentView ? 90 : 20,
+            position: 'right',
+            grid: {
+                drawOnChartArea: false
+            },
+            ticks: isAssignmentView ? {
+                stepSize: 10,
+                callback: function(value) {
+                    if ([0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(value)) {
+                        return value + ' min';
+                    }
+                    return null;  // Hide other ticks
+                }
+            } : {
+                stepSize: 2,
+                callback: function(value) {
+                    return value + ' hrs';
+                }
+            }
+        };
 
         // Show/hide relevant controls
         document.getElementById('assignmentSelect').style.display = 
