@@ -134,6 +134,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const addDataBtn = document.getElementById('addDataBtn');
     const goalGradeInput = document.getElementById('goalGrade');
     const setGoalBtn = document.getElementById('setGoalBtn');
+    const resetChartBtn = document.getElementById('resetChartBtn');
+
+    // Add this new event listener
+    resetChartBtn.addEventListener('click', function() {
+        // Clear all data
+        data.labels = [];
+        data.datasets[0].data = [];
+        data.datasets[1].data = [];
+        
+        // Reset goal line
+        config.options.plugins.annotation.annotations.goalLine.display = false;
+        goalGradeInput.value = '';
+        
+        // Update the chart
+        chart.update();
+        
+        // Reset course selection and re-populate assignments
+        courseSelect.dispatchEvent(new Event('change'));
+    });
 
     // Fetch courses and assignments data
     fetch('http://127.0.0.1:8000/gradetracker/courses-assignments/')
@@ -288,6 +307,13 @@ document.addEventListener('DOMContentLoaded', function () {
             data.datasets[0].data[existingIndex] = assignmentInfo.grade;
             data.datasets[1].data[existingIndex] = studyTime;
         } else {
+            // Limit data to 2 entries by removing oldest entry if necessary
+            if (data.labels.length >= 2) {
+                data.labels.shift();  // Remove first label
+                data.datasets[0].data.shift();  // Remove first grade
+                data.datasets[1].data.shift();  // Remove first study time
+            }
+
             // Add new data point
             data.labels.push(assignmentInfo.name);
             data.datasets[0].data.push(assignmentInfo.grade);
@@ -297,9 +323,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update chart
         chart.update();
         
-        // Reset only the study time input and keep assignment dropdown enabled
+        // Reset inputs
         studyTimeInput.value = '';
-        assignmentSelect.value = '';  // Reset selection but keep dropdown enabled
+        assignmentSelect.value = '';
+
+        // Update available assignments in dropdown
+        courseSelect.dispatchEvent(new Event('change'));
     });
 
     /**
