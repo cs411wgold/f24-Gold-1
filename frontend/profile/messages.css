@@ -1,0 +1,75 @@
+
+    .chat-messages {
+        max-height: 300px; 
+        overflow-y: auto; 
+        border: 1px solid #ccc; 
+        padding: 10px; 
+        margin-bottom: 10px;
+    }
+.message-bubble.sent {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 60%; 
+    word-break: break-word; 
+    margin: 10px 0;
+    align-self: flex-end;
+    text-align: left; 
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+    .friends {
+    display: flex;
+    }
+
+    #chatModal {
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+    background-color: #ffffff;
+    max-width: 500px; 
+    padding: 20px;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    gap: 10px; 
+}
+
+#chatInput {
+    border: 2px solid #ccc;
+}
+
+#sendMessageButton {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#sendMessageButton:hover {
+    background-color: #0056b3;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px; 
+    font-size: 30px; 
+    cursor: pointer;
+    color: #333;
+}
+
+.close:hover {
+    color: #ff0000;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowTime - Messages</title>
+    <link rel="icon" type="image/x-icon" href="/frontend/resources/tomato.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./messages.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Barlow' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <div id="header-common"></div>
+
+    <script>
+      fetch('../shared/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-common').innerHTML = data;
+
+          const currentPath = window.location.pathname;
+          const navLinks = document.querySelectorAll(".nav-link, .dropdown-item");
+
+          navLinks.forEach(link => {
+            const pagePath = link.getAttribute("href");
+            if (currentPath.includes(pagePath)) {
+              link.classList.add("active");
+              if (link.classList.contains('dropdown-item')) {
+                const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                parentLink.classList.add('active');
+              }
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        })
+        .catch(error => console.error('Error loading header:', error));
+    </script>
+
+    <!-- Main Section -->
+    <main class="container-fluid bg-light text-center col-4 p-5 border rounded shadow-sm timer-container" style="--bs-bg-opacity:0.85; margin-bottom:175px;">
+
+        <div class="logo">
+            <span style="font-size: 40px; font-weight: bold;">Messages</span>
+            <img src="../img/tomato_friends.png" alt="tomato logo" style="width:120px;" class="title-image"> 
+        </div>
+
+        <div id="friends" class="friends"></div>
+    </section>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Chat</h2>
+            <div class="chat-messages"></div>
+            <div class="input-group">
+                <input type="text" id="chatInput" class="form-control" placeholder="Type a message..." />
+                <button id="sendMessageButton" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div id="footer-common"></div>
+    <script>
+      fetch('../shared/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-common').innerHTML = data;
+        });
+    </script>
+
+    <script>
+      const friends = [
+          { id: 1, name: "Alex", avatar: "../img/profiles/alex.png" },
+          { id: 2, name: "Beth", avatar: "../img/profiles/beth.png" },
+          { id: 3, name: "Carlos", avatar: "../img/profiles/carlos.png" },
+      ];
+
+      const friendsList = document.getElementById("friends");
+
+      friends.forEach(friend => {
+          const friendCard = document.createElement("div");
+          friendCard.classList.add("col-md-4", "my-2");
+          friendCard.innerHTML = `
+              <div class="card friend-card p-3 text-center" style="cursor: pointer;">
+                  <img src="${friend.avatar}" alt="${friend.name}'s avatar" class="card-img-top" style="width: 100px; margin: auto;">
+                  <div class="card-body">
+                      <h5 class="card-title">${friend.name}</h5>
+                  </div>
+              </div>
+          `;
+          friendCard.addEventListener("click", () => openChat(friend));
+          friendsList.appendChild(friendCard);
+      });
+
+      function openChat(friend) {
+          const chatModal = document.getElementById("chatModal");
+          const chatMessages = chatModal.querySelector(".chat-messages");
+          chatModal.querySelector(".modal-title").textContent = `Chat with ${friend.name}`;
+          chatModal.style.display = "block";
+
+          const closeModal = chatModal.querySelector(".close");
+          closeModal.addEventListener("click", () => {
+              chatModal.style.display = "none";
+              chatMessages.innerHTML = "";
+          });
+
+          const sendMessageButton = chatModal.querySelector("#sendMessageButton");
+          const chatInput = chatModal.querySelector("#chatInput");
+          
+
+          sendMessageButton.onclick = () => {
+              const message = "You: " + chatInput.value.trim();
+              if (message) {
+                  const messageBubble = document.createElement("div");
+                  messageBubble.classList.add("message-bubble", "sent");
+                  messageBubble.textContent = message;
+                  chatMessages.appendChild(messageBubble);
+                  chatInput.value = "";
+              }
+          };
+      }
+    </script>
+</body>
+</html>
