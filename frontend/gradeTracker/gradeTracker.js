@@ -52,13 +52,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }, {
             label: 'Study Time',
             data: [],
-            backgroundColor: '#ff9933',
-            borderColor: '#ff9933',
+            backgroundColor: '#ff4444',
+            borderColor: '#ff4444',
             borderWidth: 1,
             yAxisID: 'y1'
         }]
     };
 
+    // Add view toggle button
+    const viewToggleBtn = document.createElement('button');
+    viewToggleBtn.className = 'btn btn-outline-primary mb-3';
+    viewToggleBtn.textContent = 'Switch to Course View';
+    document.querySelector('.controls-container').prepend(viewToggleBtn);
+
+    let isAssignmentView = true;
+
+    // Modify chart configuration
     const config = {
         type: 'bar',
         data: data,
@@ -77,26 +86,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 y1: {
                     beginAtZero: true,
-                    max: 90,
+                    max: 20, // Changed to 20 hours
                     position: 'right',
                     title: {
                         display: true,
-                        text: 'Study Time (minutes)'
+                        text: 'Study Time' // Will be updated based on view
                     },
                     grid: {
                         drawOnChartArea: false
                     },
                     ticks: {
-                        stepSize: 10,
+                        stepSize: 2, // Show ticks every 2 hours
                         callback: function(value) {
-                            return value + ' min';
+                            return isAssignmentView ? 
+                                value + ' min' : 
+                                value + ' hrs';
                         }
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Assignments'
+                        text: 'Assignments' // Will be updated based on view
                     }
                 }
             },
@@ -274,61 +285,109 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {Event} event - Click event from the add data button
      */
     addDataBtn.addEventListener('click', function() {
-        const course = courseSelect.value;
-        const assignment = assignmentSelect.value;
-        const studyTime = parseInt(studyTimeInput.value);
+        if (isAssignmentView) {
+            const course = courseSelect.value;
+            const assignment = assignmentSelect.value;
+            const studyTime = parseInt(studyTimeInput.value);
 
-        if (!course || !assignment || isNaN(studyTime) || studyTime <= 0) {
-            alert('Please fill in all fields with valid values');
-            return;
-        }
-
-        const courseData = window.assignmentData.find(c => c.id === parseInt(course));
-        if (!courseData) {
-            alert('Course not found');
-            return;
-        }
-
-        const assignmentInfo = courseData.assignments.find(a => a.id === parseInt(assignment));
-        if (!assignmentInfo) {
-            alert('Assignment not found');
-            return;
-        }
-
-        if (assignmentInfo.grade === null) {
-            alert('No grade available for this assignment');
-            return;
-        }
-
-        // Check if assignment is already in chart
-        const existingIndex = data.labels.indexOf(assignmentInfo.name);
-        if (existingIndex !== -1) {
-            // Update existing data point
-            data.datasets[0].data[existingIndex] = assignmentInfo.grade;
-            data.datasets[1].data[existingIndex] = studyTime;
-        } else {
-            // Limit data to 2 entries by removing oldest entry if necessary
-            if (data.labels.length >= 2) {
-                data.labels.shift();  // Remove first label
-                data.datasets[0].data.shift();  // Remove first grade
-                data.datasets[1].data.shift();  // Remove first study time
+            if (!course || !assignment || isNaN(studyTime) || studyTime <= 0) {
+                alert('Please fill in all fields with valid values');
+                return;
             }
 
-            // Add new data point
-            data.labels.push(assignmentInfo.name);
-            data.datasets[0].data.push(assignmentInfo.grade);
-            data.datasets[1].data.push(studyTime);
-        }
-        
-        // Update chart
-        chart.update();
-        
-        // Reset inputs
-        studyTimeInput.value = '';
-        assignmentSelect.value = '';
+            const courseData = window.assignmentData.find(c => c.id === parseInt(course));
+            if (!courseData) {
+                alert('Course not found');
+                return;
+            }
 
-        // Update available assignments in dropdown
-        courseSelect.dispatchEvent(new Event('change'));
+            const assignmentInfo = courseData.assignments.find(a => a.id === parseInt(assignment));
+            if (!assignmentInfo) {
+                alert('Assignment not found');
+                return;
+            }
+
+            if (assignmentInfo.grade === null) {
+                alert('No grade available for this assignment');
+                return;
+            }
+
+            // Check if assignment is already in chart
+            const existingIndex = data.labels.indexOf(assignmentInfo.name);
+            if (existingIndex !== -1) {
+                // Update existing data point
+                data.datasets[0].data[existingIndex] = assignmentInfo.grade;
+                data.datasets[1].data[existingIndex] = studyTime;
+            } else {
+                // Limit data to 2 entries by removing oldest entry if necessary
+                if (data.labels.length >= 2) {
+                    data.labels.shift();  // Remove first label
+                    data.datasets[0].data.shift();  // Remove first grade
+                    data.datasets[1].data.shift();  // Remove first study time
+                }
+
+                // Add new data point
+                data.labels.push(assignmentInfo.name);
+                data.datasets[0].data.push(assignmentInfo.grade);
+                data.datasets[1].data.push(studyTime);
+            }
+            
+            // Update chart
+            chart.update();
+            
+            // Reset inputs
+            studyTimeInput.value = '';
+            assignmentSelect.value = '';
+
+            // Update available assignments in dropdown
+            courseSelect.dispatchEvent(new Event('change'));
+        } else {
+            // Course view logic
+            const course = courseSelect.value;
+            const studyTime = parseFloat(studyTimeInput.value);
+
+            if (!course || isNaN(studyTime) || studyTime <= 0) {
+                alert('Please fill in all fields with valid values');
+                return;
+            }
+
+            const courseData = window.assignmentData.find(c => c.id === parseInt(course));
+            if (!courseData) {
+                alert('Course not found');
+                return;
+            }
+
+            // Calculate course average
+            const grades = courseData.assignments
+                .filter(a => a.grade !== null)
+                .map(a => a.grade);
+            const avgGrade = grades.length > 0 ? 
+                grades.reduce((a, b) => a + b) / grades.length : 
+                0;
+
+            // Update chart with course data
+            const existingIndex = data.labels.indexOf(courseData.name);
+            if (existingIndex !== -1) {
+                // Update existing data point
+                data.datasets[0].data[existingIndex] = avgGrade;
+                data.datasets[1].data[existingIndex] = studyTime;
+            } else {
+                // Limit data to 2 entries by removing oldest entry if necessary
+                if (data.labels.length >= 2) {
+                    data.labels.shift();  // Remove first label
+                    data.datasets[0].data.shift();  // Remove first grade
+                    data.datasets[1].data.shift();  // Remove first study time
+                }
+
+                // Add new data point
+                data.labels.push(courseData.name);
+                data.datasets[0].data.push(avgGrade);
+                data.datasets[1].data.push(studyTime);
+            }
+
+            chart.update();
+            studyTimeInput.value = '';
+        }
     });
 
     /**
@@ -347,6 +406,48 @@ document.addEventListener('DOMContentLoaded', function () {
             chart.update();
         } else {
             alert('Please enter a valid goal grade between 0 and 100');
+        }
+    });
+
+    // Add view toggle handler
+    viewToggleBtn.addEventListener('click', function() {
+        isAssignmentView = !isAssignmentView;
+        
+        // Update button text
+        this.textContent = isAssignmentView ? 
+            'Switch to Course View' : 
+            'Switch to Assignment View';
+
+        // Update chart labels and axes
+        config.options.scales.y1.title.text = isAssignmentView ? 
+            'Study Time (minutes)' : 
+            'Study Time (hours/week)';
+        config.options.scales.x.title.text = isAssignmentView ? 
+            'Assignments' : 
+            'Courses';
+        
+        // Update max value and step size for y1 axis
+        config.options.scales.y1.max = isAssignmentView ? 90 : 20;
+        config.options.scales.y1.ticks.stepSize = isAssignmentView ? 10 : 2;
+
+        // Show/hide relevant controls
+        document.getElementById('assignmentSelect').style.display = 
+            isAssignmentView ? 'block' : 'none';
+        studyTimeInput.placeholder = isAssignmentView ? 
+            'Study Time (minutes)' : 
+            'Study Time (hours/week)';
+
+        // Clear chart data
+        data.labels = [];
+        data.datasets[0].data = [];
+        data.datasets[1].data = [];
+        chart.update();
+
+        // Reset inputs
+        studyTimeInput.value = '';
+        courseSelect.value = '';
+        if (isAssignmentView) {
+            assignmentSelect.value = '';
         }
     });
 });
