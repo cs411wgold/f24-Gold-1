@@ -14,5 +14,21 @@
       "date_joined": "2023-10-21T00:00:00Z",
       "last_login": null
     }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "Timmy",
+      "password": "pbkdf2_sha256$320000$hdUfaWEorEBAeNpPVphQSO$3ID5rVPeEYHfX/M5f5hJoTKn7A2ZThDUbU5jq29Njrk=",
+      "email": "timmy@example.com",
+      "first_name": "Tim",
+      "last_name": "Myers",
+      "is_staff": true,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2024-11-21T03:36:05Z",
+      "last_login": null
+    }
   }
 ]

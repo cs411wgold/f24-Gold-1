@@ -29,6 +29,7 @@ services:
       PYTHONPATH: "/app"
     volumes:
       - ./backend/login/fixtures/user_data.json:/app/login/fixtures/user_data.json
+      - ./backend/login/fixtures/initial_friends.json:/app/login/fixtures/initial_friends.json
       - ./backend/grades/fixtures/grades_data.json:/app/grades/fixtures/grades_data.json
 
     command: >
@@ -42,6 +43,7 @@ services:
             python courses/utility.py &&
             python manage.py loaddata /app/login/fixtures/user_data.json &&
             python manage.py loaddata /app/timer/fixtures/study_data.json &&
+            python manage.py loaddata /app/login/fixtures/initial_friends.json &&
             python manage.py loaddata /app/usermessages/fixtures/messages.json &&
             python manage.py loaddata /app/grades/fixtures/grades_data.json &&
             python manage.py runserver 0.0.0.0:8000"

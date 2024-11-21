@@ -1,0 +1,23 @@
+[
+    {
+      "model": "login.friend",
+      "pk": 1,
+      "fields": {
+        "user_id": 1,
+        "friend_id": 2,
+        "status": "accepted",
+        "created_at": "2024-11-21T03:45:00Z"
+      }
+    },
+    {
+      "model": "login.friend",
+      "pk": 2,
+      "fields": {
+        "user_id": 2,
+        "friend_id": 1,
+        "status": "accepted",
+        "created_at": "2024-11-21T03:45:00Z"
+      }
+    }
+  ]
+  
