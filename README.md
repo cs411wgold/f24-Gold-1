@@ -30,4 +30,13 @@ username: knowtimeAdmin
 email: admin@odu.edu
 password: TestMe123
 
+# Misc
+
+To generate pydocs, assuming pydocs is installed
+
+- Generate Files by CD to backend directory and running 
+``` find . -path "./venv" -prune -o -name "*.py" -not -path "*/migrations/*" -exec python -m pydoc -w {} \; ```
+
+- Move generated HTML files to pydocs directory
+  ```  mv *.html pydocs/ ```
 
