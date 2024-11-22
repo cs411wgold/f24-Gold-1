@@ -32,3 +32,6 @@ Scrap.txt
 pythontool.py
 LocalDB.session.sql
 /tests/__pycache__ 
+
+/frontend/node_modules
+frontend/package-lock.json
