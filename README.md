@@ -30,6 +30,10 @@ username: knowtimeAdmin
 email: admin@odu.edu
 password: TestMe123
 
+# Run Tests
+- Front End 
+``` docker-compose run --rm jest ```
+
 # Misc
 
 To generate pydocs, assuming pydocs is installed
