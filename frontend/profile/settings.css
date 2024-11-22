@@ -9,11 +9,9 @@ body {
 html {
     height: 100%;  
 }
-
 main {
     flex: 1; 
 }
-
 .profile-container {
     display: flex;
     align-items: left;
@@ -118,34 +116,32 @@ input:checked + .notificationsSwitch-slider:before {
 .notificationsSwitch-slider.round:before {
     border-radius: 50%;
 }
-.FriendsList-container {
-    display: flex;
-    align-items: center;
-}
-.FriendsList-container img {
-    width: 65px; 
-    height: 65px;
-    margin-right: 15px; 
-}
-.FriendsList-container button {
-    padding: 10px 20px;
-    background-color: #2ab7f3;
-    color: rgb(255, 255, 255) 
-}
-.BlockedList-container {
-    display: flex;
-    align-items: center;
-}
-.BlockedList-container img {
-    width: 60px; 
-    height: 60px;
-    margin-right: 15px; 
-}
-.BlockedList-container button {
-    padding: 10px 20px;
-    background-color: #2ab7f3;
-    color: rgb(255, 255, 255)
-}
+.Button-container { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+    gap: 15px; 
+    margin: 0 auto; 
+} 
+.image-button { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    border: none; 
+    background: none; 
+    cursor: pointer; 
+    text-align: center; 
+} 
+.button-text { 
+    margin-top: 5px; 
+    font-size: medium; 
+    color: #000; 
+} 
+.image-button img { 
+    width: 90px; 
+    height: 90px; 
+} 
 .SaveChanges-button {
     padding: 10px 20px;
     background-color: #2ab7f3;
@@ -157,29 +153,31 @@ input:checked + .notificationsSwitch-slider:before {
     background-color: #2ab7f3;
     color: rgb(255, 255, 255) 
 }
-.popup {
-	display: none; 
+.popup { 
+    display: none; 
     position: fixed; 
     z-index: 1; 
-    left: 0;
-    top: 0;
+    left: 0; 
+    top: 0; 
     width: 100%; 
     height: 100%; 
     overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-content: center;
-    
-}
-.popup-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; 
-    max-width: 325px; /* Optional: to limit the width */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    border-radius: 10px; /* Optional: to add rounded corners */
+    background-color: rgba(0,0,0,0.4); 
+    justify-content: center; 
+    align-items: center; 
+} 
+.popup-content { 
+    background-color: #fefefe; 
+    padding: 20px; 
+    border: 1px solid #888; 
+    width: 80%;
+    max-width: 550px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    border-radius: 10px;  
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);  
 }
 .close {
     color: red;
@@ -200,15 +198,15 @@ input:checked + .notificationsSwitch-slider:before {
     margin-left:175px;
     margin-bottom:20px;
     margin-top:10px;
-}
-.popup-button {
-    padding: 10px 20px;
-    background-color: #2ab7f3;
-    color: rgb(255, 255, 255);
-    font-size: medium;
-    display: flex;
-    flex-direction: column;
+    justify-content: center; 
     align-items: center;
-    margin-bottom:20px;
-    margin-top:10px;
+}
+.popup-button { 
+    padding: 10px 20px; 
+    background-color: #2ab7f3; 
+    color: rgb(255, 255, 255); 
+    font-size: medium; 
+    margin: 10px auto; 
+    display: block; 
+    text-align: center; 
 }
