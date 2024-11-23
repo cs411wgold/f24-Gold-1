@@ -76,11 +76,37 @@ function setupDate(date = new Date(), assignments = []) {
         taskDiv.style.display = savedTasks.length > 0 ? 'block' : 'none';
 
         taskDiv.innerHTML = '';
+        // savedTasks.forEach((taskObj, index) => {
+        //     const taskItem = document.createElement('div');
+        //     taskItem.classList.add('task-item');
+        //     taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
+
+        //     const deleteButton = document.createElement('button');
+        //     deleteButton.textContent = "Delete";
+        //     deleteButton.classList.add('delete-task-btn');
+        //     deleteButton.addEventListener('click', function (e) {
+        //         e.stopPropagation();
+        //         deleteTask(year, numeralMonth, day, index);
+        //     });
+
+        //     taskItem.appendChild(deleteButton);
+        //     taskDiv.appendChild(taskItem);
+        // });
+
         savedTasks.forEach((taskObj, index) => {
+            console.log("Task Object:", taskObj); // Debugging the task object
+        
+            // Validate the task object
+            const taskDescription = taskObj.task || "No Task Name";
+            const startTime = taskObj.startTime ? convertTo12Hour(taskObj.startTime) : "No Start Time";
+            const endTime = taskObj.endTime ? convertTo12Hour(taskObj.endTime) : "No End Time";
+        
+            // Create the task item
             const taskItem = document.createElement('div');
             taskItem.classList.add('task-item');
-            taskItem.textContent = `${taskObj.task} at ${convertTo12Hour(taskObj.time)}`;
-
+            taskItem.textContent = `${taskDescription}: ${startTime} - ${endTime}`;
+        
+            // Create the delete button
             const deleteButton = document.createElement('button');
             deleteButton.textContent = "Delete";
             deleteButton.classList.add('delete-task-btn');
@@ -88,10 +114,14 @@ function setupDate(date = new Date(), assignments = []) {
                 e.stopPropagation();
                 deleteTask(year, numeralMonth, day, index);
             });
-
+        
+            // Append the delete button to the task item
             taskItem.appendChild(deleteButton);
+        
+            // Append the task item to the task container
             taskDiv.appendChild(taskItem);
         });
+        
 
         dayLi.appendChild(taskDiv);
 
@@ -155,19 +185,47 @@ function parseAssignmentLink(description) {
 /**
  * Saves a new task to local storage
  */
+// function saveTask() {
+//     const task = document.getElementById('taskInput').value;
+//     const time = document.getElementById('taskTime').value;
+//     const selectedDate = document.getElementById('selectedDate').value;
+
+//     if (!task || !time) {
+//         alert("Both task and time are required.");
+//         return;
+//     }
+
+//     // Retrieve existing tasks from localStorage
+//     const tasks = JSON.parse(localStorage.getItem(selectedDate)) || [];
+//     tasks.push({ task, time });
+//     const sortedTasks = sortTasksByTime(tasks);
+
+//     localStorage.setItem(selectedDate, JSON.stringify(sortedTasks));
+
+//     const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
+//     taskModal.hide();
+//     fetchAssignmentsAndDisplay(); // Refresh the calendar to show the added task
+// }
+
 function saveTask() {
     const task = document.getElementById('taskInput').value;
-    const time = document.getElementById('taskTime').value;
+    const startTime = document.getElementById('taskStartTime').value;
+    const endTime = document.getElementById('taskEndTime').value;
     const selectedDate = document.getElementById('selectedDate').value;
 
-    if (!task || !time) {
-        alert("Both task and time are required.");
+    if (!task || !startTime || !endTime) {
+        alert("Task, start time, and end time are required.");
+        return;
+    }
+
+    if (startTime >= endTime) {
+        alert("Start time must be before end time.");
         return;
     }
 
     // Retrieve existing tasks from localStorage
     const tasks = JSON.parse(localStorage.getItem(selectedDate)) || [];
-    tasks.push({ task, time });
+    tasks.push({ task, startTime, endTime });
     const sortedTasks = sortTasksByTime(tasks);
 
     localStorage.setItem(selectedDate, JSON.stringify(sortedTasks));
@@ -176,6 +234,7 @@ function saveTask() {
     taskModal.hide();
     fetchAssignmentsAndDisplay(); // Refresh the calendar to show the added task
 }
+
 
 /**
  * Deletes a task from local storage
@@ -199,9 +258,14 @@ function deleteTask(year, month, day, taskIndex) {
  * @param {Array} tasks - Array of task objects with time property
  * @returns {Array} - Sorted array of tasks
  */
+// function sortTasksByTime(tasks) {
+//     return tasks.sort((a, b) => convertTo24Hour(a.time).localeCompare(convertTo24Hour(b.time)));
+// }
+
 function sortTasksByTime(tasks) {
-    return tasks.sort((a, b) => convertTo24Hour(a.time).localeCompare(convertTo24Hour(b.time)));
+    return tasks.sort((a, b) => a.startTime.localeCompare(b.startTime));
 }
+
 
 /**
  * Converts 24-hour time format to 12-hour format
@@ -209,6 +273,11 @@ function sortTasksByTime(tasks) {
  * @returns {string} - Time in 12-hour format with AM/PM
  */
 function convertTo12Hour(time) {
+    if (!time) {
+        console.error("Invalid time passed to convertTo12Hour:", time);
+        return "Invalid Time";
+    }
+
     let [hours, minutes] = time.split(':');
     hours = parseInt(hours);
     const ampm = hours >= 12 ? 'PM' : 'AM';
