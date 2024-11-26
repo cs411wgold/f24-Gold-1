@@ -20,6 +20,12 @@ username: knowtimeAdmin
 email: admin@odu.edu
 password: TestMe123
 
+# Refresh Documentation
+
+- Front End 
+``` npm run jsdoc ```
+This will output jsdoc for the frontend files into frontend/docs/jsdoc. 
+
 # Run Tests
 - Front End 
 ``` docker-compose run --rm jest ```

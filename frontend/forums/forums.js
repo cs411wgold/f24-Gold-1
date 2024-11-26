@@ -412,7 +412,7 @@ const api = {
          */
         function addReplyToPost(post) {
             if (replyData.parentReplyId) {
-                // Add nested reply
+                /** Add nested reply */
                 const findAndAddReply = (replies) => {
                     for (let reply of replies) {
                         if (reply.id === replyData.parentReplyId) {
@@ -542,7 +542,7 @@ const api = {
         const post = posts.find(p => p.id === postId);
         
         if (post) {
-            // Function to remove reply recursively
+            /** Function to remove reply recursively */ 
             const removeReply = (replies) => {
                 const index = replies.findIndex(r => r.id === replyId);
                 if (index !== -1) {
@@ -592,7 +592,7 @@ const api = {
         const post = posts.find(p => p.id === postId);
         
         if (post) {
-            // Function to edit reply recursively
+            /**  Function to edit reply recursively */
             const editReplyContent = (replies) => {
                 const reply = replies.find(r => r.id === replyId);
                 if (reply) {
@@ -1242,6 +1242,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {Object|null} The reply object if found, null otherwise.
      */
     function findReplyById(posts, replyId) {
+        /**
+         * Searches through the given replies.
+         *
+         * @param {Array} replies - The array of replies to search through.
+         */        
         const searchReplies = (replies) => {
             for (let reply of replies) {
                 if (reply.id === replyId) {

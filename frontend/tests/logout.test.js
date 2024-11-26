@@ -6,9 +6,10 @@
 // Set up the DOM to simulate logout button
 document.body.innerHTML = `<button id="logoutButton">Logout</button>`;
 
-// Recreate simple logout function based on functionality from logout.js
-// Simple logout removes email, password, and name information from localStorage
-// and redirects the user to the login page
+/**  Recreate simple logout function based on functionality from logout.js
+ * Simple logout removes email, password, and name information from localStorage
+ * and redirects the user to the login page
+ */
 function logout() {
     localStorage.removeItem('email');
     localStorage.removeItem('password');

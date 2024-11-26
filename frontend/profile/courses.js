@@ -9,7 +9,7 @@
  * @listens DOMContentLoaded
  */
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to populate the dropdown menu with available courses
+    /** Function to populate the dropdown menu with available courses */ 
     function populateCourseDropdown() {
         fetch("http://127.0.0.1:8000/courses/list/")
             .then(response => response.json())
@@ -35,8 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const li = document.createElement("li");
                     const link = document.createElement("a");
                     link.classList.add("dropdown-item");
-                    link.textContent = course.name;
-                    link.href = "#";
+                    link.textContent = course.nam
+                    /**
+                     * Sets the onclick event handler for the link to add the course.
+                     */                    
                     link.onclick = () => addCourse(course);
                     li.appendChild(link);
                     courseDropdown.appendChild(li);
@@ -75,6 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     const removeButton = document.createElement("button");
                     removeButton.classList.add("btn", "btn-danger");
                     removeButton.textContent = "Remove";
+                    /**
+                     * Sets the onclick event handler for the remove button to remove the course.
+                     */             
                     removeButton.onclick = () => removeCourse(course.course_id, tr);
                     removeButtonTd.appendChild(removeButton);
                     tr.appendChild(removeButtonTd);
@@ -112,6 +117,9 @@ function addCourse(course) {
     const removeButton = document.createElement("button");
     removeButton.classList.add("btn", "btn-danger");
     removeButton.textContent = "Remove";
+    /**
+     * Sets the onclick event handler for the remove button to remove the course.
+     */
     removeButton.onclick = () => removeCourse(course.course_id, tr);
     removeButtonTd.appendChild(removeButton);
     tr.appendChild(removeButtonTd);

@@ -7,8 +7,6 @@
  * After clearing information, user is redirected to 
  * the login page.
  */
-
-// Function to handle logout
 function logout() {
     // Clear user data from localStorage
     localStorage.removeItem('email');
