@@ -10,16 +10,6 @@ Team Gold - Fall 2024
   - lkeat003 - Lauren Keating - lkeat003@odu.edu
   - Baeduh - Kyle Munoz - kmuno003@odu.edu
   - gtcatlett - Glenn Catlett - gcatl002@odu.edu
-# Production
-
-[GCP - Frontend index.html](https://cs411w.ue.r.appspot.com/)
-
-[GCP - Frontend home.html](https://cs411w.ue.r.appspot.com/frontend/home/home.html)
-
-# Development 
-[GCP - Frontend index.html](https://dev-dot-cs411w.ue.r.appspot.com/)
-
-[GCP - Frontend home.html](https://dev-dot-cs411w.ue.r.appspot.com/frontend/home/home.html)
 
 # Backend
 
