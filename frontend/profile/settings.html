@@ -81,6 +81,7 @@
           <div class="TimeZone-dropdown">
             <div id="TimeZone" class="TimeZone-content">
               <select id="timezone" name="timezone">
+                <option value="Select">Select</option>
                 <option value="Pacific/Midway">(GMT-11:00) Midway Island</option>
                 <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
                 <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
@@ -156,13 +157,23 @@
         <label for="viewUsers" class="tab-label">View/Manage Users</label>
         <div class="tab-content">
           <h2>View/Manage Users</h2>
-          <div class="FriendsList-container">
-            <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
-            <a href="friendsList.html"><button style="font-size:medium">Friends List</button></a>
-          </div>
-          <div class="BlockedList-container">
-            <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
-            <a href="blockedList.html"><button style="font-size:medium">Blocked List</button></a>
+          <div class="Button-container"></div>
+            <div class="FriendsList-container">
+              <a href="friendsList.html">
+                <button class="image-button">
+                  <img src="../img/tomato_friends.png" alt="tomato_friends" class="images">
+                  <div class="button-text">Friends List</div>
+                </button>
+              </a>
+            </div>
+            <div class="blockedList-container">
+              <a href="blockedList.html">
+                <button class="image-button">
+                  <img src="../img/avatars/sad_tomato.png" alt="blocked_list" class="images">
+                  <div class="button-text">Blocked List</div>
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
