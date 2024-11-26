@@ -57,9 +57,9 @@
             <img src="../resources/tomato.png" alt="tomato logo" style="width:60px; margin-bottom:25px";>
          </div>
          <div class="timer">
-          <select name="tasks" id="tasks">
-            <option value="" disabled selected>Select a task</option>
-        </select>
+            <select name="tasks" id="tasks">
+               <option value="" disabled selected>Select a task</option>
+            </select>
             <div class="button-container">
                <button class="button" id="pomodoro-session" onClick="normalTimer()">Pomodoro</button>
                <button class="button" id="custom-pomdoro" onclick="customTimer()">Custom Pomodoro</button>
@@ -96,44 +96,54 @@
    let alarmInterval = null;
    const alarm = new Audio("./alarm.wav");
    const taskDropdown = document.getElementById("tasks");
-
+   
    fetch('http://127.0.0.1:8000/assignments/upcoming/')
-  .then(response => response.json())
-  .then(data => {
+   .then(response => response.json())
+   .then(data => {
     data.assignments.forEach((task) => {
       const option = document.createElement("option");
          option.value = task.name; 
          option.textContent = task.name; 
          taskDropdown.appendChild(option);
     })
-  })
-  .catch(error => {
+   })
+   .catch(error => {
     console.error("Error fetching data:", error); 
-  });
-
+   });
+   
+   /**
+   * Switch between break and study timers
+   */
    function switchTimer() {
     const timerButton = document.getElementById("next");
     timerButton.remove();
-
+   
     clearInterval(alarmInterval); 
     alarmInterval = null;
-
+   
     if(currentMode === "break") {
          startStudy();
          } else if (currentMode === "study") {
           startBreak();
          }
    }
-
+   
+   /**
+   * Play alarm when timer is finished
+   */
    function playAlarm() {
     alarm.play();
-}
+   }
    
+   
+    /**
+    * Starts the timer
+     */
    function startTimer() {
      if(isRunning) {
        return;
      }
-
+   
      if(taskDropdown.value === "") {
         alert("The timer could not be started because a task has not been selected yet!");
         return;
@@ -176,12 +186,12 @@
           button.className = "button";
           button.innerText = "NEXT TIMER";
           button.onclick = switchTimer; 
-
+   
           const timerDiv = document.querySelector(".timer");
           timerDiv.appendChild(button);
-
+   
           const taskName = taskDropdown.value;
-
+   
           fetch("http://127.0.0.1:8000/timer/", {
               method: "POST",
               headers: {
@@ -206,6 +216,9 @@
      }, 1000);    
    }
    
+   /**
+    *  Allows the user to create a custom timer
+    * */ 
    function customTimer() {
     if(taskDropdown.value === "") {
           alert("Please select a task before customizing your timer!");
@@ -220,19 +233,22 @@
            while (isNaN(breakTimeInMinutes) || breakTimeInMinutes < 5 || breakTimeInMinutes > 15) {
              breakTimeInMinutes = prompt("How many minutes would you like to take for a break? (5-15 minutes)");
            }
-
+   
            longBreak = prompt("How many minutes would you like to take for a a long break? (20-60 minutes)");
            while (isNaN(longBreak) || longBreak < 20 || longBreak > 60) {
             longBreak = prompt("How many minutes would you like to take for a long break? (20-60 minutes)");
            }
-
+   
            originalLongBreak = longBreak;
    
            document.getElementById("pomodoro-timer").textContent = studyTimeInMinutes.toString() + ":00";
            originalTime = document.getElementById("pomodoro-timer").textContent;
            timeRemaining = parseInt(originalTime.split(":")[0]) * 60;
    }
-
+   
+   /*
+   * Sets up a standard timer session
+   */
    function normalTimer() {   
     if(taskDropdown.value === "") {
               alert("The timer could not be started because a task has not been selected yet!");
@@ -244,20 +260,23 @@
            breakTimeInMinutes = "5";
    }
    
+   /*
+   * Stops the timer
+   */
    function stopTimer() {
    clearInterval(timer);
    isRunning = false;
    
    document.getElementById("pomodoro-timer").textContent = originalTime;
-
+   
    const studyTimeInSeconds = parseInt(studyTimeInMinutes.split(":")[0]) * 60;
    const elapsedTime = studyTimeInSeconds - timeRemaining;
-  
+   
    
    timeRemaining = 0;
    originalTime = ""; 
    const taskName = taskDropdown.value;
-
+   
    fetch("http://127.0.0.1:8000/timer/", {
           method: "POST",
           headers: {
@@ -278,24 +297,31 @@
       });
    }
    
+   
+   /*
+   * Starts a break session
+   */
    function startBreak() {
      sessionCount++;
-
+   
      if(sessionCount % 8 === 0) {
         breakTimeInMinutes = longBreak;
      }
-
+   
      if(sessionCount !== 1 && sessionCount % 8 === 1) {
         breakTimeInMinutes = originalLongBreak;
      }
-
+   
      currentMode = "break";
      document.getElementById("type").textContent = "Time for a break!";
      document.getElementById("pomodoro-timer").textContent = breakTimeInMinutes < 10 ? "0" + breakTimeInMinutes + ":00" : breakTimeInMinutes + ":00";
      timeRemaining = parseInt(breakTimeInMinutes) * 60;
      startTimer();
    }
-
+   
+      /*
+   * Starts a study session
+   */
    function startStudy() {
      sessionCount++;
      currentMode = "study";
@@ -306,6 +332,9 @@
      startTimer();
    }
    
+      /*
+   * Pauses the timer
+   */
    function pauseTimer() {
       if (!isRunning) {
         return;
