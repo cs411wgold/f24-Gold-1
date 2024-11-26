@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: studyTime/studyTime.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: studyTime/studyTime.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Initializes and configures a study time chart using Chart.js.
+ * Sets up interactive toggle functionality for different assignments.
+ * @listens DOMContentLoaded
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('studyTimeChart').getContext('2d');
+
+    /**
+     * @typedef {Object} StudyTimeDataset
+     * @property {string} label - The name of the assignment
+     * @property {number[]} data - Array of study duration values
+     * @property {string} borderColor - Color of the line border
+     * @property {string} backgroundColor - Color of the line and points
+     * @property {number} tension - Line curve tension
+     * @property {number} pointRadius - Size of data points
+     * @property {number} pointHoverRadius - Size of data points on hover
+     */
+
+    /**
+     * Configuration object for study time data
+     * @type {Object}
+     * @property {string[]} labels - Session labels
+     * @property {StudyTimeDataset[]} datasets - Array of study time datasets
+     */
+    const data = {
+        labels: ['Session 1', 'Session 2', 'Session 3', 'Session 4', 'Session 5'],
+        datasets: [
+            {
+                label: 'CS 390: Homework 5',
+                data: [25, 15, 20, 30, 25],
+                borderColor: '#0066cc',
+                backgroundColor: '#0066cc',
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            },
+            {
+                label: 'CS 350: Lab 11',
+                data: [10, 20, 15, 25, 20],
+                borderColor: '#4d94ff',
+                backgroundColor: '#4d94ff',
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            },
+            {
+                label: 'CS 330: Homework 6',
+                data: [15, 25, 30, 20, 15],
+                borderColor: '#99c2ff',
+                backgroundColor: '#99c2ff',
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }
+        ]
+    };
+
+    /**
+     * Chart.js configuration object
+     * @type {Object}
+     */
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return `${context.dataset.label}: ${context.parsed.y} min`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 30,
+                    ticks: {
+                        stepSize: 5
+                    },
+                    title: {
+                        display: true,
+                        text: 'Study Time (minutes)',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Session',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // Initialize the chart
+    const studyTimeChart = new Chart(ctx, config);
+
+    /**
+     * Sets up toggle functionality for assignment visibility
+     * @param {HTMLElement} button - The toggle button element
+     * @listens click
+     */
+    const toggleButtons = document.querySelectorAll('.assignment-toggle');
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('active');
+            const assignmentName = button.getAttribute('data-assignment');
+            const datasetIndex = data.datasets.findIndex(ds => ds.label === assignmentName);
+
+            const isVisible = studyTimeChart.isDatasetVisible(datasetIndex);
+            if (isVisible) {
+                studyTimeChart.hide(datasetIndex);
+            } else {
+                studyTimeChart.show(datasetIndex);
+            }
+        });
+    });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCourse">addCourse</a></li><li><a href="global.html#addCustomCourse">addCustomCourse</a></li><li><a href="global.html#addFriend">addFriend</a></li><li><a href="global.html#addTagToTask">addTagToTask</a></li><li><a href="global.html#addTaskToTaskboard">addTaskToTaskboard</a></li><li><a href="global.html#addTaskToUI">addTaskToUI</a></li><li><a href="global.html#applyTagColorToSortableItem">applyTagColorToSortableItem</a></li><li><a href="global.html#blockUser">blockUser</a></li><li><a href="global.html#closePopup">closePopup</a></li><li><a href="global.html#convertTo12Hour">convertTo12Hour</a></li><li><a href="global.html#convertTo24Hour">convertTo24Hour</a></li><li><a href="global.html#deleteSelectedTask">deleteSelectedTask</a></li><li><a href="global.html#deleteTag">deleteTag</a></li><li><a href="global.html#deleteTagFromBackend">deleteTagFromBackend</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#displayTagForTask">displayTagForTask</a></li><li><a href="global.html#editTag">editTag</a></li><li><a href="global.html#fetchAssignmentsAndDisplay">fetchAssignmentsAndDisplay</a></li><li><a href="global.html#getNextMonth">getNextMonth</a></li><li><a href="global.html#getPreviousMonth">getPreviousMonth</a></li><li><a href="global.html#loadRegisteredCoursesFromBackend">loadRegisteredCoursesFromBackend</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#modal">modal</a></li><li><a href="global.html#onTagSelected">onTagSelected</a></li><li><a href="global.html#openPopup">openPopup</a></li><li><a href="global.html#openTaskModal">openTaskModal</a></li><li><a href="global.html#parseAssignmentLink">parseAssignmentLink</a></li><li><a href="global.html#populateAssignmentModal">populateAssignmentModal</a></li><li><a href="global.html#populateTaskSelect">populateTaskSelect</a></li><li><a href="global.html#registerCourseToBackend">registerCourseToBackend</a></li><li><a href="global.html#removeCourse">removeCourse</a></li><li><a href="global.html#saveTagToBackend">saveTagToBackend</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#saveTaskStatus">saveTaskStatus</a></li><li><a href="global.html#saveVotes">saveVotes</a></li><li><a href="global.html#setupDate">setupDate</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupContent">showPopupContent</a></li><li><a href="global.html#sortTasksByTime">sortTasksByTime</a></li><li><a href="global.html#unblockUser">unblockUser</a></li><li><a href="global.html#unfriend">unfriend</a></li><li><a href="global.html#updateTagInBackend">updateTagInBackend</a></li><li><a href="global.html#updateTagOnBackend">updateTagOnBackend</a></li><li><a href="global.html#updateTaskBackgroundColor">updateTaskBackgroundColor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 25 2024 19:22:02 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

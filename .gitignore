@@ -35,4 +35,9 @@ LocalDB.session.sql
 
 /frontend/node_modules
 frontend/package-lock.json
+docs/frontend/.DS_Store
 backend/.DS_Store
+node_modules
+docs/frontend/jsdoc/fonts
+docs/frontend/jsdoc/scripts
+docs/frontend/jsdoc/styles
