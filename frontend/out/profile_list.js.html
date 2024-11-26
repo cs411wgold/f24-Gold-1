@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: profile/list.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: profile/list.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Declare variable for modal search box.  The first
+ * variable declares the modal searchUsers from 
+ * friendsList.html.  
+ * 
+ * btn is the variable for the searchButton for
+ * the searchUsers modal.
+ * 
+ * span is the variable used for the close button on the
+ * top left of the modal.  
+ */
+var modal = document.getElementById("searchUsers");
+var btn = document.getElementById("searchButton");
+var span = document.getElementsByClassName("close")[0];
+
+/**
+ * Function to make the modal visible upon clicking
+ * the btn variable, searchButton
+ */
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+/**
+ * When span is clicked to close the modal, 
+ * set modal display to none to hide the modal.
+ */
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+/**
+ * Function to close the modal if the user clicks
+ * outside of the modal box.  If this happens,
+ * the modal display is set to none to hide
+ * the modal.
+ * 
+ * @param {MouseEvent} event - user clicking outside of modal
+ */
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+/**
+ * Function to add friends by the friendID.
+ * Request is sent to the server and success or failure message
+ * is returned.
+ * 
+ * @param {*} friendId 
+ */
+// Friend Actions
+function addFriend(friendId) {
+  fetch(`/add_friend/${friendId}/`, { method: 'POST' })
+      .then(response => response.json())
+      .then(data => alert(data.message || data.error))
+      .catch(error => console.error('Error:', error));
+}
+
+/**
+ * Function to remove friend from friends list using friendID.
+ * Request is sent to the server and success or failure message
+ * is returned.
+ * 
+ * @param {*} friendId 
+ */
+function unfriend(friendId) {
+  fetch(`/unfriend/${friendId}/`, { method: 'POST' })
+      .then(response => response.json())
+      .then(data => alert(data.message || data.error))
+      .catch(error => console.error('Error:', error));
+}
+
+/**
+ * Function to blcck user using friendID.
+ * Request is sent to the server and success or failure message
+ * is returned.
+ * 
+ * @param {*} friendId 
+ */
+function blockUser(friendId) {
+  fetch(`/block_user/${friendId}/`, { method: 'POST' })
+      .then(response => response.json())
+      .then(data => alert(data.message || data.error))
+      .catch(error => console.error('Error:', error));
+}
+
+/**
+ * Function to unblock user from blocked list using friendID.
+ * Request is sent to the server and success or failure message
+ * is returned.
+ * 
+ * @param {*} friendId 
+ */
+function unblockUser(friendId) {
+  fetch(`/unblock_user/${friendId}/`, { method: 'POST' })
+      .then(response => response.json())
+      .then(data => alert(data.message || data.error))
+      .catch(error => console.error('Error:', error));
+}
+
+/**
+ * Function to load and display list of friends.
+ * 
+ * Function fetches list of friends.  For each friend returned, 
+ * a friends card is created that contains the friend's username
+ * as well as an "Unfriend","Block", and "Message" buttons.
+ * 
+ * &lt;!--Messaging friends not implemented-->
+ */
+// Load friends list
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/friends/')
+      .then(response => response.json())
+      .then(data => {
+          const friendsList = document.getElementById("friendsList");
+          data.friends.forEach(friend => {
+              const friendCard = document.createElement("div");
+              friendCard.classList.add("card", "shadow-sm");
+
+              friendCard.innerHTML = `
+                  &lt;div class="card-body">
+                      &lt;h3 class="card-title text-center">${friend.username}&lt;/h3>
+                      &lt;div class="d-flex justify-content-center">
+                          &lt;button onclick="unfriend(${friend.id})" class="btn btn-primary mx-2">Unfriend&lt;/button>
+                          &lt;button onclick="blockUser(${friend.id})" class="btn btn-danger mx-2">Block&lt;/button>
+                          &lt;button onclick="message(${friend.id})" class="btn btn-danger mx-2">Message&lt;/button>
+                      &lt;/div>
+                  &lt;/div>
+              `;
+              friendsList.appendChild(friendCard);
+          });
+      })
+      .catch(error => console.error('Error loading friends:', error));
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCourse">addCourse</a></li><li><a href="global.html#addCustomCourse">addCustomCourse</a></li><li><a href="global.html#addFriend">addFriend</a></li><li><a href="global.html#addTagToTask">addTagToTask</a></li><li><a href="global.html#addTaskToTaskboard">addTaskToTaskboard</a></li><li><a href="global.html#addTaskToUI">addTaskToUI</a></li><li><a href="global.html#applyTagColorToSortableItem">applyTagColorToSortableItem</a></li><li><a href="global.html#blockUser">blockUser</a></li><li><a href="global.html#closePopup">closePopup</a></li><li><a href="global.html#convertTo12Hour">convertTo12Hour</a></li><li><a href="global.html#convertTo24Hour">convertTo24Hour</a></li><li><a href="global.html#deleteSelectedTask">deleteSelectedTask</a></li><li><a href="global.html#deleteTag">deleteTag</a></li><li><a href="global.html#deleteTagFromBackend">deleteTagFromBackend</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#displayTagForTask">displayTagForTask</a></li><li><a href="global.html#editTag">editTag</a></li><li><a href="global.html#fetchAssignmentsAndDisplay">fetchAssignmentsAndDisplay</a></li><li><a href="global.html#getNextMonth">getNextMonth</a></li><li><a href="global.html#getPreviousMonth">getPreviousMonth</a></li><li><a href="global.html#loadRegisteredCoursesFromBackend">loadRegisteredCoursesFromBackend</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#modal">modal</a></li><li><a href="global.html#onTagSelected">onTagSelected</a></li><li><a href="global.html#openPopup">openPopup</a></li><li><a href="global.html#openTaskModal">openTaskModal</a></li><li><a href="global.html#parseAssignmentLink">parseAssignmentLink</a></li><li><a href="global.html#populateAssignmentModal">populateAssignmentModal</a></li><li><a href="global.html#populateTaskSelect">populateTaskSelect</a></li><li><a href="global.html#registerCourseToBackend">registerCourseToBackend</a></li><li><a href="global.html#removeCourse">removeCourse</a></li><li><a href="global.html#saveTagToBackend">saveTagToBackend</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#saveTaskStatus">saveTaskStatus</a></li><li><a href="global.html#saveVotes">saveVotes</a></li><li><a href="global.html#setupDate">setupDate</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupContent">showPopupContent</a></li><li><a href="global.html#sortTasksByTime">sortTasksByTime</a></li><li><a href="global.html#unblockUser">unblockUser</a></li><li><a href="global.html#unfriend">unfriend</a></li><li><a href="global.html#updateTagInBackend">updateTagInBackend</a></li><li><a href="global.html#updateTagOnBackend">updateTagOnBackend</a></li><li><a href="global.html#updateTaskBackgroundColor">updateTaskBackgroundColor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 25 2024 19:18:13 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: taskboard/taskboard.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: taskboard/taskboard.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+document.addEventListener("DOMContentLoaded", function () {
+    // Load selected tasks into the taskboard
+    loadSelectedTasks();
+
+    /**
+     * Loads selected tasks from the backend and displays them in the taskboard
+     * Fetches tasks from the API and distributes them into appropriate columns
+     */
+    function loadSelectedTasks() {
+        fetch("http://127.0.0.1:8000/taskboard/selected_task/")
+            .then(response => response.json())
+            .then(data => {
+                console.log("Loaded selected tasks:", data);
+
+                // Clear existing tasks from each column
+                const newTasksList = document.getElementById("new-tasks");
+                const inProgressTasksList = document.getElementById("in-progress-tasks");
+                const completedTasksList = document.getElementById("completed-tasks");
+                newTasksList.innerHTML = "";
+                inProgressTasksList.innerHTML = "";
+                completedTasksList.innerHTML = "";
+
+                if (data.selected_tasks) {
+                    data.selected_tasks.forEach(task => {
+                        const taskElement = document.createElement("li");
+                        taskElement.className = "sortable-item";
+                        taskElement.dataset.id = task.id;
+                        taskElement.innerHTML = `
+                            ${task.title}
+                            &lt;button class="delete-task-btn btn btn-danger btn-sm"" onclick="deleteSelectedTask(${task.id})">Delete&lt;/button>
+                        `;
+
+                        // Append task to the correct column based on status
+                        if (task.status === "new") {
+                            newTasksList.appendChild(taskElement);
+                        } else if (task.status === "in-progress") {
+                            inProgressTasksList.appendChild(taskElement);
+                        } else if (task.status === "completed") {
+                            completedTasksList.appendChild(taskElement);
+                        }
+
+                        // Fetch and apply tag color to task
+                        fetchAndRenderTags()
+                    });
+                }
+            })
+            .catch(error => console.error("Error loading selected tasks:", error));
+            
+    }
+    
+    /**
+     * Fetches tags from the backend and applies them to tasks
+     * Updates tag colors, populates tag dropdowns, and sets up event listeners
+     */
+    function fetchAndRenderTags() {
+        fetch("http://127.0.0.1:8000/taskboard/tags/list/")
+            .then(response => response.json())
+            .then(data => {
+                const tags = data.tags; // Extract the tags array
+    
+                // Create a map to store the color for each task by task ID
+                const taskColorMap = {};
+                tags.forEach(tag => {
+                    taskColorMap[tag.task_id] = tag.color; // Map task ID to its tag color
+                });
+    
+                // Apply colors to tasks based on their tag colors
+                document.querySelectorAll(".sortable-item").forEach(item => {
+                    const taskId = item.dataset.id; // Assume each sortable-item has data-id attribute for task ID
+    
+                    // Check if this task has an associated color
+                    if (taskColorMap[taskId]) {
+                        item.style.backgroundColor = taskColorMap[taskId];
+                    }
+                });
+    
+                // Populate the tags list dropdown and set event listener for selecting tags
+                const tagSelect = document.getElementById("tags-list");
+                tagSelect.innerHTML = ""; // Clear existing options
+                tags.forEach(tag => {
+                    const option = document.createElement("option");
+                    option.value = tag.id;
+                    option.textContent = tag.name;
+                    option.dataset.color = tag.color; // Store the color in a data attribute
+                    tagSelect.appendChild(option);
+                });
+    
+                // When a tag is selected from the dropdown, apply color to the selected task
+                tagSelect.addEventListener("change", function () {
+                    const selectedTag = tagSelect.options[tagSelect.selectedIndex];
+                    const color = selectedTag.dataset.color;
+                    const selectedTaskId = document.querySelector(".sortable-item[data-id='" + selectedTag.value + "']");
+                    if (selectedTaskId) {
+                        selectedTaskId.style.backgroundColor = color;
+                    }
+                });
+    
+                // Render tags in the list on the page
+                const tagsList = document.getElementById('tags-list');
+                tagsList.innerHTML = ""; // Clear any existing tags
+                tags.forEach(tag => {
+                    const tagItem = renderTag(tag);
+                    tagsList.appendChild(tagItem);
+                });
+            })
+            .catch(error => console.error("Error fetching tags:", error));
+    }
+    
+    /**
+     * Creates and returns a DOM element for a tag
+     * @param {Object} tag - The tag object containing id, name, color, and task_id
+     * @returns {HTMLElement} The created tag list item element
+     */
+    function renderTag(tag) {
+        const tagItem = document.createElement('li');
+        tagItem.classList.add('tag-item');
+        tagItem.innerHTML = `
+            &lt;span class="tag-circle" style="background-color: ${tag.color};">&lt;/span>
+            &lt;span class="tag-name">${tag.name}&lt;/span>
+            &lt;button class="edit-tag-btn">Edit&lt;/button>
+            &lt;button class="delete-tag-btn">Delete&lt;/button>
+        `;
+    
+        // Add event listeners for Edit and Delete buttons
+        tagItem.querySelector('.edit-tag-btn').addEventListener('click', () => editTag(tagItem, tag.id));
+        tagItem.querySelector('.delete-tag-btn').addEventListener('click', () => deleteTag(tagItem, tag.task_id));
+    
+        return tagItem;
+    }
+    
+    // Load tags and apply colors when the page loads
+    document.addEventListener("DOMContentLoaded", fetchAndRenderTags);
+
+
+
+    // Initialize sortable lists with jQuery UI
+    $(".sortable-list").sortable({
+        connectWith: ".sortable-list",
+        placeholder: "sortable-placeholder",
+        tolerance: "pointer",
+        start: function (event, ui) {
+            ui.item.addClass("dragging");
+        },
+        stop: function (event, ui) {
+            ui.item.removeClass("dragging");
+            const taskId = ui.item.data("id");
+            const newStatus = ui.item.closest(".task-column").data("status");
+            if (taskId &amp;&amp; newStatus) {
+                saveTaskStatus(taskId, newStatus);
+            }
+        }
+    }).disableSelection();
+
+});
+    populateTaskSelect();
+
+    /**
+    * Handles tag selection and applies the color to the relevant task
+    */
+    function onTagSelected() {
+        // Fetch the tag details by tag ID (including color)
+        fetch(`http://127.0.0.1:8000/taskboard/tags/list/`)
+            .then(response => response.json())
+            .then(tag => {
+                const color = tag.color; // Assuming `color` is a property of the tag
+                applyTagColorToSortableItem(tag.id, color);
+            })
+            .catch(error => console.error("Error fetching tag:", error));
+    }
+
+    /**
+     * Applies the background color to `sortable-item` elements
+     * @param {string} tagId - The ID of the tag
+     * @param {string} color - The color to apply (CSS color value)
+     */
+    function applyTagColorToSortableItem(tagId, color) {
+        // Find all sortable items associated with this tag and change their background
+        document.querySelectorAll(`.sortable-item[data-tag-id="${tagId}"]`).forEach(item => {
+            item.style.backgroundColor = color;
+        });
+    }
+    
+    
+    // Add an event listener for the tag selection dropdown
+    document.getElementById("tags-list").addEventListener("change", function() {
+        onTagSelected();
+    });
+    // Load tag modal
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize the Add Tags Button Logic
+        // Initialize the Add Tags Button Logic
+        const addTagsButton = document.getElementById("add-tags-btn");
+        const addTagModalElement = document.getElementById("addTagModal");
+        const saveTagButton = document.getElementById("saveTagBtn");
+        const taskSelect = document.getElementById("taskSelect");
+        const tagNameInput = document.getElementById("tagNameInput");
+        const tagsList = document.getElementById("tags-list");
+
+        if (addTagsButton &amp;&amp; addTagModalElement) {
+            const addTagModal = new bootstrap.Modal(addTagModalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            addTagsButton.addEventListener("click", function () {
+                populateTaskSelect(); // Populate task selection dropdown with current tasks
+                addTagModal.show(); // Show the modal for adding tags
+            });
+
+            saveTagButton.addEventListener("click", function () {
+                const tagName = tagNameInput.value.trim();
+                const selectedTaskId = taskSelect.value;
+                const color = document.getElementById("colorpicker").value;
+
+                if (tagName &amp;&amp; selectedTaskId &amp;&amp; color) {
+                    addTagToTask(tagName, selectedTaskId, color);
+                    addTagModal.hide(); // Close the modal after saving
+                } else {
+                    alert("Please enter a valid tag name and select a task.");
+                }
+            });
+        }
+    
+        /**
+         * Populates the task selection dropdown with selected tasks
+         */
+        function populateTaskSelect() {
+            fetch("http://127.0.0.1:8000/taskboard/selected_task/")
+                .then(response => response.json())
+                .then(data => {
+                    // Check if response contains selected tasks in an expected format
+                    let tasks;
+                    if (Array.isArray(data.selected_tasks)) {
+                        tasks = data.selected_tasks;
+                    } else if (Array.isArray(data)) {
+                        tasks = data;
+                    } else {
+                        console.error("Unexpected response format:", data);
+                        return;
+                    }
+    
+                    // Clear previous options
+                    taskSelect.innerHTML = "";
+    
+                    // Populate dropdown with selected tasks
+                    tasks.forEach(task => {
+                        const option = document.createElement("option");
+                        option.value = task.id;
+                        option.textContent = task.title;
+                        taskSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching selected tasks:", error));
+        }
+    
+
+    
+    });
+    
+/**
+ * Loads tasks and their tags from the backend and displays them in the UI
+ */
+function loadTasks() {
+    fetch("http://127.0.0.1:8000/taskboard/selected_task/")
+        .then(response => response.json())
+        .then(tasks => {
+            tasks.forEach(task => {
+                addTaskToUI(task); // Add each task to the UI
+            });
+        })
+        .catch(error => console.error("Error loading tasks:", error));
+}
+
+/**
+ * Adds a task to the UI
+ * @param {Object} task - The task object containing id, title, status, and tags
+ */
+function addTaskToUI(task) {
+    const taskHTML = `
+        &lt;li class="sortable-item" data-id="${task.id}">
+            ${task.title}
+            &lt;button class="delete-task-btn" onclick="deleteTask(${task.id})">Delete&lt;/button>
+        &lt;/li>
+    `;
+
+    const taskColumn = document.querySelector(`.task-column[data-status="${task.status}"] .sortable-list`);
+    taskColumn.insertAdjacentHTML('beforeend', taskHTML);
+
+    const taskElement = document.querySelector(`.sortable-item[data-id="${task.id}"]`);
+
+    // If tags exist, display them and apply the color of the first tag as background
+    if (task.tags &amp;&amp; task.tags.length > 0) {
+        task.tags.forEach(tag => {
+            displayTagForTask(taskElement, tag);
+        });
+
+        // Set the background color of the task to the color of the first tag
+        taskElement.style.backgroundColor = task.tags[0].color;
+    }
+}
+
+/**
+ * Displays a tag for a task
+ * @param {HTMLElement} taskElement - The task DOM element
+ * @param {Object} tag - The tag object containing name and color
+ */
+function displayTagForTask(taskElement, tag) {
+    const tagDiv = document.createElement('span');
+    tagDiv.classList.add('task-tag');
+    tagDiv.style.backgroundColor = tag.color;
+    tagDiv.textContent = tag.name;
+    taskElement.appendChild(tagDiv);
+}
+
+
+
+/**
+ * Populates the task selection dropdown
+ */
+function populateTaskSelect() {
+    fetch("http://127.0.0.1:8000/taskboard/selected_task/")
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data); // Log the response to check the structure
+    
+            // Extract the "selected_tasks" array from the response
+            if (data.selected_tasks &amp;&amp; Array.isArray(data.selected_tasks)) {
+                const tasks = data.selected_tasks;
+    
+                // Clear existing options
+                taskSelect.innerHTML = "";
+    
+                // Populate the dropdown with the tasks
+                tasks.forEach(task => {
+                    const option = document.createElement("option");
+                    option.value = task.id;
+                    option.textContent = task.title;
+                    taskSelect.appendChild(option);
+                });
+            } else {
+                console.error("The response from the server is not an array as expected.", data);
+            }
+        })
+        .catch(error => console.error("Error fetching tasks:", error));
+}
+    
+    
+   /**
+    * Adds a new tag to a specific task
+    * @param {string} tagName - The name of the tag
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} color - The color for the tag (CSS color value)
+    */
+    function addTagToTask(tagName, taskId, color) {
+        const tagsList = document.getElementById("tags-list");
+        const tagItem = document.createElement('li');
+        tagItem.innerHTML = `
+            &lt;span class="tag-circle" style="background-color: ${color};">&lt;/span> 
+            &lt;span class="tag-name">${tagName}&lt;/span>
+            &lt;button class="edit-tag-btn">Edit&lt;/button>
+            &lt;button class="delete-tag-btn">Delete&lt;/button>
+        `;
+        tagsList.appendChild(tagItem);
+        saveTagToBackend(tagName, taskId, color);
+        updateTaskBackgroundColor(taskId, color);
+        tagItem.querySelector('.edit-tag-btn').addEventListener('click', () => editTag(tagItem, taskId));
+        tagItem.querySelector('.delete-tag-btn').addEventListener('click', () => deleteTag(tagItem, taskId));
+    }
+
+
+/**
+ * Saves the tag to the backend
+ * @param {string} tagName - The name of the tag
+ * @param {string|number} taskId - The ID of the task
+ * @param {string} color - The color for the tag (CSS color value)
+ */
+function saveTagToBackend(tagName, taskId, color) {
+    fetch("http://127.0.0.1:8000/taskboard/tags/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tagName, taskId, color }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to save tag.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Tag saved to backend:", data);
+        })
+        .catch(error => console.error("Error saving tag to backend:", error));
+    }
+
+    /**
+     * Edits a tag
+     * @param {HTMLElement} tagItem - The tag DOM element
+     * @param {string|number} taskId - The ID of the task
+     */
+    function editTag(tagItem, taskId) {
+        const tagNameElement = tagItem.querySelector('.tag-name');
+        const newTagName = prompt("Edit tag name:", tagNameElement.textContent);
+
+        if (newTagName &amp;&amp; newTagName.trim() !== "") {
+            tagNameElement.textContent = newTagName.trim();
+            // Optionally, update the backend with the new tag name
+            updateTagOnBackend(taskId, newTagName);
+        }
+    }
+
+/**
+ * Updates the tag in the backend
+ * @param {string|number} tagId - The ID of the tag
+ * @param {string} newTagName - The new name for the tag
+ */
+function updateTagInBackend(tagId, newTagName) {
+    fetch(`http://127.0.0.1:8000/taskboard/tags/update/${tagId}/`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newTagName }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Tag updated in backend:", data);
+    })
+    .catch(error => console.error("Error updating tag in backend:", error));
+}
+    /**
+     * Deletes a tag
+     * @param {HTMLElement} tagItem - The tag DOM element
+     * @param {string|number} taskId - The ID of the task
+     */
+    function deleteTag(tagItem, taskId) {
+        if (confirm("Are you sure you want to delete this tag?")) {
+            const tagsList = document.getElementById('tags-list');
+            
+            // Check if tagItem is a valid node and exists within tagsList
+            if (tagsList.contains(tagItem)) {
+                tagsList.removeChild(tagItem);
+                deleteTagFromBackend(taskId);
+                updateTaskBackgroundColor(taskId, ''); // Reset background color
+            } else {
+                console.error("Tag item not found in tagsList or is not a valid node.");
+            }
+        }
+    }
+    
+   /**
+    * Deletes a tag from the backend
+    * @param {string|number} taskId - The ID of the task
+    */
+    function deleteTagFromBackend(taskId) {
+        fetch(`http://127.0.0.1:8000/taskboard/tags/${taskId}/`, {
+            method: "DELETE",
+        })
+            .then(() => {
+                console.log("Tag deleted from backend:", taskId);
+            })
+            .catch(error => console.error("Error deleting tag from backend:", error));
+    }
+
+   /**
+    * Updates a tag name in the backend
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} newTagName - The new name for the tag
+    */
+    function updateTagOnBackend(taskId, newTagName) {
+        fetch(`http://127.0.0.1:8000/taskboard/tags/update/${taskId}/`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tagName: newTagName }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to update tag.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Tag updated on backend:", data);
+            })
+            .catch(error => console.error("Error updating tag on backend:", error));
+    }
+
+    /**
+     * Updates the background color of a task based on the tag
+     * @param {string|number} taskId - The ID of the task
+     * @param {string} color - The color to apply (CSS color value)
+     */
+    function updateTaskBackgroundColor(taskId, color) {
+        const taskElement = document.querySelector(`.sortable-item[data-id='${taskId}']`);
+        if (taskElement) {
+            taskElement.style.backgroundColor = color;
+        }
+    }
+
+   /**
+    * Populates the assignment selection modal with available assignments
+    */
+    function populateAssignmentModal() {
+        fetch("http://127.0.0.1:8000/assignments/list/")
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data); // Log the API response to check its structure
+
+                let assignments;
+
+                if (Array.isArray(data)) {
+                    assignments = data;
+                } else if (data.assignments &amp;&amp; Array.isArray(data.assignments)) {
+                    assignments = data.assignments;
+                } else {
+                    console.error("The API response format is incorrect, expected an array of assignments.");
+                    return;
+                }
+
+                const assignmentSelect = document.getElementById("assignmentSelect");
+                if (!assignmentSelect) {
+                    console.error("Element with ID 'assignmentSelect' not found.");
+                    return;
+                }
+
+                assignmentSelect.innerHTML = "";
+
+                assignments.forEach(assignment => {
+                    const option = document.createElement("option");
+                    option.value = assignment.id;
+                    option.textContent = assignment.name;
+                    assignmentSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Error fetching assignments:", error));
+    }
+
+    const selectAssignmentButton = document.getElementById("selectAssignmentButton");
+    const selectAssignmentModalElement = document.getElementById("selectAssignmentModal");
+    const addAssignmentBtn = document.getElementById("addAssignmentBtn");
+    const assignmentSelect = document.getElementById("assignmentSelect");
+
+    if (selectAssignmentButton &amp;&amp; selectAssignmentModalElement) {
+        const selectAssignmentModal = new bootstrap.Modal(selectAssignmentModalElement, {
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        selectAssignmentButton.addEventListener("click", function () {
+            populateAssignmentModal(); // Populate the modal with assignments
+            selectAssignmentModal.show(); // Show the modal
+        });
+
+        addAssignmentBtn.addEventListener("click", function () {
+            const selectedAssignmentId = assignmentSelect.value;
+            if (selectedAssignmentId) {
+                addTaskToTaskboard(selectedAssignmentId);
+                populateTaskSelect();
+                selectAssignmentModal.hide(); // Close the modal after adding
+            } else {
+                alert("Please select an assignment to add.");
+            }
+        });
+    } else {
+        console.error("Element with ID 'selectAssignmentButton' or 'selectAssignmentModal' was not found.");
+    }
+
+   /**
+    * Adds a selected assignment to the taskboard
+    * @param {string|number} assignmentId - The ID of the assignment to add
+    */
+    function addTaskToTaskboard(assignmentId) {
+        fetch(`http://127.0.0.1:8000/taskboard/task/${assignmentId}/`)
+            .then(response => response.json())
+            .then(assignment => {
+                if (!assignment || !assignment.id) {
+                    console.error("Task not found in taskboard database.");
+                    return;
+                }
+    
+                // Save new task to selected tasks backend
+                fetch("http://127.0.0.1:8000/taskboard/selected_task/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ task_id: assignment.id }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Task successfully selected:", data);
+    
+                    // Create task HTML element and append to the new tasks list
+                    const newTasksList = document.getElementById("new-tasks");
+                    if (newTasksList) {
+                        const taskElement = document.createElement("li");
+                        taskElement.className = "sortable-item";
+                        taskElement.dataset.id = assignment.id;
+                        taskElement.innerHTML = `
+                            ${assignment.title}
+                            &lt;button class="delete-task-btn btn btn-danger btn-sm">Delete&lt;/button>
+                        `;
+                        newTasksList.appendChild(taskElement);
+    
+                        // Attach event listener to the delete button
+                        const deleteButton = taskElement.querySelector(".delete-task-btn");
+                        deleteButton.addEventListener("click", function() {
+                            deleteSelectedTask(assignment.id);
+                        });
+                    } else {
+                        console.error("Element with ID 'new-tasks' not found.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error selecting task:", error);
+                });
+            })
+            .catch(error => console.error("Error fetching assignment:", error));
+    }
+    
+
+   /**
+    * Saves the updated status of a task after moving to another column
+    * @param {string|number} taskId - The ID of the task
+    * @param {string} newStatus - The new status of the task
+    */
+    function saveTaskStatus(taskId, newStatus) {
+        fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: newStatus }),
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Network response was not ok: ${text}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Task status updated in backend:", data);
+            })
+            .catch(error => console.error("Error updating task status in backend:", error));
+    }
+
+   /**
+    * Deletes a selected task from the taskboard
+    * @param {string|number} taskId - The ID of the task to delete
+    */
+    function deleteSelectedTask(taskId) {
+        fetch(`http://127.0.0.1:8000/taskboard/selected_task/${taskId}/`, {
+            method: "DELETE",
+        })
+            .then(() => {
+                const taskElement = document.querySelector(`li[data-id="${taskId}"]`);
+                if (taskElement) {
+                    taskElement.remove();
+                }
+                console.log("Selected task deleted:", taskId);
+            })
+            .catch(error => console.error("Error deleting selected task:", error));
+    }
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCourse">addCourse</a></li><li><a href="global.html#addCustomCourse">addCustomCourse</a></li><li><a href="global.html#addFriend">addFriend</a></li><li><a href="global.html#addTagToTask">addTagToTask</a></li><li><a href="global.html#addTaskToTaskboard">addTaskToTaskboard</a></li><li><a href="global.html#addTaskToUI">addTaskToUI</a></li><li><a href="global.html#applyTagColorToSortableItem">applyTagColorToSortableItem</a></li><li><a href="global.html#blockUser">blockUser</a></li><li><a href="global.html#closePopup">closePopup</a></li><li><a href="global.html#convertTo12Hour">convertTo12Hour</a></li><li><a href="global.html#convertTo24Hour">convertTo24Hour</a></li><li><a href="global.html#deleteSelectedTask">deleteSelectedTask</a></li><li><a href="global.html#deleteTag">deleteTag</a></li><li><a href="global.html#deleteTagFromBackend">deleteTagFromBackend</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#displayTagForTask">displayTagForTask</a></li><li><a href="global.html#editTag">editTag</a></li><li><a href="global.html#fetchAssignmentsAndDisplay">fetchAssignmentsAndDisplay</a></li><li><a href="global.html#getNextMonth">getNextMonth</a></li><li><a href="global.html#getPreviousMonth">getPreviousMonth</a></li><li><a href="global.html#loadRegisteredCoursesFromBackend">loadRegisteredCoursesFromBackend</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#modal">modal</a></li><li><a href="global.html#onTagSelected">onTagSelected</a></li><li><a href="global.html#openPopup">openPopup</a></li><li><a href="global.html#openTaskModal">openTaskModal</a></li><li><a href="global.html#parseAssignmentLink">parseAssignmentLink</a></li><li><a href="global.html#populateAssignmentModal">populateAssignmentModal</a></li><li><a href="global.html#populateTaskSelect">populateTaskSelect</a></li><li><a href="global.html#registerCourseToBackend">registerCourseToBackend</a></li><li><a href="global.html#removeCourse">removeCourse</a></li><li><a href="global.html#saveTagToBackend">saveTagToBackend</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#saveTaskStatus">saveTaskStatus</a></li><li><a href="global.html#saveVotes">saveVotes</a></li><li><a href="global.html#setupDate">setupDate</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupContent">showPopupContent</a></li><li><a href="global.html#sortTasksByTime">sortTasksByTime</a></li><li><a href="global.html#unblockUser">unblockUser</a></li><li><a href="global.html#unfriend">unfriend</a></li><li><a href="global.html#updateTagInBackend">updateTagInBackend</a></li><li><a href="global.html#updateTagOnBackend">updateTagOnBackend</a></li><li><a href="global.html#updateTaskBackgroundColor">updateTaskBackgroundColor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 25 2024 19:18:13 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
