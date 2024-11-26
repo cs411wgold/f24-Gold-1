@@ -6,3 +6,5 @@ gunicorn==22.0.0
 django-cors-headers
 djangorestframework
 requests
+pytest 
+pytest-django

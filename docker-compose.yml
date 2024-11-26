@@ -70,7 +70,19 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      
+
+  pytest:
+    build:
+      context: ./backend
+      dockerfile: dockerfile.test
+    volumes:
+      - ./backend:/app
+      - ./backend/tests:/app/tests
+    environment:
+      - DJANGO_SETTINGS_MODULE=djangoConfig.settings
+      - PYTHONPATH=/app
+    command: pytest tests
+
 networks:
   app-network:
     driver: bridge

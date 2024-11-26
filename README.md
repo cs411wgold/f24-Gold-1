@@ -34,6 +34,10 @@ password: TestMe123
 - Front End 
 ``` docker-compose run --rm jest ```
 
+- Back End
+``` docker compose run --rm jest```
+``` python manage.py test tests.test_login ```
+
 # Misc
 
 To generate pydocs, assuming pydocs is installed

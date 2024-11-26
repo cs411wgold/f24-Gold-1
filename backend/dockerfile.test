@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+RUN pip install pytest pytest-django
+
+# Copy the application code
+COPY . .
+
+ENV DJANGO_SETTINGS_MODULE=djangoConfig.settings
+# ENV PYTHONPATH=/app
+
+# Run pytest
+CMD ["python", "-m", "pytest", "tests.test_login"]
