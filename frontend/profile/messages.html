@@ -39,14 +39,17 @@
            })
            .catch(error => console.error('Error loading header:', error));
       </script>
+      
       <!-- Main Section -->
-      <main class="container-fluid bg-light text-center col-4 p-5 border rounded shadow-sm timer-container" style="--bs-bg-opacity:0.85; margin-bottom:175px;">
+      <main class="container-fluid bg-light text-center col-4 p-5 border rounded shadow-sm timer-container" style="--bs-bg-opacity:0.85; margin-bottom:245px; margin-top:50px;">
       <div class="logo">
          <span style="font-size: 40px; font-weight: bold;">Messages</span>
          <img src="../img/tomato_friends.png" alt="tomato logo" style="width:120px;" class="title-image"> 
       </div>
       <div id="friends" class="friends"></div>
       </section>
+      </main>
+      
       <!-- Chat Modal -->
       <div id="chatModal" class="modal" style="display: none;">
          <div class="modal-content">
@@ -59,6 +62,7 @@
             </div>
          </div>
       </div>
+
       <!-- Footer Section -->
       <div id="footer-common"></div>
       <script>
@@ -68,6 +72,7 @@
              document.getElementById('footer-common').innerHTML = data;
            });
       </script>
+
       <script>
          function capitalizeFirstLetter(name) {
              return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
