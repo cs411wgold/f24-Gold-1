@@ -1489,3 +1489,5 @@ document.addEventListener('DOMContentLoaded', () => {
         postsContainer.scrollIntoView({ behavior: 'smooth' });
     };
 });
+
+module.exports = { api, notifications };
