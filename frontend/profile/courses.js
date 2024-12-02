@@ -27,15 +27,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
+                 // Filter out the unwanted course
+                const filteredCourses = courses.filter(course => course.name !== "Passport to Canvas (Canvas Student Orientation - 2022)");
+
+
                 // Populate the dropdown menu
                 const courseDropdown = document.getElementById("courseDropdown");
                 courseDropdown.innerHTML = ""; // Clear existing options
 
-                courses.forEach(course => {
+                filteredCourses.forEach(course => {
                     const li = document.createElement("li");
                     const link = document.createElement("a");
                     link.classList.add("dropdown-item");
-                    link.textContent = course.nam
+                    link.textContent = course.name
                     /**
                      * Sets the onclick event handler for the link to add the course.
                      */                    

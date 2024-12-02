@@ -17,9 +17,36 @@ def fetch_courses(user_id):
         "Authorization": f"Bearer {ACCESS_TOKEN}",
         "Content-Type": "application/json"
     }
-    response = requests.get(CANVAS_API_URL.format(user_id=user_id), headers=headers)
-    response.raise_for_status()
-    return response.json()
+
+    courses = []
+    url = CANVAS_API_URL.format(user_id=user_id)
+
+    while url:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        # Add the current page's courses to the list
+        courses.extend(response.json())
+
+        # Parse the 'Link' header for pagination
+        link_header = response.headers.get("Link")
+        if link_header:
+            next_url = None
+            for link in link_header.split(","):
+                if 'rel="next"' in link:
+                    next_url = link.split(";")[0].strip("<> ")
+            url = next_url
+        else:
+            url = None  # No more pages
+
+    # Filter the courses: example filters
+    filtered_courses = [
+        course for course in courses
+        if course.get("name") and course.get("workflow_state") == "available"
+    ]
+
+    return filtered_courses
+
 
 def save_courses(user_id):
     try:
